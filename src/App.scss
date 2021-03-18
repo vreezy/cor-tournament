@@ -1,7 +1,14 @@
+@import "~bootstrap/scss/bootstrap";
+
+// if not needed deinstall
+@import 'office-ui-fabric-core/dist/sass/Fabric.scss';
+
+
 .App {
-  text-align: center;
+   height: 100vh;
 }
 
+/*
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -35,4 +42,4 @@
   to {
     transform: rotate(360deg);
   }
-}
+} */

@@ -1,0 +1,10 @@
+@import "../../colors";
+
+.headerCard {
+   border-color: $primaryColor;
+   border-style: solid;
+   border-width: 2px;
+   font-size: x-large;
+   padding: 16px;
+   background-color: #292929;
+}
