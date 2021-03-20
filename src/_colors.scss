@@ -1,3 +1,12 @@
 $primaryColor: #52c3ee;
-$backgroundColor: #292929;
-$backgroundContrastColor: #1d1d1b;
+$primaryBackgroundColor: #292929;
+$secondaryBackgroundColor: #292929;
+
+// export
+// https://til.hashrocket.com/posts/sxbrscjuqu-share-scss-variables-with-javascript
+
+:export {
+   primarycolor: $primaryColor;
+   primaryBackgroundColor: $primaryBackgroundColor;
+   secondaryBackgroundColor: $secondaryBackgroundColor;
+}

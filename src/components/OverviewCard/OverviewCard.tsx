@@ -1,21 +1,23 @@
 import React from 'react';
-import parse from 'html-react-parser';
+// import parse from 'html-react-parser';
 
 // styles
 import './OverviewCard.scss'
 
-type CardProps = {
+type IOverviewCardProps = {
    title: string,
-   content: string[]
+   content: React.ReactNode
 }
 
-function OverviewCard({ title, content }: CardProps) {
+function OverviewCard({ title, content }: IOverviewCardProps) {
   return (
-   <div className="col-sm">
-      <div className="text-center headerCard">
+   <div className="p-2 d-flex flex-column flex-fill">
+      <div className="header text-center border border-2 rounded-top border-primary">
          {title}
       </div>  
-         {parse(content.join(' <br /> '))}
+      <div className="content border border-2 rounded-bottom border-secondary border-top-0 flex-fill">
+         {content}
+      </div>
 
 
    </div>

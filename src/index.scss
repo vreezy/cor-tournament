@@ -1,17 +1,24 @@
+// default colors
+@import "./colors";
+
+// redefinde bootsrap colors
+// https://stackoverflow.com/questions/38792005/how-to-change-the-bootstrap-primary-color
+$primary: $primaryColor;
+@import "~bootstrap/scss/bootstrap";
+
+// if not needed deinstall
+@import 'office-ui-fabric-core/dist/sass/Fabric.scss';
+
+
+// html, body, #root {
+//    min-height: 100% !important;
+//    height: 100%;
+// }
+
+
+// react default
 body {
    margin: 0;
-   /* font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-   sans-serif; */
    -webkit-font-smoothing: antialiased;
    -moz-osx-font-smoothing: grayscale;
 }
-
-body > #root > div {
-   height: 100%;
- }
-
-/* code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-} */

@@ -1,10 +1,29 @@
 @import "../../colors";
 
-.headerCard {
-   border-color: $primaryColor;
-   border-style: solid;
-   border-width: 2px;
+.OverviewCard:first-child  {
+   margin-right: 10px;
+}
+
+.OverviewCard:not {
+   margin: 10px;
+}
+
+.OverviewCard:last-child  {
+   margin-left: 10px;
+}
+
+.header {
+   // border-color: $primaryColor;
+   // border-style: solid;
+   // border-width: 2px;
    font-size: x-large;
    padding: 16px;
-   background-color: #292929;
+   background-color: $secondaryBackgroundColor;
+}
+
+.content {
+   // border-color: #545454;
+   // border-style: solid;
+   // border-width: 2px;
+   padding: 16px;
 }
