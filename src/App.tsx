@@ -14,6 +14,10 @@ import Home from './components/Home/Home';
 
 import Footer from './components/Footer/Footer';
 
+import Impressum from './components/Impressum/Impressum';
+import Contact from './components/Contact/Contact';
+import DataProtection from './components/DataProtection/DataProtection';
+
 // styles 
 import { loadTheme } from '@fluentui/react';
 import './App.scss';
@@ -53,21 +57,21 @@ function App() {
    return (
       <div className="App h-100 bg-dark text-white">
          <Router>
-            <Header />
-            <Switch>
-               <Route exact path="/">
-                  <Home content={content}/>
-               </Route>
-               <Route path="/impressum">
-                  <div>Impressum</div>
-               </Route>
-               <Route path="/dataprotection">
-                  <div>Datenschutz</div>
-               </Route>
-               <Route path="/contact">
-                  <div>contact</div>
-               </Route>
-            </Switch>
+            <Header content={content} />
+               <Switch>
+                  <Route exact path="/">
+                     <Home content={content}/>
+                  </Route>
+                  <Route path="/impressum">
+                     <Impressum />
+                  </Route>
+                  <Route path="/dataprotection">
+                     <DataProtection />
+                  </Route>
+                  <Route path="/contact">
+                     <Contact />
+                  </Route>
+               </Switch>
             <Footer />
          </Router>
       </div>
