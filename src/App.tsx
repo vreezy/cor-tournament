@@ -4,7 +4,7 @@ import {
    Switch,
    Route,
 } from "react-router-dom";
-
+import { initializeIcons } from '@fluentui/react';
 
 // Content
 import content from './content';
@@ -26,33 +26,59 @@ import './App.scss';
 const darkTheme = {
    palette: {
       themePrimary: '#52c3ee',
-      themeLighterAlt: '#f8fcfe',
-      themeLighter: '#e2f5fc',
-      themeLight: '#c8ecfa',
-      themeTertiary: '#94d9f4',
-      themeSecondary: '#64c8ef',
-      themeDarkAlt: '#49aed5',
-      themeDark: '#3d93b4',
-      themeDarker: '#2d6c85',
-      neutralLighterAlt: '#faf9f8',
-      neutralLighter: '#f3f2f1',
-      neutralLight: '#edebe9',
-      neutralQuaternaryAlt: '#e1dfdd',
-      neutralQuaternary: '#d0d0d0',
-      neutralTertiaryAlt: '#c8c6c4',
-      neutralTertiary: '#a19f9d',
-      neutralSecondary: '#605e5c',
-      neutralPrimaryAlt: '#3b3a39',
+      themeLighterAlt: '#030809',
+      themeLighter: '#0d1f26',
+      themeLight: '#183a47',
+      themeTertiary: '#30748e',
+      themeSecondary: '#47aad1',
+      themeDarkAlt: '#61c7ef',
+      themeDark: '#78cff1',
+      themeDarker: '#9adbf5',
+      neutralLighterAlt: '#1b1b19',
+      neutralLighter: '#1b1b19',
+      neutralLight: '#1a1a18',
+      neutralQuaternaryAlt: '#181816',
+      neutralQuaternary: '#171715',
+      neutralTertiaryAlt: '#161614',
+      neutralTertiary: '#c8c8c8',
+      neutralSecondary: '#d0d0d0',
+      neutralPrimaryAlt: '#dadada',
       neutralPrimary: '#ffffff',
-      neutralDark: '#201f1e',
-      black: '#1d1d1b',
+      neutralDark: '#f4f4f4',
+      black: '#f8f8f8',
       white: '#1d1d1b',
+
+      // themePrimary: '#52c3ee',
+      // themeLighterAlt: '#f8fcfe',
+      // themeLighter: '#e2f5fc',
+      // themeLight: '#c8ecfa',
+      // themeTertiary: '#94d9f4',
+      // themeSecondary: '#64c8ef',
+      // themeDarkAlt: '#49aed5',
+      // themeDark: '#3d93b4',
+      // themeDarker: '#2d6c85',
+      // neutralLighterAlt: '#faf9f8',
+      // neutralLighter: '#f3f2f1',
+      // neutralLight: '#edebe9',
+      // neutralQuaternaryAlt: '#e1dfdd',
+      // neutralQuaternary: '#d0d0d0',
+      // neutralTertiaryAlt: '#c8c6c4',
+      // neutralTertiary: '#a19f9d',
+      // neutralSecondary: '#605e5c',
+      // neutralPrimaryAlt: '#3b3a39',
+      // neutralPrimary: '#ffffff',
+      // neutralDark: '#201f1e',
+      // black: '#1d1d1b',
+      // white: '#1d1d1b',
    }
 }; 
  
-loadTheme(darkTheme);
+
 
 function App() {
+
+   loadTheme(darkTheme);
+   initializeIcons();
      
    return (
       <div className="App h-100 bg-dark text-white">

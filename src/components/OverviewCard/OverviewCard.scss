@@ -1,15 +1,11 @@
 @import "../../colors";
 
-.OverviewCard:first-child  {
-   margin-right: 10px;
+.OverviewCard {
+   margin-bottom: 20px;
 }
 
-.OverviewCard:not {
-   margin: 10px;
-}
-
-.OverviewCard:last-child  {
-   margin-left: 10px;
+.border-fix {
+   border-width: 2px !important;
 }
 
 .header {

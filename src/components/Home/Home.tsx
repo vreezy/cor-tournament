@@ -7,6 +7,10 @@ import IContent from '../../interfaces/IContent';
 import Register from '../Register/Register';
 import Rules from '../Rules/Rules';
 
+import User from '../User/User';
+
+import { v4 as uuidv4 } from 'uuid';
+
 // styles
 import './Home.scss';
 
@@ -20,33 +24,34 @@ function Home({content}: IHomeProps) {
 
       return (
          <div className="container">
-       
-
-
-            <img src={logo} alt="Logo"/>
-            <br />
- 
-
-
-            <div className="InfoBox d-flex flex-wrap align-items-stretch">
-               <OverviewCard title="Übersicht" content={content.overview.map(ele => <div>{ele} <br /></div> )}   />
+            <div className="row">
+               <OverviewCard title="Übersicht" content={content.overview.map((ele) => <div key={uuidv4()}>{ele} <br /></div> )}   />
                <OverviewCard title="Anmelden" content={<Register />}/>
                <OverviewCard title="Regeln" content={<Rules content={content.rules}/>}/>
             </div>
 
-            <div className="d-flex">
+         
+            <User />
+           
 
+            <div className="">
+            <br />
                
-               Teilnehmer auflistung<br />
-
+               <h2>TODO</h2>
+               Teilnehmer refresh nach registrierung<br />
+               Teilnehmer a-z / z-a
+               <br />
+               header background image
+               <br />
                Teams auflistung<br />
-
+               <br />
                twitch links/live<br />
-
-               
-
+               <br />
                Turnier plan https://display.turnier.live/R1se/cor-test/0<br />
-               +
+
+               <br />
+               <img src={logo} alt="Logo"/>
+               
             </div>
      
          </div>
