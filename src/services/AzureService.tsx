@@ -6,6 +6,7 @@ import { constants } from '../constants';
 // interfaces
 import { IRegisterUser } from '../interfaces/IRegisterUser';
 import { IBasicResult } from '../interfaces/IBasicResult';
+import { ITwitchItem } from '../interfaces/ITwitchItem';
 
 export const signUp = async (body: IRegisterUser): Promise<IBasicResult> => {
    try {
@@ -69,5 +70,37 @@ export const getUser = async (): Promise<any[]> => {
       return [];
    }
 
-}
+};
+
+export const getTwitchStatus = async (): Promise<ITwitchItem[]> => {
+   try {
+      const url = `${constants.twitchStatusAPIURL}`;
+      const options: RequestInit = {
+         method: 'POST',
+         headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+      }
+
+      const response = await fetch(url, options);
+
+      console.log(response)
+
+      if(response.status === 200) {
+         const json = await response.json();
+
+         if(json && json.hasOwnProperty("status") && json.hasOwnProperty("data") && json.status === "ok" && Array.isArray(json.data)) {
+            return json.data
+         }
+      }
+   }
+   catch(e) {
+      console.log(e)
+      return [];
+   }
+
+   return [];
+};
+
 

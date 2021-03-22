@@ -9,7 +9,7 @@ import {
 } from '@fluentui/react';
 
 // services
-import { getUser } from '../../services/azureStorageService';
+import { getUser } from '../../services/AzureService';
 
 const columnProps: Partial<IStackProps> = {
    tokens: { childrenGap: 15 },
@@ -77,7 +77,7 @@ function User() {
    }
 
    return (
-      <div>
+      <div className="container">
 
         <h2>Teilnehmer</h2>
          <Stack {...columnProps}>

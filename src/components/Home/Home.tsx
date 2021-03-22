@@ -9,6 +9,8 @@ import Rules from '../Rules/Rules';
 
 import User from '../User/User';
 
+import Twitch from '../Twitch/Twitch';
+
 import { v4 as uuidv4 } from 'uuid';
 
 // styles
@@ -23,18 +25,22 @@ function Home({content}: IHomeProps) {
 
 
       return (
-         <div className="container">
-            <div className="row">
-               <OverviewCard title="Übersicht" content={content.overview.map((ele) => <div key={uuidv4()}>{ele} <br /></div> )}   />
-               <OverviewCard title="Anmelden" content={<Register />}/>
-               <OverviewCard title="Regeln" content={<Rules content={content.rules}/>}/>
+         <div>
+            <br /><br />
+            <div className="container">
+               <div className="row">
+                  <OverviewCard title="Übersicht" content={content.overview.map((ele) => <div key={uuidv4()}>{ele} <br /></div> )}   />
+                  <OverviewCard title="Anmelden" content={<Register />}/>
+                  <OverviewCard title="Regeln" content={<Rules content={content.rules}/>}/>
+               </div>
             </div>
 
-         
+            <br /><br />
             <User />
-           
-
-            <div className="">
+            <br /><br />
+            <Twitch />
+            <br /><br />
+            <div className="container">
             <br />
                
                <h2>TODO</h2>
@@ -55,6 +61,7 @@ function Home({content}: IHomeProps) {
             </div>
      
          </div>
+
          
       );
 

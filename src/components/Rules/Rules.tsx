@@ -9,11 +9,11 @@ const columnProps: Partial<IStackProps> = {
  };
 
 
-type IOverviewCardProps = {
+type IRulesProps = {
    content: IContentRules[]
 }
 
-function Rules({ content }: IOverviewCardProps) {
+function Rules({ content }: IRulesProps) {
   return (
    <div>
       <Stack {...columnProps}>

@@ -9,7 +9,7 @@ import {
 } from '@fluentui/react';
 
 // services
-import { signUp } from '../../services/azureStorageService';
+import { signUp } from '../../services/AzureService';
 
 const columnProps: Partial<IStackProps> = {
    tokens: { childrenGap: 15 },
