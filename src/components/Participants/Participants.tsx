@@ -9,13 +9,13 @@ import {
 } from '@fluentui/react';
 
 // services
-import { getUser } from '../../services/AzureService';
+import { getUsers } from '../../services/AzureService';
 
 const columnProps: Partial<IStackProps> = {
    tokens: { childrenGap: 15 },
  };
 
-function User() {
+function Participants() {
 
    const columns: IColumn[] = [
       {
@@ -56,7 +56,7 @@ function User() {
    React.useEffect(() => {
       const fetchUsers = async () => {
          setLoading(true);
-         const response = await getUser();
+         const response = await getUsers();
          setUsers(response);
          setLoading(false);
 
@@ -104,4 +104,4 @@ function User() {
 
 }
 
-export default User;
+export default Participants;

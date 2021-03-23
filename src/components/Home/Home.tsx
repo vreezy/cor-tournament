@@ -1,22 +1,20 @@
 import React from 'react';
+
 import logo from '../../logo_300.png';
 
-import OverviewCard from '../OverviewCard/OverviewCard';
-import IContent from '../../interfaces/IContent';
-
-import Register from '../Register/Register';
-import Rules from '../Rules/Rules';
-
-import User from '../User/User';
-
+import Overview from '../Overview/Overview'
+import Participants from '../Participants/Participants';
 import Twitch from '../Twitch/Twitch';
 
-import { v4 as uuidv4 } from 'uuid';
+// helper
+//import { v4 as uuidv4 } from 'uuid';
 
 // styles
 import './Home.scss';
 
 // interfaces
+import IContent from '../../interfaces/IContent';
+
 type IHomeProps = {
    content: IContent,
 }
@@ -26,19 +24,10 @@ function Home({content}: IHomeProps) {
 
       return (
          <div>
-            <br /><br />
-            <div className="container">
-               <div className="row">
-                  <OverviewCard title="Übersicht" content={content.overview.map((ele) => <div key={uuidv4()}>{ele} <br /></div> )}   />
-                  <OverviewCard title="Anmelden" content={<Register />}/>
-                  <OverviewCard title="Regeln" content={<Rules content={content.rules}/>}/>
-               </div>
-            </div>
-
-            <br /><br />
-            <User />
-            <br /><br />
+            <Overview />
+            <Participants />
             <Twitch />
+
             <br /><br />
             <div className="container">
             <br />

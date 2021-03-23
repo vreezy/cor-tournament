@@ -44,7 +44,7 @@ export const signUp = async (body: IRegisterUser): Promise<IBasicResult> => {
    }
 };
 
-export const getUser = async (): Promise<any[]> => {
+export const getUsers = async (): Promise<any[]> => {
 
    try {
       const account = "cordatabase";
@@ -72,7 +72,7 @@ export const getUser = async (): Promise<any[]> => {
 
 };
 
-export const getTwitchStatus = async (): Promise<ITwitchItem[]> => {
+export const getTwitchItems = async (): Promise<ITwitchItem[]> => {
    try {
       const url = `${constants.twitchStatusAPIURL}`;
       const options: RequestInit = {
@@ -84,8 +84,6 @@ export const getTwitchStatus = async (): Promise<ITwitchItem[]> => {
       }
 
       const response = await fetch(url, options);
-
-      console.log(response)
 
       if(response.status === 200) {
          const json = await response.json();

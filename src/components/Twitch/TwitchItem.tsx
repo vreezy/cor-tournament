@@ -1,5 +1,6 @@
 import React from 'react';
 import { ITwitchItem } from '../../interfaces/ITwitchItem';
+
 // styles
 import './TwitchItem.scss'
 
@@ -16,18 +17,23 @@ function TwitchItem({ data }: ITwitchItemProps) {
       return 'offline'
    }
 
+   const liveBadge = (state: boolean) =>{
+      if(state) {
+         return <span className="badge badge-danger">Online</span>
+      }
+      return <span className="badge badge-secondary">Offline</span>
+   }
+   
    return (
-      <div className="col col-lg-4 col-xl-4 flex-fill" >
-         <div className={"TwitchItem border-fix text-center border border-2 h-100 rounded " + isLive(data.is_live)} style={{backgroundImage: "url("+data.thumbnail_url+")"}}>
-         {/* <img src={data.thumbnail_url} alt="thumb"/> */}
-         {/* d-flex flex-column */}
-         {data.display_name}
-         {data.is_live}
-         {data.title}
-         </div>
+      <div className="TwitchItem p-3 col col-lg-4 col-xl-4 flex-fill">
+         <a href={"https://twitch.tv/" + data.broadcaster_login} target="_blank" rel="noreferrer">
+            <div className={"TwitchItemInner border-fix d-flex flex-column  border border-2 h-100 rounded " + isLive(data.is_live)} style={{backgroundImage: "url("+data.thumbnail_url+")"}}>
+               <div className="TwitchItemText mb-auto p-2">{data.display_name} {liveBadge(data.is_live)}</div>
+               <div className="TwitchItemText p-2">{data.title}</div>
+            </div>
+         </a>
       </div>
    )
-
 }
 
 export default TwitchItem

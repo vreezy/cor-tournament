@@ -7,6 +7,7 @@ import {
    Stack,
    IStackProps
 } from '@fluentui/react';
+import { Spinner, SpinnerSize  } from '@fluentui/react';
 
 // services
 import { signUp } from '../../services/AzureService';
@@ -60,8 +61,8 @@ function Register() {
 
    if(loading) {
       return (
-         <div>
-            Loading...
+         <div className="d-flex h-100 justify-content-center align-items-center">
+            <Spinner label="Loading..." size={SpinnerSize.large} />
          </div>
       )
    }

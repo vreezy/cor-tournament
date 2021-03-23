@@ -1,15 +1,23 @@
-.TwitchItem {
+.TwitchItemInner {
    background-repeat: no-repeat;
    // background-attachment: fixed;
    background-position: center;
    background-size: cover;
    min-height: 370px;
+   
 }
 
+
+
 .online {
-   border-color: #28a745!important ;
+   border-color: #dc3545!important; 
 }
 
 .offline {
-   border-color: #dc3545!important;
+   border-color: #6c757d!important;
 }
+
+.TwitchItemText {
+   background-color:rgba(0, 0, 0, 0.8);
+}
+

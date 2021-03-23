@@ -1,7 +1,22 @@
-.DesktopHeader {
-   background-image: url('../../header.jpg');
+.desktopHeader {
+   background-image: url('../../assets/header.jpg');
    background-repeat: no-repeat;
    background-attachment: fixed;
    background-position: center top; 
    height: 80vh;
+}
+
+
+.dividerHeader {
+   background-image: url('../../assets/headerdivider.png');
+   background-position: bottom; 
+   background-repeat: no-repeat;
+   background-size: 100vw 200px;
+   height: 80vh;
+}
+
+.display-3 {
+
+   text-shadow: 4px 4px 8px #121212;
+
 }

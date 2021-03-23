@@ -1,0 +1,52 @@
+.twitchLogo {
+   max-height: 80px;
+}
+
+.twitchDividerMobile {
+   background-repeat: no-repeat;
+   background-size: 100vw 40px;
+   min-height: 40px;
+}
+
+.twitchDividerDesktop {
+   background-repeat: no-repeat;
+   background-size: 100vw 200px;
+   min-height: 200px;
+}
+
+.twitchDividerTop {
+   background-image: url('../../assets/twbgtop.png');
+   background-position: bottom; 
+}
+
+.twitchWrapper {
+   background-color: #a970ff;
+}
+
+.twitchDividerBottom {
+   background-image: url('../../assets/twbgbottom.png');
+   background-position: top; 
+
+
+ }
+
+// .twitchBG::before {
+//    // content: "acacccaawd";
+//    // background-image: url('../../assets/TwitchGlitchBlackOps.png');
+//    // background-repeat: no-repeat;
+//    // // // background-attachment: fixed;
+//    // background-position: 20% 40%; 
+//    // background-size: 200px;
+
+//    // // background-color: #a970ff;
+
+
+//    // position: absolute;
+//    // top: 0; 
+//    // left: 0;
+//    // width: 100%; 
+//    // height: 100%;  
+//    // opacity: .4; 
+//    // z-index: -1;
+
+//  }
