@@ -76,7 +76,7 @@ function Overview() {
 
                <div className={contentStyles.header}>
                   <IconButton
-                     styles={iconButtonStyles}
+                     //styles={iconButtonStyles}
                      iconProps={cancelIcon}
                      ariaLabel="Close popup modal"
                      onClick={() => setIsOpenModal(false)}
