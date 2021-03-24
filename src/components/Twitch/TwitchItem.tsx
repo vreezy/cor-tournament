@@ -23,13 +23,18 @@ function TwitchItem({ data }: ITwitchItemProps) {
       }
       return <span className="badge badge-secondary">Offline</span>
    }
-   
+      
    return (
       <div className="TwitchItem p-3 col col-lg-4 col-xl-4 flex-fill">
          <a href={"https://twitch.tv/" + data.broadcaster_login} target="_blank" rel="noreferrer">
             <div className={"TwitchItemInner border-fix d-flex flex-column  border border-2 h-100 rounded " + isLive(data.is_live)} style={{backgroundImage: "url("+data.thumbnail_url+")"}}>
-               <div className="TwitchItemText mb-auto p-2">{data.display_name} {liveBadge(data.is_live)}</div>
-               <div className="TwitchItemText p-2">{data.title}</div>
+               <div className="TwitchItemText mb-auto p-2 d-flex justify-content-between">
+                  <div className="font-weight-bold">{data.display_name}</div>
+                  <div>{liveBadge(data.is_live)}</div>
+               </div>
+               <div className="TwitchItemText p-2">
+                  {data.title}
+               </div>
             </div>
          </a>
       </div>

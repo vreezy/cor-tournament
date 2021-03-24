@@ -24,11 +24,29 @@ function Twitch() {
    const [loading, setLoading] = React.useState(false);
    const [data, setData] = React.useState<ITwitchItem[]>([]);
 
+   const allow: string[] = [
+      "50709196",
+      "85065321",
+      "562786842",
+      "135951498",
+      "177332607",
+      "49610170",
+      "550047764",
+      "64538285"
+   ];
+
+   const filterData = (data: ITwitchItem[]) => {
+      return data.filter((ele:ITwitchItem) => {
+         return allow.includes(ele.id)
+      })
+
+   }
+
    React.useEffect(() => {
       const fetchUsers = async () => {
          setLoading(true);
          const response: any = await getTwitchItems();
-         setData(response);
+         setData(filterData(response));
          setLoading(false);
 
       }

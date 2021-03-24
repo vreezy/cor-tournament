@@ -1,54 +1,15 @@
 import React from 'react';
-import { 
-   Stack,
-   IStackProps,
-   DetailsList,
-   DetailsListLayoutMode,
-   SelectionMode,
-   IColumn,
-} from '@fluentui/react';
+
 
 // services
 import { getUsers } from '../../services/AzureService';
 
-const columnProps: Partial<IStackProps> = {
-   tokens: { childrenGap: 15 },
- };
+// helper
+import { v4 as uuidv4 } from 'uuid';
+import { Spinner, SpinnerSize  } from '@fluentui/react';
 
 function Participants() {
 
-   const columns: IColumn[] = [
-      {
-        key: 'column2',
-        name: 'Spielername',
-        fieldName: 'user',
-        minWidth: 100,
-        // maxWidth: 350,
-        isRowHeader: true,
-        isResizable: true,
-        isSorted: true,
-        isSortedDescending: false,
-        sortAscendingAriaLabel: 'Sorted A to Z',
-        sortDescendingAriaLabel: 'Sorted Z to A',
-        // onColumnClick: this._onColumnClick,
-        data: 'string',
-        isPadded: true,
-      },
-      {
-        key: 'column3',
-        name: 'Team',
-        fieldName: 'team',
-        minWidth: 100,
-        //   maxWidth: 90,
-        isResizable: true,
-        // onColumnClick: this._onColumnClick,
-        data: 'string',
-      //   onRender: (item: IDocument) => {
-      //     return <span>{item.dateModified}</span>;
-      //   },
-        isPadded: true,
-      },
-    ];
 
     const [loading, setLoading] = React.useState(false);
     const [users, setUsers] = React.useState<any[]>([]);
@@ -68,37 +29,16 @@ function Participants() {
       }
    }, [])
 
-   if(loading) {
-      return (
-         <div>
-            Loading...
-         </div>
-      )
-   }
-
    return (
-      <div className="container">
-
-        <h2>Teilnehmer</h2>
-         <Stack {...columnProps}>
-            <DetailsList
-               items={users}
-               compact={true}
-               columns={columns}
-               selectionMode={SelectionMode.none}
-               //getKey={this._getKey}
-               // setKey="multiple"
-               layoutMode={DetailsListLayoutMode.justified}
-               isHeaderVisible={true}
-               //selection={this._selection}
-               // selectionPreservedOnEmptyClick={true}
-               // onItemInvoked={this._onItemInvoked}
-               // enterModalSelectionOnTouch={true}
-               //ariaLabelForSelectionColumn="Toggle selection"
-               //ariaLabelForSelectAllCheckbox="Toggle selection for all items"
-              // checkButtonAriaLabel="select row"
-            />       
-         </Stack>  
+      <div className="container mt-4">
+         <div className="row">
+            <h2>Teilnehmer</h2>
+         </div>
+         
+         <div className="row align-items-center justify-content-center border rounded bg-secondary">
+            {loading && <div className="col col-auto p-5"><Spinner label="Loading..." size={SpinnerSize.large}/> </div> }
+            {users.map(user => <div key={uuidv4()} className="col col-auto p-2"><div className="badge badge-secondary font-weight-light bg-dark" style={{fontSize: "1.2rem"}}>{user.user}</div></div> )}
+         </div>
       </div>         
    );
 

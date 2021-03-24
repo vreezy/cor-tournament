@@ -1,12 +1,12 @@
 import React from 'react';
 import IContentRules from '../../interfaces/IContentRules';
 
-import { PrimaryButton, Stack,IStackProps } from '@fluentui/react';
+import { PrimaryButton, Stack, IStackProps } from '@fluentui/react';
 import { v4 as uuidv4 } from 'uuid';
 
 const columnProps: Partial<IStackProps> = {
    tokens: { childrenGap: 15 },
- };
+};
 
 
 type IRulesProps = {

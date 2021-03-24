@@ -89,6 +89,7 @@ export const getTwitchItems = async (): Promise<ITwitchItem[]> => {
          const json = await response.json();
 
          if(json && json.hasOwnProperty("status") && json.hasOwnProperty("data") && json.status === "ok" && Array.isArray(json.data)) {
+            // console.table(json.data)
             return json.data
          }
       }
