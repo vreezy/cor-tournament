@@ -35,4 +35,4 @@ jobs:
         app-name: 'hardcorcup'
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_c7e299dbbab142ba802d8411cb73fec7 }}
-        package: ./build
+        package: build
