@@ -7,6 +7,11 @@ export const setKey = (key: string, value:string): void => {
 export const getKey = (key: string): string | null => {
    const now = new Date().getTime();
    const time = sessionStorage.getItem(key + "_time");
+
+   if (!time || time === "undefined" || time === null) {
+      return null;
+   }
+   
    const timeInt = time ? parseInt(time) + 300_000 : 0;
 
    // console.log(now)
@@ -15,8 +20,10 @@ export const getKey = (key: string): string | null => {
    // console.log(now - timeInt)
 
    if (now < timeInt) {
-      return sessionStorage.getItem(key);
+      const value = sessionStorage.getItem(key);
+      if (value && value !== "undefined" && value !== null) {
+         return value;
+      }
    }
-
    return null;
 }

@@ -87,9 +87,8 @@ export const getTwitchItems = async (): Promise<ITwitchStatus> => {
 
       if(response.status === 200) {
          const json = await response.json();
-         console.log(json)
+         // console.log(json)
          return json;
-
       }
    }
    catch(e) {

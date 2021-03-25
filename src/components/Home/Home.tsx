@@ -30,18 +30,10 @@ function Home({content}: IHomeProps) {
             <Participants />
             <Twitch />
 
-            <br /><br />
-            <div className="container">
-            <br />
 
-               <br />
-               Turnier plan https://display.turnier.live/R1se/cor-test/0<br />
-
-
-           
-               <br />
+            <div className="container mt-5 mb-5 text-center">
+               Presented by<br />
                <img src={logo} alt="Logo"/>
-               
             </div>
 
 

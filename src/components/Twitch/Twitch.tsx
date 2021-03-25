@@ -29,19 +29,27 @@ function Twitch() {
 
    React.useEffect(() => {
       const filterData = (data: ITwitchItem[], query: string[]) => {
-         return data.filter((ele:ITwitchItem) => {
+         const reduced = data.filter((ele:ITwitchItem) => {
             return query.includes(ele.broadcaster_login)
-         });   
+         });
+         
+         return reduced.sort(function(a:ITwitchItem, b:ITwitchItem){
+            if(a.broadcaster_login < b.broadcaster_login) { return -1; }
+            if(a.broadcaster_login > b.broadcaster_login) { return 1; }
+            return 0;
+        });
       }
       
-      const fetchUsers = async () => {
+      const fetchTwitch = async () => {
          setLoading(true);
 
          const cacheFilteredData = getKey("twitch");
-         if (cacheFilteredData !== null) {
+         if (cacheFilteredData && cacheFilteredData !== null) {
             setData(JSON.parse(cacheFilteredData));
          }
-         else {
+         else 
+         
+         {
             const response: ITwitchStatus = await getTwitchItems();
             if (response && response.status && response.status === "ok" && response.hasOwnProperty("data") && response.hasOwnProperty("query")) {
                const filteredData = filterData(response.data, response.query);
@@ -53,7 +61,7 @@ function Twitch() {
          setLoading(false);
 
       }
-      fetchUsers();
+      fetchTwitch();
    
       return () => {
       // returned function will be called on component unmount    
@@ -79,6 +87,9 @@ function Twitch() {
                
                <img src={twitchLogo} alt="Twitch Logo" className="twitchLogo mb-4" />
 
+               <div className="text-center text-dark font-weight-bold">
+                  <p>Folgende Caster Casten für euch den Cup. schaut doch mal vorbei!</p>
+               </div>
                <div className="row m-1 justify-content-center border border-secondary border-fix rounded bg-dark">
                   {loading && <div className="p-5"><Spinner label="Loading..." size={SpinnerSize.large}/> </div> }
                   {data.map(ele => <TwitchItem key={uuidv4()} data={ele} />)}
