@@ -1,3 +1,6 @@
+// default colors
+@import "../../colors";
+
 .desktopHeader {
    background-image: url('../../assets/header.jpg');
    background-repeat: no-repeat;
@@ -16,8 +19,21 @@
    height: 80vh;
 }
 
-.display-3 {
-
-   text-shadow: 4px 4px 8px #121212;
+.desktopHeaderText {
+ 
+      //  background: none repeat scroll 0 0 #000000;
+       // color: #FFFFFF;
+       text-shadow:
+       0 0 7px #000000,
+       0 0 10px #FFFFFF,
+       0 0 20px #FFFFFF,
+       0 0 30px #FFFFFF,
+       0 0 40px $primaryColor,
+       0 0 70px $primaryColor,
+       0 0 80px $primaryColor,
+       0 0 100px $primaryColor,
+       0 0 150px $primaryColor;
+   
+   // text-shadow: 4px 4px 8px #121212;
 
 }

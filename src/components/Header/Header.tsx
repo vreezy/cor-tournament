@@ -18,13 +18,13 @@ function Header({content}: IHomeProps) {
       return (
          <div className="desktopHeader">
             <div className="dividerHeader">
-               <div className="container d-flex h-100 justify-content-center align-items-end flex-column">
+               <div className="container d-flex h-100 justify-content-center align-items-end flex-column ">
 
-                  <div className="display-3 mb-0 text-right">
+                  <div className="desktopHeaderText display-3 mb-0 text-right">
                      <p className="mb-0">{content.title}</p>
                   </div>
-                  <div className="mb-0 text-right">
-                  <p> {content.subTitle}</p>
+                  <div className="desktopHeaderText mb-0 text-right">
+                     <p> {content.subTitle}</p>
                   </div>
                </div>
             </div>

@@ -12,10 +12,11 @@ export const getKey = (key: string): string | null => {
    // console.log(now)
    // console.log(timeInt)
    // console.log(now < timeInt)
+   // console.log(now - timeInt)
 
    if (now < timeInt) {
       return sessionStorage.getItem(key);
    }
-   
+
    return null;
 }

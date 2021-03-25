@@ -27,10 +27,6 @@ function Twitch() {
    const [loading, setLoading] = React.useState(false);
    const [data, setData] = React.useState<ITwitchItem[]>([]);
 
-
-
-
-
    React.useEffect(() => {
       const filterData = (data: ITwitchItem[], query: string[]) => {
          return data.filter((ele:ITwitchItem) => {
@@ -54,8 +50,6 @@ function Twitch() {
             }
          }
 
-
-
          setLoading(false);
 
       }
@@ -74,7 +68,6 @@ function Twitch() {
       }
       return "twitchDividerMobile"
    }
-
    
    return (
       <div className="d-flex flex-column mt-5">
