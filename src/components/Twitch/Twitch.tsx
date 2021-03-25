@@ -4,6 +4,8 @@ import TwitchItem from './TwitchItem';
 
 // services
 import { getTwitchItems } from '../../services/AzureService';
+import { setKey, getKey } from '../../services/cacheService';
+
 
 // helper
 import { v4 as uuidv4 } from 'uuid';
@@ -11,6 +13,7 @@ import { Spinner, SpinnerSize  } from '@fluentui/react';
 import useWindowSize from "../../utils/useWindowSize";
 
 // interfaces
+import { ITwitchStatus } from '../../interfaces/ITwitchStatus';
 import { ITwitchItem } from '../../interfaces/ITwitchItem';
 
 // content
@@ -29,28 +32,30 @@ function Twitch() {
 
 
    React.useEffect(() => {
-      const allow: string[] = [
-         "50709196",
-         "85065321",
-         "562786842",
-         "135951498",
-         "177332607",
-         "49610170",
-         "550047764",
-         "64538285"
-      ];
-      
-      const filterData = (data: ITwitchItem[]) => {
+      const filterData = (data: ITwitchItem[], query: string[]) => {
          return data.filter((ele:ITwitchItem) => {
-            return allow.includes(ele.id)
-         })
-   
+            return query.includes(ele.broadcaster_login)
+         });   
       }
       
       const fetchUsers = async () => {
          setLoading(true);
-         const response: any = await getTwitchItems();
-         setData(filterData(response));
+
+         const cacheFilteredData = getKey("twitch");
+         if (cacheFilteredData !== null) {
+            setData(JSON.parse(cacheFilteredData));
+         }
+         else {
+            const response: ITwitchStatus = await getTwitchItems();
+            if (response && response.status && response.status === "ok" && response.hasOwnProperty("data") && response.hasOwnProperty("query")) {
+               const filteredData = filterData(response.data, response.query);
+               setKey("twitch", JSON.stringify(filteredData));
+               setData(filteredData);
+            }
+         }
+
+
+
          setLoading(false);
 
       }

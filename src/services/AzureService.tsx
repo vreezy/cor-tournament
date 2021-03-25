@@ -6,7 +6,7 @@ import { constants } from '../constants';
 // interfaces
 import { IRegisterUser } from '../interfaces/IRegisterUser';
 import { IBasicResult } from '../interfaces/IBasicResult';
-import { ITwitchItem } from '../interfaces/ITwitchItem';
+import { ITwitchStatus } from '../interfaces/ITwitchStatus';
 
 export const signUp = async (body: IRegisterUser): Promise<IBasicResult> => {
    try {
@@ -72,7 +72,7 @@ export const getUsers = async (): Promise<any[]> => {
 
 };
 
-export const getTwitchItems = async (): Promise<ITwitchItem[]> => {
+export const getTwitchItems = async (): Promise<ITwitchStatus> => {
    try {
       const url = `${constants.twitchStatusAPIURL}`;
       const options: RequestInit = {
@@ -87,19 +87,25 @@ export const getTwitchItems = async (): Promise<ITwitchItem[]> => {
 
       if(response.status === 200) {
          const json = await response.json();
+         console.log(json)
+         return json;
 
-         if(json && json.hasOwnProperty("status") && json.hasOwnProperty("data") && json.status === "ok" && Array.isArray(json.data)) {
-            // console.table(json.data)
-            return json.data
-         }
       }
    }
    catch(e) {
       console.log(e)
-      return [];
+      return {
+         status: "exception",
+         data: [],
+         query: []
+      };
    }
 
-   return [];
+   return {
+      status: "failed",
+      data: [],
+      query: []
+   };
 };
 
 
