@@ -14,9 +14,13 @@ import { signUp } from '../../services/AzureService';
 
 const columnProps: Partial<IStackProps> = {
    tokens: { childrenGap: 15 },
- };
+};
 
-function Register() {
+ type IRegisterProps = {
+   addParticipant(username: string): void;
+}
+
+function Register({addParticipant}: IRegisterProps) {
 
    const [loading, setLoading] = React.useState(false);
    const [username, setUsername] = React.useState('');
@@ -53,10 +57,14 @@ function Register() {
          "password": password
       });
 
+      
       setStatus(result.status);
       setMessage(result.message);
       setLoading(false);
 
+      if(result.status === "ok") {
+         addParticipant(username);
+      }
    }
 
    if(loading) {
@@ -69,9 +77,9 @@ function Register() {
 
    if(status === "ok") {
       return (
-         <MessageBar messageBarType={MessageBarType.success}>
+         <div>
            Vielen Dank für deine Anmeldung "{username}".
-         </MessageBar>
+         </div>
       );
    }
 

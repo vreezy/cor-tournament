@@ -11,23 +11,22 @@ import OverViewContent from './OverviewContent';
 // content
 import content from '../../content';
 
-function Overview() {
+type IOverviewProps = {
+   addParticipant(username: string): void;
+}
 
-
+function Overview({addParticipant}: IOverviewProps) {
    return (
       <div>
          <br /><br />
          <div className="container">
             <div className="row">
                <OverviewCard title="Übersicht" content={<OverViewContent />}   />
-               <OverviewCard title="Anmelden" content={<Register />}/>
+               <OverviewCard title="Anmelden" content={<Register addParticipant={addParticipant}/>}/>
                <OverviewCard title="Regeln" content={<Rules content={content.rules}/>}/>
             </div>
          </div>
-
-
       </div>
-      
    );
 }
 

@@ -1,6 +1,10 @@
 import React from 'react';
 
+import useWindowScrollTop from '../../utils/useWindowScrollTop';
+
 function Impressum() {
+   useWindowScrollTop();
+   
    return (
       <div className="container">
          <h1>Impressum</h1>
@@ -25,7 +29,6 @@ function Impressum() {
       </div>
       
    );
-
 }
 
 export default Impressum;

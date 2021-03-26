@@ -17,35 +17,44 @@ import './Home.scss';
 // interfaces
 import IContent from '../../interfaces/IContent';
 
+// import useWindowScrollTop from '../../utils/useWindowScrollTop';
+
+import { IParticipant } from '../../interfaces/IParticipant';
+
 type IHomeProps = {
    content: IContent,
 }
 
 function Home({content}: IHomeProps) {
+   // useWindowScrollTop();
 
+   const [participants, setParticipants] = React.useState<IParticipant[]>([]);
 
-      return (
-         <div>
-            <Overview />
-            <Participants />
-            <Twitch />
+   const addParticipant = (username: string) => {
+      const participantsClone: IParticipant[] = JSON.parse(JSON.stringify(participants));
+      participantsClone.push({
+         etag: "",
+         partitionKey: "",
+         rowKey: "",
+         timestamp: "",
+         user: username
+      });
 
+      setParticipants(participantsClone);
+   }
+   
+   return (
+      <div>
+         <Overview addParticipant={addParticipant} />
+         <Participants participants={participants} setParticipants={setParticipants}/>
+         <Twitch />
 
-            <div className="container mt-5 mb-5 text-center">
-               Presented by<br />
-               <img src={logo} alt="Logo"/>
-            </div>
-
-
-
-     
+         <div className="container mt-5 mb-5 text-center">
+            Presented by<br />
+            <img src={logo} alt="Logo"/>
          </div>
-
-         
-      );
-
+      </div>      
+   );
 }
-
-
 
 export default Home;

@@ -1,6 +1,10 @@
 import React from 'react';
 
+import useWindowScrollTop from '../../utils/useWindowScrollTop';
+
 function DataProtection() {
+   useWindowScrollTop();
+   
    return (
       <div className="container">
          <h1>Datenschutz&shy;erkl&auml;rung</h1>

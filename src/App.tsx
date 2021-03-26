@@ -18,6 +18,10 @@ import Impressum from './components/Impressum/Impressum';
 import Contact from './components/Contact/Contact';
 import DataProtection from './components/DataProtection/DataProtection';
 
+// AppInsights
+import { AppInsightsContext } from "@microsoft/applicationinsights-react-js";
+import { reactPlugin } from "./utils/AppInsight";
+
 // styles 
 import { loadTheme } from '@fluentui/react';
 import './App.scss';
@@ -81,26 +85,28 @@ function App() {
    initializeIcons();
      
    return (
-      <div className="App h-100 bg-dark text-white">
-         <Router>
-            <Header content={content} />
-               <Switch>
-                  <Route exact path="/">
-                     <Home content={content}/>
-                  </Route>
-                  <Route path="/impressum">
-                     <Impressum />
-                  </Route>
-                  <Route path="/dataprotection">
-                     <DataProtection />
-                  </Route>
-                  <Route path="/contact">
-                     <Contact />
-                  </Route>
-               </Switch>
-            <Footer />
-         </Router>
-      </div>
+      <AppInsightsContext.Provider value={reactPlugin}>
+         <div className="App h-100 bg-dark text-white">
+            <Router>
+               <Header content={content} />
+                  <Switch>
+                     <Route exact path="/">
+                        <Home content={content}/>
+                     </Route>
+                     <Route path="/impressum">
+                        <Impressum />
+                     </Route>
+                     <Route path="/dataprotection">
+                        <DataProtection />
+                     </Route>
+                     <Route path="/contact">
+                        <Contact />
+                     </Route>
+                  </Switch>
+               <Footer />
+            </Router>
+         </div>
+      </AppInsightsContext.Provider>
    );
 }
 

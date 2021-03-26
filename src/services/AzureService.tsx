@@ -7,6 +7,7 @@ import { constants } from '../constants';
 import { IRegisterUser } from '../interfaces/IRegisterUser';
 import { IBasicResult } from '../interfaces/IBasicResult';
 import { ITwitchStatus } from '../interfaces/ITwitchStatus';
+import { IParticipant } from '../interfaces/IParticipant';
 
 export const signUp = async (body: IRegisterUser): Promise<IBasicResult> => {
    try {
@@ -44,7 +45,7 @@ export const signUp = async (body: IRegisterUser): Promise<IBasicResult> => {
    }
 };
 
-export const getUsers = async (): Promise<any[]> => {
+export const getUsers = async (): Promise<IParticipant[]> => {
 
    try {
       const account = "cordatabase";
@@ -57,10 +58,9 @@ export const getUsers = async (): Promise<any[]> => {
       );
 
       const entitiesIter = clientWithSAS.listEntities();
-      const result = [];
+      const result: IParticipant[]  = [];
       for await (const entity of entitiesIter) {
-         result.push(entity)
-         //console.log(entity);
+         result.push(entity as IParticipant)
       }
 
       return result;
