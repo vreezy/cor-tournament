@@ -20,7 +20,7 @@ import DataProtection from './components/DataProtection/DataProtection';
 
 // AppInsights
 import { AppInsightsContext } from "@microsoft/applicationinsights-react-js";
-import { reactPlugin } from "./utils/AppInsight";
+import { reactPlugin } from "./utils/AppInsights";
 
 // styles 
 import { loadTheme } from '@fluentui/react';

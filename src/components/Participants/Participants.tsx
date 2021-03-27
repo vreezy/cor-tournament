@@ -40,13 +40,16 @@ function Participants({participants, setParticipants}: IParticipantsProps) {
    return (
       <div className="container mt-4">
          <div className="row">
-            <h2>Teilnehmer</h2>
+            <div className="col">
+               <h2>Teilnehmer</h2>
+            </div>
          </div>
          
-         <div className="row align-items-center justify-content-center border rounded bg-secondary">
+         <div className="row m-1 p-4 align-items-center justify-content-center border border-fix border-secondary rounded ">
             {loading && <div className="col col-auto p-5"><Spinner label="Loading..." size={SpinnerSize.large}/> </div> }
-            {participants.map((participant: any) => <div key={uuidv4()} className="col col-auto p-2"><div className="badge badge-secondary font-weight-light bg-dark" style={{fontSize: "1.2rem"}}>{participant.user}</div></div> )}
+            {participants.map((participant: any) => <div key={uuidv4()} className="col col-auto p-2"><div className="badge badge-secondary font-weight-light p-2" style={{fontSize: "1.2rem"}}>{participant.user}</div></div> )}
          </div>
+         
       </div>         
    );
 

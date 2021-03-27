@@ -17,14 +17,11 @@ type IOverviewProps = {
 
 function Overview({addParticipant}: IOverviewProps) {
    return (
-      <div>
-         <br /><br />
-         <div className="container">
-            <div className="row">
-               <OverviewCard title="Übersicht" content={<OverViewContent />}   />
-               <OverviewCard title="Anmelden" content={<Register addParticipant={addParticipant}/>}/>
-               <OverviewCard title="Regeln" content={<Rules content={content.rules}/>}/>
-            </div>
+      <div className="container mt-4">
+         <div className="row">
+            <OverviewCard title="Übersicht" content={<OverViewContent />}   />
+            <OverviewCard title="Anmelden" content={<Register addParticipant={addParticipant}/>}/>
+            <OverviewCard title="Regeln" content={<Rules content={content.rules}/>}/>
          </div>
       </div>
    );

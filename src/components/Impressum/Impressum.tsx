@@ -2,6 +2,12 @@ import React from 'react';
 
 import useWindowScrollTop from '../../utils/useWindowScrollTop';
 
+//logging
+import { reactPlugin } from '../../utils/AppInsights';
+import { 
+   withAITracking
+} from "@microsoft/applicationinsights-react-js";
+
 function Impressum() {
    useWindowScrollTop();
    
@@ -31,4 +37,4 @@ function Impressum() {
    );
 }
 
-export default Impressum;
+export default withAITracking(reactPlugin, Impressum);

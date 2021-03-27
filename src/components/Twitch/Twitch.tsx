@@ -1,4 +1,13 @@
 import React from 'react';
+// logging
+import { reactPlugin } from '../../utils/AppInsights';
+import { 
+   useAppInsightsContext,
+   useTrackMetric,
+   useTrackEvent,
+   withAITracking
+} from "@microsoft/applicationinsights-react-js";
+
 // components
 import TwitchItem from './TwitchItem';
 
@@ -11,7 +20,7 @@ import { setKey, getKey } from '../../services/cacheService';
 import { v4 as uuidv4 } from 'uuid';
 import { Spinner, SpinnerSize  } from '@fluentui/react';
 import useWindowSize from "../../utils/useWindowSize";
-import { useAppInsightsContext, useTrackMetric } from "@microsoft/applicationinsights-react-js";
+
 
 // interfaces
 import { ITwitchStatus } from '../../interfaces/ITwitchStatus';
@@ -25,7 +34,8 @@ import './Twitch.scss'
 
 function Twitch() {
    const appInsights = useAppInsightsContext();
-   const trackComponent = useTrackMetric(appInsights, "Twitch");
+   const trackOnMouseEnter = useTrackMetric(appInsights, "Twitch - onMouseEnter");
+   const trackFetchLoading = useTrackEvent(appInsights, "Twitch - fetch Loading time", {twitchLoadingtime: new Date().getTime()}, false);
 
    const [loading, setLoading] = React.useState(false);
    const [data, setData] = React.useState<ITwitchItem[]>([]);
@@ -63,13 +73,15 @@ function Twitch() {
 
          setLoading(false);
 
+         trackFetchLoading({twitchLoadingtime: new Date().getTime()})
+
       }
       fetchTwitch();
    
       return () => {
       // returned function will be called on component unmount    
       }
-   }, []);
+   }, [trackFetchLoading]);
    
    const { width } = useWindowSize();
 
@@ -81,7 +93,7 @@ function Twitch() {
    }
 
    return (
-      <div className="d-flex flex-column mt-5" onMouseEnter={() => trackComponent} >
+      <div className="d-flex flex-column mt-5" onMouseEnter={() => trackOnMouseEnter} >
 
          <div className={"twitchDividerTop " + getTwitchDividerClass()}></div>
          <div className="twitchWrapper">
@@ -104,4 +116,4 @@ function Twitch() {
    )
 }
 
-export default Twitch;
+export default withAITracking(reactPlugin, Twitch);

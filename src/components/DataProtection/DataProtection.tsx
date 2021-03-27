@@ -1,5 +1,11 @@
 import React from 'react';
 
+//logging
+import { reactPlugin } from '../../utils/AppInsights';
+import { 
+   withAITracking
+} from "@microsoft/applicationinsights-react-js";
+
 import useWindowScrollTop from '../../utils/useWindowScrollTop';
 
 function DataProtection() {
@@ -45,9 +51,7 @@ function DataProtection() {
          <p>Quelle: <a href="https://www.e-recht24.de">eRecht24</a></p>
 
       </div>
-      
    );
-
 }
 
-export default DataProtection;
+export default withAITracking(reactPlugin, DataProtection);

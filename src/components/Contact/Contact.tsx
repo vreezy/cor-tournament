@@ -1,5 +1,11 @@
 import React from 'react';
 
+//logging
+import { reactPlugin } from '../../utils/AppInsights';
+import { 
+   withAITracking
+} from "@microsoft/applicationinsights-react-js";
+
 import useWindowScrollTop from '../../utils/useWindowScrollTop';
 
 function Contact() {
@@ -17,4 +23,4 @@ function Contact() {
    );
 }
 
-export default Contact;
+export default withAITracking(reactPlugin, Contact);
