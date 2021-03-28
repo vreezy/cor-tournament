@@ -88,7 +88,7 @@ function Register({addParticipant}: IRegisterProps) {
    if(status === "ok") {
       return (
          <div>
-           Vielen Dank für deine Anmeldung "{username}".
+            Vielen Dank für deine Anmeldung "{username}".
          </div>
       );
    }
@@ -101,6 +101,7 @@ function Register({addParticipant}: IRegisterProps) {
             </MessageBar>
          }     
         
+         <p>Das Password erhälst Du bei deinem Team-Leader!</p>
          <Stack {...columnProps}>
             <TextField 
                label="Spielername"
@@ -120,6 +121,7 @@ function Register({addParticipant}: IRegisterProps) {
                text="Anmelden"
                onClick={_send}
             />
+
          </Stack>  
       </div>         
    );

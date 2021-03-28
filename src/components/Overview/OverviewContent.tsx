@@ -83,7 +83,10 @@ function Overview() {
                   />
                </div>
                <div className={contentStyles.body}>
-                  <iframe className="tournamentIframe" title="turnier" src="https://display.turnier.live/R1se/cor-test/0"></iframe>
+                  <div className="tournamentIframeWrapper">
+                     <iframe title="turnier" className="tournamentIframe" src="https://mobile.turnier.live/R1se/hardcor-cup" ></iframe>
+                  </div>
+                  
                </div>
             </Modal>
       </div>
