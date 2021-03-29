@@ -8,6 +8,7 @@ import { IRegisterUser } from '../interfaces/IRegisterUser';
 import { IBasicResult } from '../interfaces/IBasicResult';
 import { ITwitchStatus } from '../interfaces/ITwitchStatus';
 import { IParticipant } from '../interfaces/IParticipant';
+// import { ITwitchBroadcaster } from '../interfaces/ITwitchBroadcaster';
 
 export const signUp = async (body: IRegisterUser): Promise<IBasicResult> => {
    try {
@@ -49,7 +50,7 @@ export const getUsers = async (): Promise<IParticipant[]> => {
 
    try {
       const account = "cordatabase";
-      const sas = "?sv=2020-02-10&ss=t&srt=sco&sp=rl&se=2021-10-09T20:18:24Z&st=2021-03-21T13:18:24Z&spr=https,http&sig=zBGf8TfipcVZVlhAdQjBO7p6YjFHyjGwvGGSLjC2Fzo%3D";
+      const sas = constants.sasToken;
       const tableName = "user"
       
       const clientWithSAS = new TableClient(
@@ -69,7 +70,32 @@ export const getUsers = async (): Promise<IParticipant[]> => {
       console.log(e)
       return [];
    }
+};
 
+export const getAzureTableEntities = async (account: string, tableName: string): Promise<any[]> => {
+
+   try {
+      // const account = "cordatabase";
+      const sas = constants.sasToken;
+      //const tableName = "user"
+      
+      const clientWithSAS = new TableClient(
+         `https://${account}.table.core.windows.net${sas}`,
+         tableName
+      );
+
+      const entitiesIter = clientWithSAS.listEntities();
+      const result: IParticipant[]  = [];
+      for await (const entity of entitiesIter) {
+         result.push(entity as IParticipant)
+      }
+
+      return result;
+   }
+   catch(e) {
+      console.log(e)
+      return [];
+   }
 };
 
 export const getTwitchItems = async (): Promise<ITwitchStatus> => {

@@ -1,7 +1,7 @@
-import { ITwitchItem } from './ITwitchItem';
+import { ITwitchBroadcaster } from './ITwitchBroadcaster';
 
 export interface ITwitchStatus {
    status: string;
-   data: ITwitchItem[];
+   data: ITwitchBroadcaster[];
    query: string[];
 }

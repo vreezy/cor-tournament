@@ -1,15 +1,14 @@
 import React from 'react';
-
-
-// services
-import { getUsers } from '../../services/AzureService';
+import { constants } from '../../constants';
 
 // helper
 import { v4 as uuidv4 } from 'uuid';
 import { Spinner, SpinnerSize  } from '@fluentui/react';
 
-// interface
+// services
+import { getAzureTableEntities } from '../../services/AzureService';
 
+// interfaces
 import { IParticipant } from '../../interfaces/IParticipant';
 
 type IParticipantsProps = {
@@ -18,19 +17,16 @@ type IParticipantsProps = {
 }
 
 function Participants({participants, setParticipants}: IParticipantsProps) {
-
-
-    const [loading, setLoading] = React.useState(false);
-    
+   const [loading, setLoading] = React.useState(false);
 
    React.useEffect(() => {
-      const fetchUsers = async () => {
+      const fetchParticipants = async () => {
          setLoading(true);
-         const response = await getUsers();
+         const response: IParticipant[] = await getAzureTableEntities(constants.azureAccount, "user");
          setParticipants(response);
          setLoading(false);
       }
-      fetchUsers();
+      fetchParticipants();
    
       return () => {
       // returned function will be called on component unmount    
@@ -48,11 +44,9 @@ function Participants({participants, setParticipants}: IParticipantsProps) {
          <div className="row m-1 p-4 align-items-center justify-content-center border border-fix border-secondary rounded ">
             {loading && <div className="col col-auto p-5"><Spinner label="Loading..." size={SpinnerSize.large}/> </div> }
             {participants.map((participant: any) => <div key={uuidv4()} className="col col-auto p-2"><div className="badge badge-secondary font-weight-light p-2" style={{fontSize: "1.2rem"}}>{participant.user}</div></div> )}
-         </div>
-         
+         </div>         
       </div>         
    );
-
 }
 
 export default Participants;

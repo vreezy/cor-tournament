@@ -9,27 +9,31 @@ import {
 } from "@microsoft/applicationinsights-react-js";
 
 // styles
-import './TwitchItem.scss'
+import './TwitchBroadcaster.scss'
 
 // interfaces
-import { ITwitchItem } from '../../interfaces/ITwitchItem';
-type ITwitchItemProps = {
-   data: ITwitchItem
+import { ITwitchBroadcaster } from '../../interfaces/ITwitchBroadcaster';
+type ITwitchBroadcasterProps = {
+   data: ITwitchBroadcaster
 }
 
-function TwitchItem({ data }: ITwitchItemProps) {
+function TwitchBroadcaster({ data }: ITwitchBroadcasterProps) {
    const appInsights = useAppInsightsContext();
    const trackBroadcaster = useTrackEvent(appInsights, "TwitchItem - Broadcaster clicked", {broadcaster_login: ""}, false);
 
-   const isLive = (state: boolean) => {
-      if(state) {
+   const stringToBool = (str: string): boolean => {
+      return str.toLowerCase() === "true"
+   }
+
+   const isLive = (state: string) => {
+      if(stringToBool(state)) {
          return 'online'
       }
       return 'offline'
    }
 
-   const liveBadge = (state: boolean) =>{
-      if(state) {
+   const liveBadge = (state: string) =>{
+      if(stringToBool(state)) {
          return <span className="badge badge-danger">Online</span>
       }
       return <span className="badge badge-secondary">Offline</span>
@@ -52,4 +56,4 @@ function TwitchItem({ data }: ITwitchItemProps) {
    )
 }
 
-export default TwitchItem; // withAITracking(reactPlugin, TwitchItem);
+export default TwitchBroadcaster; // withAITracking(reactPlugin, TwitchItem);

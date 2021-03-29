@@ -1,6 +1,4 @@
 import React from 'react';
-
-import { constants } from '../../constants';
 // logging
 import { reactPlugin } from '../../utils/AppInsights';
 import { 
@@ -14,7 +12,7 @@ import {
 import TwitchItem from './TwitchBroadcaster';
 
 // services
-import { getAzureTableEntities } from '../../services/AzureService';
+import { getTwitchItems } from '../../services/AzureService';
 import { setKey, getKey } from '../../services/cacheService';
 
 
@@ -25,6 +23,7 @@ import useWindowSize from "../../utils/useWindowSize";
 
 
 // interfaces
+import { ITwitchStatus } from '../../interfaces/ITwitchStatus';
 import { ITwitchBroadcaster } from '../../interfaces/ITwitchBroadcaster';
 
 // content
@@ -42,7 +41,18 @@ function Twitch() {
    const [data, setData] = React.useState<ITwitchBroadcaster[]>([]);
 
    React.useEffect(() => {
-     
+      const filterData = (data: ITwitchBroadcaster[], query: string[]) => {
+         const reduced = data.filter((ele: ITwitchBroadcaster) => {
+            return query.includes(ele.broadcaster_login)
+         });
+         
+         return reduced.sort(function(a:ITwitchBroadcaster, b:ITwitchBroadcaster){
+            if(a.broadcaster_login < b.broadcaster_login) { return -1; }
+            if(a.broadcaster_login > b.broadcaster_login) { return 1; }
+            return 0;
+        });
+      }
+      
       const fetchTwitch = async () => {
          setLoading(true);
 
@@ -50,10 +60,15 @@ function Twitch() {
          if (cacheFilteredData && cacheFilteredData !== null) {
             setData(JSON.parse(cacheFilteredData));
          }
-         else {
-            const response: ITwitchBroadcaster[] = await getAzureTableEntities(constants.azureAccount, "twitchBroadcaster");
-            setKey("twitch", JSON.stringify(response));
-            setData(response);
+         else 
+         
+         {
+            const response: ITwitchStatus = await getTwitchItems();
+            if (response && response.status && response.status === "ok" && response.hasOwnProperty("data") && response.hasOwnProperty("query")) {
+               const filteredData = filterData(response.data, response.query);
+               setKey("twitch", JSON.stringify(filteredData));
+               setData(filteredData);
+            }
          }
 
          setLoading(false);
