@@ -102,6 +102,14 @@ function Register({addParticipant, participantsCount}: IRegisterProps) {
       )
    }
 
+   if(true) {
+      return (
+         <div>
+            Anmeldung geschlossen!
+         </div>
+      )
+   }
+
    return (
       <div>
          {message && 

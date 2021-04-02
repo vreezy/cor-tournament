@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { constants } from '../../constants';
+
 // logging
 import { reactPlugin } from '../../utils/AppInsights';
 import { 
@@ -17,21 +18,21 @@ import TwitchItem from './TwitchBroadcaster';
 import { getAzureTableEntities } from '../../services/AzureService';
 import { setKey, getKey } from '../../services/cacheService';
 
-
 // helper
 import { v4 as uuidv4 } from 'uuid';
 import { Spinner, SpinnerSize  } from '@fluentui/react';
 import useWindowSize from "../../utils/useWindowSize";
 
 
-// interfaces
-import { ITwitchBroadcaster } from '../../interfaces/ITwitchBroadcaster';
 
 // content
 import twitchLogo from '../../assets/TwitchExtrudedWordmarkPurple.svg'
 
 // styles
 import './Twitch.scss'
+
+// interfaces
+import { ITwitchBroadcaster } from '../../interfaces/ITwitchBroadcaster';
 
 function Twitch() {
    const appInsights = useAppInsightsContext();

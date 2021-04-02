@@ -1,23 +1,19 @@
-.TwitchItemInner {
+.twitchBoradcasterInner {
    background-repeat: no-repeat;
-   // background-attachment: fixed;
    background-position: center;
    background-size: cover;
    min-height: 370px;
-   
 }
 
-
-
-.online {
+.twitchOnline {
    border-color: #dc3545!important; 
 }
 
-.offline {
+.twitchOffline {
    border-color: #6c757d!important;
 }
 
-.TwitchItemText {
+.twitchBroadcasterText {
    background-color:rgba(0, 0, 0, 0.6);
 }
 

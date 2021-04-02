@@ -1,15 +1,18 @@
 import React from 'react';
-import useWindowSize from "../../utils/useWindowSize";
-import IContent from '../../interfaces/IContent';
-// import headerng from '../../header.jpg'
 
+// components
 import MobileHeader from './MobileHeader';
 import DesktopHeader from './DesktopHeader';
+
 // styles
 import './Header.scss';
 
+// util
+import useWindowSize from "../../utils/useWindowSize";
+
 // interfaces
-type IHeaderProps = {
+import IContent from '../../interfaces/IContent';
+export type IHeaderProps = {
    content: IContent,
 }
 
