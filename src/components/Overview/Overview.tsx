@@ -11,16 +11,19 @@ import OverViewContent from './OverviewContent';
 // content
 import content from '../../content';
 
+import { IParticipant } from '../../interfaces/IParticipant';
+
 type IOverviewProps = {
    addParticipant(username: string): void;
+   participants: IParticipant[];
 }
 
-function Overview({addParticipant}: IOverviewProps) {
+function Overview({addParticipant,  participants}: IOverviewProps) {
    return (
       <div className="container mt-4">
          <div className="row">
             <OverviewCard title="Übersicht" content={<OverViewContent />}   />
-            <OverviewCard title="Anmelden" content={<Register addParticipant={addParticipant}/>}/>
+            <OverviewCard title="Anmelden" content={<Register addParticipant={addParticipant} participantsCount={participants.length}/>}/>
             <OverviewCard title="Regeln" content={<Rules content={content.rules}/>}/>
          </div>
       </div>

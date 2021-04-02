@@ -1,4 +1,4 @@
-// import { ApplicationInsights } from '@microsoft/applicationinsights-web'
+// import './wdyr'; // <--- first import
 
 import React from 'react';
 import ReactDOM from 'react-dom';

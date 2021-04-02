@@ -25,9 +25,10 @@ const columnProps: Partial<IStackProps> = {
 
  type IRegisterProps = {
    addParticipant(username: string): void;
+   participantsCount: number;
 }
 
-function Register({addParticipant}: IRegisterProps) {
+function Register({addParticipant, participantsCount}: IRegisterProps) {
    const appInsights = useAppInsightsContext();
    const trackUser = useTrackEvent(appInsights, "Register - username", {user: ""}, false);
 
@@ -91,6 +92,14 @@ function Register({addParticipant}: IRegisterProps) {
             Vielen Dank für deine Anmeldung "{username}".
          </div>
       );
+   }
+
+   if(participantsCount > 15) {
+      return (
+         <div>
+            Anmeldung geschlossen! Maximal Teilnehmer erreicht.
+         </div>
+      )
    }
 
    return (

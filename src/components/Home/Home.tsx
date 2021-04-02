@@ -45,7 +45,7 @@ function Home({content}: IHomeProps) {
    
    return (
       <div>
-         <Overview addParticipant={addParticipant} />
+         <Overview addParticipant={addParticipant} participants={participants} />
          <Participants participants={participants} setParticipants={setParticipants}/>
          <Twitch />
 

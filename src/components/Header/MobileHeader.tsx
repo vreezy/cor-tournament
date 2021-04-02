@@ -1,11 +1,17 @@
 import React from 'react';
+import IContent from '../../interfaces/IContent';
 
-function Header() {
+// interfaces
+type IHeaderProps = {
+   content: IContent,
+}
+
+function Header({content}: IHeaderProps) {
   return (
-   <div>  
-
-   </div>
-   
+      <div className="container">
+         <h1>{content.title} </h1>
+         {content.subTitle}
+      </div>
   );
 }
 
