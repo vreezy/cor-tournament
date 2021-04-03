@@ -102,7 +102,7 @@ function Register({addParticipant, participantsCount}: IRegisterProps) {
       )
    }
 
-   if(true) {
+   if(false) {
       return (
          <div>
             Anmeldung geschlossen!

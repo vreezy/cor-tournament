@@ -10,6 +10,8 @@ import { ITwitchStatus } from '../interfaces/ITwitchStatus';
 import { IParticipant } from '../interfaces/IParticipant';
 // import { ITwitchBroadcaster } from '../interfaces/ITwitchBroadcaster';
 
+
+
 export const signUp = async (body: IRegisterUser): Promise<IBasicResult> => {
    try {
       const url = `${constants.registerAPIURL}`;
@@ -19,13 +21,10 @@ export const signUp = async (body: IRegisterUser): Promise<IBasicResult> => {
          headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
-          },
+         },
       }
 
       const response = await fetch(url, options);
-
-      console.log(body)
-      console.log(response)
 
       if(response.status !== 200) {
          return {
