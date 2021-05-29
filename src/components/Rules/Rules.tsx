@@ -8,19 +8,18 @@ import {
 } from '@fluentui/react';
  import { v4 as uuidv4 } from 'uuid';
 
+ import content from '../../content';
+
 const columnProps: Partial<IStackProps> = {
    tokens: { childrenGap: 15 },
 };
 
-type IRulesProps = {
-   content: IContentRules[];
-}
 
-function Rules({ content }: IRulesProps) {
+function Rules() {
   return (
    <div>
       <Stack {...columnProps}>
-         {content.map((ele) =>{
+         {content.rules.map((ele) =>{
             return (
                <PrimaryButton key={uuidv4()} text={ele.title} href={ele.href} target="_blank"/>
             );

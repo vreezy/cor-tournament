@@ -24,7 +24,7 @@ function Overview({addParticipant,  participants}: IOverviewProps) {
          <div className="row">
             <OverviewCard title="Übersicht" content={<OverViewContent />}   />
             <OverviewCard title="Anmelden" content={<Register addParticipant={addParticipant} participantsCount={participants.length}/>}/>
-            <OverviewCard title="Regeln" content={<Rules content={content.rules}/>}/>
+            <OverviewCard title="Regeln" content={<Rules />}/>
          </div>
       </div>
    );

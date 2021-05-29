@@ -9,6 +9,7 @@ import { initializeIcons } from '@fluentui/react';
 // Content
 import content from './content';
 // Components
+import Navbar from './components/Navbar/Navbar';
 import Header from './components/Header/Header';
 import Home from './components/Home/Home';
 
@@ -17,6 +18,9 @@ import Footer from './components/Footer/Footer';
 import Impressum from './components/Impressum/Impressum';
 import Contact from './components/Contact/Contact';
 import DataProtection from './components/DataProtection/DataProtection';
+
+import Rules from './components/Rules/Rules';
+import OverviewCard from './components/OverviewCard/OverviewCard'
 
 // AppInsights
 import { AppInsightsContext } from "@microsoft/applicationinsights-react-js";
@@ -88,6 +92,7 @@ function App() {
       <AppInsightsContext.Provider value={reactPlugin}>
          <div className="App h-100 bg-dark text-white">
             <Router>
+               <Navbar />
                <Header content={content} />
                   <Switch>
                      <Route exact path="/">
@@ -101,6 +106,9 @@ function App() {
                      </Route>
                      <Route path="/contact">
                         <Contact />
+                     </Route>
+                     <Route path="/rules">
+                     <OverviewCard title="Regeln" content={<Rules />}/>
                      </Route>
                   </Switch>
                <Footer />
