@@ -108,7 +108,11 @@ function App() {
                         <Contact />
                      </Route>
                      <Route path="/rules">
-                     <OverviewCard title="Regeln" content={<Rules />}/>
+                        <div className="container mt-4">
+                           <div className="row">
+                              <OverviewCard title="Regeln" content={<Rules />}/>
+                           </div>
+                        </div>
                      </Route>
                   </Switch>
                <Footer />

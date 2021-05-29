@@ -13,6 +13,8 @@ import content from '../../content';
 
 import { IParticipant } from '../../interfaces/IParticipant';
 
+import styles from './Overview.module.scss';
+
 type IOverviewProps = {
    addParticipant(username: string): void;
    participants: IParticipant[];
@@ -21,7 +23,7 @@ type IOverviewProps = {
 function Overview({addParticipant,  participants}: IOverviewProps) {
    return (
       <div className="container mt-4">
-         <div className="row">
+         <div className={styles.OverviewRow}>
             <OverviewCard title="Übersicht" content={<OverViewContent />}   />
             <OverviewCard title="Anmelden" content={<Register addParticipant={addParticipant} participantsCount={participants.length}/>}/>
             <OverviewCard title="Regeln" content={<Rules />}/>
