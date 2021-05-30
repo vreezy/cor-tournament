@@ -39,7 +39,7 @@ function NavbarComp() {
    return (
       <Navbar color="dark" dark fixed="top" expand="md">
         <div className="container">
-        <NavbarBrand href="/">HardCoR-Cup</NavbarBrand>
+        <NavbarBrand href="/">HardCoR-Season 1</NavbarBrand>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto bg-dark" navbar>
