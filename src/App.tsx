@@ -3,6 +3,7 @@ import {
    BrowserRouter as Router,
    Switch,
    Route,
+   HashRouter
 } from "react-router-dom";
 import { initializeIcons } from '@fluentui/react';
 
@@ -11,7 +12,7 @@ import content from './content';
 // Components
 import Navbar from './components/Navbar/Navbar';
 import Header from './components/Header/Header';
-import Home from './components/Home/Home';
+import Home2 from './components/Home2/Home2';
 
 import Footer from './components/Footer/Footer';
 
@@ -19,8 +20,16 @@ import Impressum from './components/Impressum/Impressum';
 import Contact from './components/Contact/Contact';
 import DataProtection from './components/DataProtection/DataProtection';
 
+
+
+import Participants from './components/Participants/Participants';
+import Teams from './components/Teams/Teams';
+import Games from './components/Games/Games';
+
 import Rules from './components/Rules/Rules';
-import OverviewCard from './components/OverviewCard/OverviewCard'
+import OverviewCard from './components/OverviewCard/OverviewCard';
+
+import { IParticipant } from './interfaces/IParticipant';
 
 // AppInsights
 import { AppInsightsContext } from "@microsoft/applicationinsights-react-js";
@@ -87,16 +96,22 @@ function App() {
 
    loadTheme(darkTheme);
    initializeIcons();
+
+   const [participants, setParticipants] = React.useState<IParticipant[]>([]);
      
    return (
       <AppInsightsContext.Provider value={reactPlugin}>
          <div className="App h-100 bg-dark text-white">
-            <Router>
+            <HashRouter>
                <Navbar />
                <Header content={content} />
                   <Switch>
                      <Route exact path="/">
-                        <Home content={content}/>
+                        <div className="container mt-4">
+                           <div className="row">
+                              <OverviewCard title="Übersicht" content={<Home2 />}   />
+                           </div>
+                        </div>
                      </Route>
                      <Route path="/impressum">
                         <Impressum />
@@ -114,9 +129,29 @@ function App() {
                            </div>
                         </div>
                      </Route>
+
+                     <Route path="/participants">
+
+                        <Participants participants={participants} setParticipants={setParticipants} />
+
+   
+                     </Route>
+
+                     <Route path="/teams">
+
+                        <Teams />
+
+
+                     </Route>
+                     <Route path="/schedule">
+                        <Games />
+                     </Route>
+
+                     
+
                   </Switch>
                <Footer />
-            </Router>
+            </HashRouter>
          </div>
       </AppInsightsContext.Provider>
    );

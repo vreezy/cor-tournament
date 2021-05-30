@@ -4,4 +4,5 @@ export interface IParticipant {
    rowKey: string;
    timestamp: string;
    user: string;
+   teamRowKey: string;
 }

@@ -37,18 +37,26 @@ function NavbarComp() {
 
 
    return (
-      <div className="container">
-      <Navbar color="dark" dark expand="md">
+      <Navbar color="dark" dark fixed="top" expand="md">
+        <div className="container">
         <NavbarBrand href="/">HardCoR-Cup</NavbarBrand>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto bg-dark" navbar>
             <NavItem>
-              <NavLink href="/rules">Regeln</NavLink>
-             
+              <NavLink href="/">Home</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="https://github.com/reactstrap/reactstrap">Turnierplan</NavLink>
+              <NavLink href="/#/rules">Regeln</NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink href="/#/participants">Teilnehmer</NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink href="/#/teams">Teams</NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink href="/#/schedule">Turnierplan</NavLink>
             </NavItem>
             {/* <UncontrolledDropdown nav inNavbar dark>
               <DropdownToggle nav caret>
@@ -70,8 +78,8 @@ function NavbarComp() {
           </Nav>
           {/* <NavbarText>Simple Text</NavbarText> */}
         </Collapse>
+        </div>
       </Navbar>
-    </div>
    );
 }
 
