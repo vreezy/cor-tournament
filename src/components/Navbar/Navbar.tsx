@@ -43,19 +43,19 @@ function NavbarComp() {
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto bg-dark" navbar>
             <NavItem>
-              <NavLink href="/">Home</NavLink>
+              <NavLink href="/" onClick={toggle}>Home</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="/#/rules">Regeln</NavLink>
+              <NavLink href="/#/rules" onClick={toggle}>Regeln</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="/#/participants">Teilnehmer</NavLink>
+              <NavLink href="/#/participants" onClick={toggle}>Teilnehmer</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="/#/teams">Teams</NavLink>
+              <NavLink href="/#/teams" onClick={toggle}>Teams</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="/#/schedule">Spielplan</NavLink>
+              <NavLink href="/#/schedule" onClick={toggle}>Spielplan</NavLink>
             </NavItem>
             {/* <UncontrolledDropdown nav inNavbar dark>
               <DropdownToggle nav caret>

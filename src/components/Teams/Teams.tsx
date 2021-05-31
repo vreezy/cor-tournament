@@ -156,7 +156,7 @@ function Teams() {
         //onColumnClick: this._onColumnClick,
         onRender: (item: ITeamCompared) => {
          //return <div className="badge badge-primary font-weight-light p-2" style={{fontSize: "1.0rem"}}>{item.team1Name}</div>
-         return item.users.map((participant: any) => <div key={uuidv4()} className="badge badge-secondary block-badge font-weight-light p-2 mr-2" style={{fontSize: "1.2rem"}}>{participant.user}</div> )
+         return item.users.map((participant: any) => <div key={uuidv4()} className="badge badge-secondary block-badge font-weight-light p-2 mr-2" style={{fontSize: "0.8rem"}}>{participant.user}</div> )
       },
         data: 'string',
         isPadded: true,

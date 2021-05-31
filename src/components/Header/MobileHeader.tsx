@@ -9,8 +9,8 @@ type IHeaderProps = {
 function Header({content}: IHeaderProps) {
   return (
       <div className="container">
-         <br /><br />
-         <h1>{content.title} </h1>
+         <br />
+         {/* <h1>{content.title} </h1> */}
          {content.subTitle}
       </div>
   );

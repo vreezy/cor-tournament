@@ -108,7 +108,7 @@ function App() {
                      <Route exact path="/">
                         <div className="container mt-4">
                            <div className="row">
-                              <OverviewCard title="Übersicht" content={<Home2 />}   />
+                              <OverviewCard title="WELCOME" content={<Home2 />}   />
                            </div>
                         </div>
                      </Route>

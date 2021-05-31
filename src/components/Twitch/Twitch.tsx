@@ -89,7 +89,7 @@ function Twitch() {
                <img src={twitchLogo} alt="Twitch Logo" className="twitchLogo mb-4" />
 
                <div className="text-center text-dark font-weight-bold">
-                  <p>Folgende Caster Casten für euch den Cup. schaut doch mal vorbei!</p>
+                  <p>Unsere Streamer. schaut doch mal vorbei!</p>
                </div>
                <div className="row m-1 justify-content-center border border-secondary border-fix rounded bg-dark">
                   {loading && <div className="p-5"><Spinner label="Loading..." size={SpinnerSize.large}/> </div> }
