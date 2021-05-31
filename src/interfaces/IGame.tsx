@@ -1,17 +1,13 @@
+import { IAzureDateTime } from './IAzureDateTime';
+
 export interface IGame {
     etag: string;
     partitionKey: string;
     rowKey: string;
-    timestamp: {
-        value: string;
-        type: string;
-    };
+    timestamp: IAzureDateTime
     team1RowKey: string;
     team2RowKey: string;
-    gameDateTime: {
-        value: string;
-        type: string;
-    };
+    gameDateTime: IAzureDateTime
     punktet1: string;
     punktet2: string;
  }

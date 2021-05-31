@@ -21,6 +21,7 @@ import { constants } from '../../constants';
 import { IParticipant } from '../../interfaces/IParticipant';
 import { ITeam } from '../../interfaces/ITeam';
 import { IGame } from '../../interfaces/IGame';
+import { IMap } from '../../interfaces/IMap';
 
 interface ITeamCompared extends ITeam {
    users: IParticipant[];
@@ -44,10 +45,12 @@ function Teams() {
          promises.push(getAzureTableEntities(constants.azureAccount, "user"));
          promises.push(getAzureTableEntities(constants.azureAccount, "teams"));
          promises.push(getAzureTableEntities(constants.azureAccount, "games"));
+         promises.push(getAzureTableEntities(constants.azureAccount, "maps"));
          const results = await Promise.all(promises);
          const participants: IParticipant[] = results[0];
          const teams: ITeam[] = results[1];
          const games: IGame[] = results[2];
+         const maps: IMap[] = results[3];
 
          const teamsCompared: ITeamCompared[] = teams.map((team: ITeam) => {
             const users = participants.filter(p => p.teamRowKey === team.rowKey);
@@ -62,11 +65,13 @@ function Teams() {
                   if(!isNaN(parseInt(game.punktet2)))
                   scores += parseInt(game.punktet2);
                }
-            })
+            });
+
+            
             return {
                etag: team.etag,
-               map1: team.map1,
-               map2: team.map2,
+               map1: maps.find((m: IMap) => {return m.rowKey === team.map1})?.name || "Fehler",
+               map2: maps.find((m: IMap) => {return m.rowKey === team.map2})?.name || "Fehler",
                name: team.name,
                partitionKey: team.partitionKey,
                rowKey: team.rowKey,

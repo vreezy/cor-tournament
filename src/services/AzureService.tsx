@@ -45,57 +45,6 @@ export const signUp = async (body: IRegisterUser): Promise<IBasicResult> => {
    }
 };
 
-export const getUsers = async (): Promise<IParticipant[]> => {
-
-   try {
-      const account = "cordatabase";
-      const sas = constants.sasToken;
-      const tableName = "user"
-      
-      const clientWithSAS = new TableClient(
-         `https://${account}.table.core.windows.net${sas}`,
-         tableName
-      );
-
-      const entitiesIter = clientWithSAS.listEntities();
-      const result: IParticipant[]  = [];
-      for await (const entity of entitiesIter) {
-         result.push(entity as IParticipant)
-      }
-
-      return result;
-   }
-   catch(e) {
-      console.log(e)
-      return [];
-   }
-};
-
-export const getTeams = async (): Promise<IParticipant[]> => {
-
-   try {
-      const account = "cordatabase";
-      const sas = constants.sasToken;
-      const tableName = "teams"
-      
-      const clientWithSAS = new TableClient(
-         `https://${account}.table.core.windows.net${sas}`,
-         tableName
-      );
-
-      const entitiesIter = clientWithSAS.listEntities();
-      const result: IParticipant[]  = [];
-      for await (const entity of entitiesIter) {
-         result.push(entity as IParticipant)
-      }
-
-      return result;
-   }
-   catch(e) {
-      console.log(e)
-      return [];
-   }
-};
 
 export const getAzureTableEntities = async (account: string, tableName: string): Promise<any[]> => {
 

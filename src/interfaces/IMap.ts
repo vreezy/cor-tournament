@@ -1,10 +1,9 @@
 import { IAzureDateTime } from './IAzureDateTime';
 
-export interface IParticipant {
+export interface IMap {
    etag: string;
    partitionKey: string;
    rowKey: string;
    timestamp: IAzureDateTime;
-   user: string;
-   teamRowKey: string;
+   name: string;
 }

@@ -13,6 +13,7 @@ import { constants } from '../../constants';
 // interfaces
 import { IGame } from '../../interfaces/IGame';
 import { ITeam } from '../../interfaces/ITeam';
+import { IMap } from '../../interfaces/IMap';
 
 import { 
    DetailsList,
@@ -24,10 +25,24 @@ import {
 interface IGameCompared extends IGame {
    team1Name: string;
    team2Name: string;
+   map1: string;
+   map2: string;
+   map3: string;
+   map4: string;
 }
 
-interface IFakeTeam {
+class FakeTeam {
    name: string;
+   map1: string;
+   map2: string;
+
+
+   constructor() {
+      this.name = "Fehler";
+      this.map1 = "Fehler";
+      this.map2 = "fehler";
+   }
+
 }
 
 function Games() {
@@ -45,19 +60,62 @@ function Games() {
          const promises: Promise<any>[] = [];
          promises.push(getAzureTableEntities(constants.azureAccount, "games"));
          promises.push(getAzureTableEntities(constants.azureAccount, "teams"));
+         promises.push(getAzureTableEntities(constants.azureAccount, "maps"));
          const results = await Promise.all(promises);
          const games: IGame[] = results[0];
          const teams: ITeam[] = results[1];
+         const maps: IMap[] = results[2];
 
 
          const gamesFiltered = games.sort((a: IGame, b: IGame) => {
             return new Date(a.gameDateTime.value).getTime() - new Date(b.gameDateTime.value).getTime();
          });
 
+         const mapRowKeys: string[] = maps.map(m => m.rowKey);
 
+         var mapCount: number = 0;
          const gamesCompared: IGameCompared[] = gamesFiltered.map((game: IGame) => {
-            const team1: ITeam | IFakeTeam = teams.find(t => t.rowKey === game.team1RowKey) || {name: "unbekannt"};
-            const team2: ITeam | IFakeTeam = teams.find(t => t.rowKey === game.team2RowKey) || {name: "unbekannt"};
+            const team1: ITeam | FakeTeam = teams.find(t => t.rowKey === game.team1RowKey) || new FakeTeam();
+            const team2: ITeam | FakeTeam = teams.find(t => t.rowKey === game.team2RowKey) || new FakeTeam();
+
+            const team1Maps = [team1.map1, team1.map2];
+            const allTeamMaps = [...team1Maps, team2.map1, team2.map2];
+
+            const mapRowKeysFiltered = mapRowKeys.filter((m: string) => {
+               return !allTeamMaps.includes(m);
+            });
+
+
+
+
+            const map1 = maps.find((m: IMap) => {return m.rowKey === team1.map1})?.name || "Fehler"
+            const map2 = maps.find((m: IMap) => {return m.rowKey === team1.map2})?.name || "Fehler"
+
+            var map3 = "toDo";
+            var map4 = "toDo";
+            
+            if(team1Maps.includes(team2.map1)){
+               if(mapCount >= mapRowKeysFiltered.length){
+                  mapCount = 0;
+               }
+               map3 = maps.find((m: IMap) => {return m.rowKey === mapRowKeysFiltered[mapCount]})?.name || "Fehler"
+               mapCount += 2;
+            }
+            else {
+               map3 = maps.find((m: IMap) => {return m.rowKey === team2.map1})?.name || "Fehler"
+            }
+
+            if(team1Maps.includes(team2.map2)){
+               if(mapCount >= mapRowKeysFiltered.length){
+                  mapCount = 1;
+               }
+               map4 = maps.find((m: IMap) => {return m.rowKey === mapRowKeysFiltered[mapCount]})?.name || "Fehler"
+               mapCount += 2;
+            }
+            else {
+               map4 = maps.find((m: IMap) => {return m.rowKey === team2.map2})?.name || "Fehler"
+            }
+
             return {
                etag: game.etag,
                partitionKey: game.partitionKey,
@@ -69,7 +127,11 @@ function Games() {
                team1Name: team1.name,
                team1RowKey: game.team1RowKey,
                team2Name: team2.name,
-               team2RowKey: game.team2RowKey
+               team2RowKey: game.team2RowKey,
+               map1,
+               map2,
+               map3,
+               map4
 
             }
 
@@ -92,8 +154,8 @@ function Games() {
          key: uuidv4(),
          name: 'Datum',
          // fieldName: 'gameDateTime.value',
-         minWidth: 60,
-         maxWidth: 80,
+         minWidth: 50,
+         maxWidth: 60,
          isRowHeader: true,
          isResizable: true,
          // isSorted: true,
@@ -112,8 +174,8 @@ function Games() {
          key: uuidv4(),
          name: 'Uhrzeit',
          // fieldName: 'gameDateTime.value',
-         minWidth: 60,
-         maxWidth: 80,
+         minWidth: 50,
+         maxWidth: 60,
          isRowHeader: true,
          isResizable: true,
          //isSorted: true,
@@ -126,13 +188,13 @@ function Games() {
             
          },
          // data: 'string',
-         isPadded: true,
+         //isPadded: true,
        },
        {
         key: uuidv4(),
         name: 'Team1',
         fieldName: 'team1Name',
-        minWidth: 210,
+        minWidth: 150,
         maxWidth: 350,
         isRowHeader: true,
         isResizable: true,
@@ -152,7 +214,7 @@ function Games() {
          key: uuidv4(),
          name: '',
          fieldName: 'punktet1',
-         minWidth: 50,
+         minWidth: 30,
          maxWidth: 80,
          isRowHeader: true,
          //isResizable: true,
@@ -168,7 +230,7 @@ function Games() {
          key: uuidv4(),
          name: '',
          fieldName: 'punktet2',
-         minWidth: 50,
+         minWidth: 30,
          maxWidth: 80,
          isRowHeader: true,
          //isResizable: true,
@@ -184,7 +246,7 @@ function Games() {
          key: uuidv4(),
          name: 'Team2',
          fieldName: 'team2Name',
-         minWidth: 210,
+         minWidth: 150,
          maxWidth: 350,
          isRowHeader: true,
          isResizable: true,
@@ -194,7 +256,47 @@ function Games() {
          // sortDescendingAriaLabel: 'Sorted Z to A',
          //onColumnClick: this._onColumnClick,
          data: 'string',
-         isPadded: true,
+         //isPadded: true,
+       },
+       {
+         key: uuidv4(),
+         name: 'Map1',
+         fieldName: 'map1',
+         minWidth: 100,
+         maxWidth: 150,
+         isRowHeader: true,
+         isResizable: true,
+         data: 'string',
+       },
+       {
+         key: uuidv4(),
+         name: 'Map2',
+         fieldName: 'map2',
+         minWidth: 100,
+         maxWidth: 150,
+         isRowHeader: true,
+         isResizable: true,
+         data: 'string',
+       },
+       {
+         key: uuidv4(),
+         name: 'Map3',
+         fieldName: 'map3',
+         minWidth: 100,
+         maxWidth: 150,
+         isRowHeader: true,
+         isResizable: true,
+         data: 'string',
+       },
+       {
+         key: uuidv4(),
+         name: 'Map4',
+         fieldName: 'map4',
+         minWidth: 100,
+         maxWidth: 150,
+         isRowHeader: true,
+         isResizable: true,
+         data: 'string',
        },
     ];
 
