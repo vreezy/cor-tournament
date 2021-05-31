@@ -14,7 +14,12 @@ import { constants } from '../../constants';
 import { IGame } from '../../interfaces/IGame';
 import { ITeam } from '../../interfaces/ITeam';
 
-import { DetailsList, DetailsListLayoutMode, Selection, SelectionMode, IColumn } from '@fluentui/react/lib/DetailsList';
+import { 
+   DetailsList,
+   DetailsListLayoutMode,
+   SelectionMode,
+   IColumn
+} from '@fluentui/react/lib/DetailsList';
 
 interface IGameCompared extends IGame {
    team1Name: string;
@@ -197,7 +202,7 @@ function Games() {
       <div className="container mt-4">
          <div className="row">
             <div className="col">
-               <h2>Spiele ({gamesCompared.length})</h2>
+               <h2>Spielplan ({gamesCompared.length})</h2>
             </div>
          </div>
          

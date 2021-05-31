@@ -1,18 +1,10 @@
-import React from 'react';
-import IContentRules from '../../interfaces/IContentRules';
+// import React from 'react';
+// import IContentRules from '../../interfaces/IContentRules';
 
-import { 
-   PrimaryButton,
-   Stack,
-   IStackProps
-} from '@fluentui/react';
- import { v4 as uuidv4 } from 'uuid';
+//  import { v4 as uuidv4 } from 'uuid';
 
- // import content from '../../content';
+// import content from '../../content';
 
-const columnProps: Partial<IStackProps> = {
-   tokens: { childrenGap: 15 },
-};
 
 
 function Home2() {

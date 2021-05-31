@@ -1,5 +1,5 @@
 import React from 'react';
-import IContentRules from '../../interfaces/IContentRules';
+// import IContentRules from '../../interfaces/IContentRules';
 
 import { 
    PrimaryButton,

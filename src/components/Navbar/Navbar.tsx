@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 
 // components
 import { useState } from 'react';
@@ -10,22 +10,21 @@ import {
   Nav,
   NavItem,
   NavLink,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-  NavbarText
+  // UncontrolledDropdown,
+  // DropdownToggle,
+  // DropdownMenu,
+  // DropdownItem,
+  // NavbarText
 } from 'reactstrap';
 
-import {
-  Link
-} from "react-router-dom";
+// import {
+//   Link
+// } from "react-router-dom";
 
 // styles
-//import './Header.scss';
 
 // util
-import useWindowSize from "../../utils/useWindowSize";
+// import useWindowSize from "../../utils/useWindowSize";
 
 // interfaces
 
@@ -56,7 +55,7 @@ function NavbarComp() {
               <NavLink href="/#/teams">Teams</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="/#/schedule">Turnierplan</NavLink>
+              <NavLink href="/#/schedule">Spielplan</NavLink>
             </NavItem>
             {/* <UncontrolledDropdown nav inNavbar dark>
               <DropdownToggle nav caret>

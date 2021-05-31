@@ -1,13 +1,15 @@
 // default colors
 @import "../../colors";
 
+$headerHeight: 60vh;
+
 .desktopHeader {
-   background-image: url('../../assets/header.jpg');
+   background-image: url('../../assets/headerSeason1.jpg');
    background-repeat: no-repeat;
    background-attachment: fixed;
    background-position: center top; 
    background-size: 100vw;
-   height: 80vh;
+   height: $headerHeight;
 }
 
 
@@ -16,7 +18,7 @@
    background-position: bottom; 
    background-repeat: no-repeat;
    background-size: 100vw 200px;
-   height: 80vh;
+   height: $headerHeight;
 }
 
 .desktopHeaderText {
