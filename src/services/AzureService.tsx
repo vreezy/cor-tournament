@@ -7,7 +7,7 @@ import { constants } from '../constants';
 import { IRegisterUser } from '../interfaces/IRegisterUser';
 import { IBasicResult } from '../interfaces/IBasicResult';
 import { ITwitchStatus } from '../interfaces/ITwitchStatus';
-import { IParticipant } from '../interfaces/IParticipant';
+// import { IParticipant } from '../interfaces/IParticipant';
 // import { ITwitchBroadcaster } from '../interfaces/ITwitchBroadcaster';
 
 

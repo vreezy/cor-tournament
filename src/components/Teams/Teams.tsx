@@ -84,7 +84,7 @@ function Teams() {
          });
 
          const teamsComparedSorted: ITeamCompared[] = teamsCompared.sort((a: ITeamCompared, b: ITeamCompared) => {
-            return a.scores - b.scores;
+            return b.scores - a.scores;
          });
 
          const teamsComparedRanked: ITeamCompared[] = teamsComparedSorted.map((team: ITeamCompared, index: number) => {
