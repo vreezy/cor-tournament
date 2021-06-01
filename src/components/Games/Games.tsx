@@ -3,6 +3,7 @@ import React from 'react';
 // helper
 import { v4 as uuidv4 } from 'uuid';
 import { Spinner, SpinnerSize  } from '@fluentui/react';
+import moment from 'moment';
 
 // services
 import { getAzureTableEntities } from '../../services/AzureService';
@@ -152,10 +153,10 @@ function Games() {
    const columns: IColumn[] = [
       {
          key: uuidv4(),
-         name: 'Datum',
+         name: 'KW',
          // fieldName: 'gameDateTime.value',
-         minWidth: 50,
-         maxWidth: 60,
+         minWidth: 30,
+         maxWidth: 50,
          isRowHeader: true,
          isResizable: true,
          // isSorted: true,
@@ -164,32 +165,42 @@ function Games() {
          // sortDescendingAriaLabel: 'Sorted Z to A',
          //onColumnClick: this._onColumnClick,
          onRender: (item: IGameCompared) => {
-            return <span>{new Date(item.gameDateTime.value).toLocaleDateString()}</span>
+            // return <span>{new Date(item.gameDateTime.value).toLocaleDateString()}</span>
+            const matchKW = moment(new Date(item.gameDateTime.value)).isoWeek();
+            var color = "white";
+            if(matchKW === moment().isoWeek()){
+               color = "green"
+            }
+            if(matchKW < moment().isoWeek()){
+               color = "red"
+            }
+            return <span style={{color}}>{matchKW}</span>
+
             
          },
          data: 'string',
          //isPadded: true,
        },
-       {
-         key: uuidv4(),
-         name: 'Uhrzeit',
-         // fieldName: 'gameDateTime.value',
-         minWidth: 50,
-         maxWidth: 60,
-         isRowHeader: true,
-         isResizable: true,
-         //isSorted: true,
-         //isSortedDescending: false,
-         //sortAscendingAriaLabel: 'Sorted A to Z',
-         //sortDescendingAriaLabel: 'Sorted Z to A',
-         //onColumnClick: this._onColumnClick,
-         onRender: (item: IGameCompared) => {
-            return <span>{new Date(item.gameDateTime.value).toLocaleTimeString()}</span>
+      //  {
+      //    key: uuidv4(),
+      //    name: 'Uhrzeit',
+      //    // fieldName: 'gameDateTime.value',
+      //    minWidth: 50,
+      //    maxWidth: 60,
+      //    isRowHeader: true,
+      //    isResizable: true,
+      //    //isSorted: true,
+      //    //isSortedDescending: false,
+      //    //sortAscendingAriaLabel: 'Sorted A to Z',
+      //    //sortDescendingAriaLabel: 'Sorted Z to A',
+      //    //onColumnClick: this._onColumnClick,
+      //    onRender: (item: IGameCompared) => {
+      //       return <span>{new Date(item.gameDateTime.value).toLocaleTimeString()}</span>
             
-         },
-         // data: 'string',
-         //isPadded: true,
-       },
+      //    },
+      //    // data: 'string',
+      //    //isPadded: true,
+      //  },
        {
         key: uuidv4(),
         name: 'Team1',
@@ -314,6 +325,9 @@ function Games() {
             </div> 
          }
 
+         <p>
+         Handelt in der angegeben Kalenderwoche (KW) mit euren Gegnern eine Spielzeit aus. Diese muss nicht bestätigt werden. Wenn Ihr gespielt habt, meldet das Ergebnis an die Turnierleitung. Die Turnierleitung trägt die Ergebnisse hier ein.
+         </p>
          <DetailsList
             items={gamesCompared}
             compact={false}
