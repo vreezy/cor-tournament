@@ -23,10 +23,18 @@ import { ITeam } from '../../interfaces/ITeam';
 import { IGame } from '../../interfaces/IGame';
 import { IMap } from '../../interfaces/IMap';
 
+// mock
+// import { games as mockGames } from '../../mock/games';
+
 interface ITeamCompared extends ITeam {
    users: IParticipant[];
    scores: number;
    rank: number;
+   wins: number;
+   draws: number;
+   looses: number;
+   pointsSelf: number;
+   pointsEnemy: number;
 }
 
 function Teams() {
@@ -49,21 +57,57 @@ function Teams() {
          const results = await Promise.all(promises);
          const participants: IParticipant[] = results[0];
          const teams: ITeam[] = results[1];
-         const games: IGame[] = results[2];
+         const games: IGame[] = results[2]; // mockGames; // 
          const maps: IMap[] = results[3];
 
          const teamsCompared: ITeamCompared[] = teams.map((team: ITeam) => {
             const users = participants.filter(p => p.teamRowKey === team.rowKey);
-            var scores: number = 0
+            var scores: number = 0;
+            var pointsSelf: number = 0;
+            var pointsEnemy: number = 0;
+            var wins: number = 0;
+            var looses: number = 0;
+            var draws: number = 0;
             games.forEach((game: IGame) => {
                if(game.team1RowKey === team.rowKey) {
-                  if(!isNaN(parseInt(game.punktet1)))
-                  scores += parseInt(game.punktet1);
+                  if(!isNaN(parseInt(game.punktet1)) && !isNaN(parseInt(game.punktet2))) {
+                     pointsSelf += parseInt(game.punktet1);
+                     pointsEnemy += parseInt(game.punktet2) ;
+                  }
+
+                  if(parseInt(game.punktet1) > parseInt(game.punktet2)) {
+                     wins++;
+                     scores += 3;
+                  }
+
+                  if(parseInt(game.punktet2) > parseInt(game.punktet1)) {
+                     looses++;
+                  }
+
+                  if(parseInt(game.punktet1) === parseInt(game.punktet2)) {
+                     draws++;
+                     scores += 1;
+                  }
                }
 
                if(game.team2RowKey === team.rowKey) {
-                  if(!isNaN(parseInt(game.punktet2)))
-                  scores += parseInt(game.punktet2);
+                  if(!isNaN(parseInt(game.punktet2)) && !isNaN(parseInt(game.punktet1))) {
+                     pointsSelf += parseInt(game.punktet2);
+                     pointsEnemy += parseInt(game.punktet1);
+                     if(parseInt(game.punktet2) > parseInt(game.punktet1)) {
+                        wins++;
+                        scores += 3;
+                     }
+
+                     if(parseInt(game.punktet1) > parseInt(game.punktet2)) {
+                        looses++;
+                     }
+
+                     if(parseInt(game.punktet1) === parseInt(game.punktet2)) {
+                        draws++;
+                        scores += 1;
+                     }
+                  }
                }
             });
 
@@ -78,13 +122,28 @@ function Teams() {
                timestamp: team.timestamp,
                users,
                scores,
-               rank: 0
+               rank: 0,
+               wins,
+               draws,
+               looses,
+               pointsSelf,
+               pointsEnemy
             }
 
          });
 
          const teamsComparedSorted: ITeamCompared[] = teamsCompared.sort((a: ITeamCompared, b: ITeamCompared) => {
-            return b.scores - a.scores;
+            if(b.scores === a.scores) {
+               return b.pointsSelf - a.pointsSelf;
+            } 
+            if(b.scores > a.scores) {
+               return 1
+            }
+            if(b.scores < a.scores) {
+               return -1
+            }
+            return -1
+            // return a.scores > b.scores ? 1 : -1;
          });
 
          const teamsComparedRanked: ITeamCompared[] = teamsComparedSorted.map((team: ITeamCompared, index: number) => {
@@ -130,10 +189,11 @@ function Teams() {
          key: uuidv4(),
          name: 'Name',
          fieldName: 'name',
-         minWidth: 100,
-         maxWidth: 100,
+         minWidth: 140,
+         maxWidth: 180,
          isRowHeader: true,
          isResizable: true,
+         isMultiline: true,
          //isSorted: true,
          //isSortedDescending: false,
          //sortAscendingAriaLabel: 'Sorted A to Z',
@@ -143,17 +203,18 @@ function Teams() {
          //    return <span>{new Date(item.gameDateTime.value).toLocaleTimeString()}</span>
             
          // },
-         // data: 'string',
+         data: 'string'
          //isPadded: true,
        },
        {
         key: uuidv4(),
         name: 'Spieler',
         //fieldName: 'team1Name',
-        minWidth: 300,
-        maxWidth: 500,
+        minWidth: 180,
+        // maxWidth: 120,
         isRowHeader: true,
         isResizable: true,
+        isMultiline: true,
       //   isSorted: true,
       //   isSortedDescending: false,
       //   sortAscendingAriaLabel: 'Sorted A to Z',
@@ -161,8 +222,12 @@ function Teams() {
         //onColumnClick: this._onColumnClick,
         onRender: (item: ITeamCompared) => {
          //return <div className="badge badge-primary font-weight-light p-2" style={{fontSize: "1.0rem"}}>{item.team1Name}</div>
-         return item.users.map((participant: any) => <div key={uuidv4()} className="badge badge-secondary block-badge font-weight-light p-2 mr-2" style={{fontSize: "0.8rem"}}>{participant.user}</div> )
-      },
+         return (
+            <div className="d-flex flex-wrap">
+               {item.users.map((participant: any) => <div key={uuidv4()} className="badge badge-secondary block-badge font-weight-light p-2 m-1" style={{fontSize: "0.8rem"}}>{participant.user}</div> )}
+            </div>
+         )
+         },
         data: 'string',
         isPadded: true,
       },
@@ -170,25 +235,10 @@ function Teams() {
          key: uuidv4(),
          name: 'Punkte',
          fieldName: 'scores',
-         minWidth: 100,
-         maxWidth: 120,
+         minWidth: 50,
+         maxWidth: 50,
          isRowHeader: true,
-         //isResizable: true,
-         //isSorted: true,
-         //isSortedDescending: false,
-         //sortAscendingAriaLabel: 'Sorted A to Z',
-         //sortDescendingAriaLabel: 'Sorted Z to A',
-         //onColumnClick: this._onColumnClick,
-         data: 'string',
-         //isPadded: true,
-       },
-      {
-         key: uuidv4(),
-         name: 'Map1',
-         fieldName: 'map1',
-         minWidth: 100,
-         maxWidth: 120,
-         isRowHeader: true,
+
          //isResizable: true,
          //isSorted: true,
          //isSortedDescending: false,
@@ -200,19 +250,70 @@ function Teams() {
        },
        {
          key: uuidv4(),
-         name: 'Map2',
-         fieldName: 'map2',
-         minWidth: 100,
+         name: 'Wins',
+         fieldName: 'wins',
+         minWidth: 50,
+         maxWidth: 50,
+         isRowHeader: true,
+
+         data: 'number',
+
+       },
+       {
+         key: uuidv4(),
+         name: 'Draws',
+         fieldName: 'draws',
+         minWidth: 50,
+         maxWidth: 50,
+         isRowHeader: true,
+         data: 'number',
+
+       },
+       {
+         key: uuidv4(),
+         name: 'Looses',
+         fieldName: 'looses',
+         minWidth: 50,
+         maxWidth: 50,
+         isRowHeader: true,
+
+         data: 'number',
+
+       },
+       {
+         key: uuidv4(),
+         name: 'Ergebnis',
+         //fieldName: 'pointsSelf',
+         minWidth: 80,
+         //maxWidth: 80,
+         isRowHeader: true,
+
+         
+         onRender: (item: ITeamCompared) => {
+            //return <div className="badge badge-primary font-weight-light p-2" style={{fontSize: "1.0rem"}}>{item.team1Name}</div>
+            return (
+               <div>{item.pointsSelf}:{item.pointsEnemy}</div>
+            )
+            },
+//         data: 'number',
+
+       },
+       {
+         key: uuidv4(),
+         name: 'Maps',
+         // fieldName: 'map2',
+         minWidth: 140,
          maxWidth: 120,
          isRowHeader: true,
-         //isResizable: true,
-         //isSorted: true,
-         //isSortedDescending: false,
-         //sortAscendingAriaLabel: 'Sorted A to Z',
-         //sortDescendingAriaLabel: 'Sorted Z to A',
-         //onColumnClick: this._onColumnClick,
-         data: 'string',
-         //isPadded: true,
+         onRender: (item: ITeamCompared) => {
+            //return <div className="badge badge-primary font-weight-light p-2" style={{fontSize: "1.0rem"}}>{item.team1Name}</div>
+            return (
+               <div className="d-flex align-items-start flex-column">
+                  <span>{item.map1}</span>
+                  <span>{item.map2}</span>
+               </div>
+            )
+         },
        }
 
     ];

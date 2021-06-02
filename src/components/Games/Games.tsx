@@ -118,10 +118,10 @@ function Games() {
             }
 
             return {
-               etag: game.etag,
-               partitionKey: game.partitionKey,
-               rowKey: game.rowKey,
-               timestamp: game.timestamp,
+               'odata.etag': game['odata.etag'],
+               PartitionKey: game.PartitionKey,
+               RowKey: game.RowKey,
+               Timestamp: game.Timestamp,
                gameDateTime: game.gameDateTime,
                punktet1: game.punktet1,
                punktet2: game.punktet2,
@@ -326,7 +326,9 @@ function Games() {
          }
 
          <p>
-         Handelt in der angegeben Kalenderwoche (KW) mit euren Gegnern eine Spielzeit aus. Diese muss nicht bestätigt werden. Wenn Ihr gespielt habt, meldet das Ergebnis an die Turnierleitung. Die Turnierleitung trägt die Ergebnisse hier ein.
+            Handelt für die angegeben Kalenderwoche (KW) mit euren Gegnern eine Spielzeit aus.
+            Diese Spielzeit muss nicht bie der Turnierleitung bestätigt werden.
+            Wenn Ihr gespielt habt, meldet das Ergebnis bei einem Turnierleiter. Dieser trägt das Ergebnis bald möglich ein.
          </p>
          <DetailsList
             items={gamesCompared}
