@@ -184,8 +184,8 @@ function Teams() {
          // },
          data: 'number',
          //isPadded: true,
-       },
-       {
+      },
+      {
          key: uuidv4(),
          name: 'Name',
          fieldName: 'name',
@@ -194,42 +194,26 @@ function Teams() {
          isRowHeader: true,
          isResizable: true,
          isMultiline: true,
-         //isSorted: true,
-         //isSortedDescending: false,
-         //sortAscendingAriaLabel: 'Sorted A to Z',
-         //sortDescendingAriaLabel: 'Sorted Z to A',
-         //onColumnClick: this._onColumnClick,
-         // onRender: (item: IGameCompared) => {
-         //    return <span>{new Date(item.gameDateTime.value).toLocaleTimeString()}</span>
-            
-         // },
          data: 'string'
-         //isPadded: true,
-       },
-       {
-        key: uuidv4(),
-        name: 'Spieler',
-        //fieldName: 'team1Name',
-        minWidth: 180,
-        // maxWidth: 120,
-        isRowHeader: true,
-        isResizable: true,
-        isMultiline: true,
-      //   isSorted: true,
-      //   isSortedDescending: false,
-      //   sortAscendingAriaLabel: 'Sorted A to Z',
-      //   sortDescendingAriaLabel: 'Sorted Z to A',
-        //onColumnClick: this._onColumnClick,
-        onRender: (item: ITeamCompared) => {
-         //return <div className="badge badge-primary font-weight-light p-2" style={{fontSize: "1.0rem"}}>{item.team1Name}</div>
+      },
+      {
+      key: uuidv4(),
+      name: 'Spieler',
+      //fieldName: 'team1Name',
+      minWidth: 180,
+      // maxWidth: 120,
+      isRowHeader: true,
+      isResizable: true,
+      isMultiline: true,
+      onRender: (item: ITeamCompared) => {
          return (
             <div className="d-flex flex-wrap">
                {item.users.map((participant: any) => <div key={uuidv4()} className="badge badge-secondary block-badge font-weight-light p-2 m-1" style={{fontSize: "0.8rem"}}>{participant.user}</div> )}
             </div>
          )
-         },
-        data: 'string',
-        isPadded: true,
+      },
+      data: 'string',
+      // isPadded: true,
       },
       {
          key: uuidv4(),
@@ -238,67 +222,61 @@ function Teams() {
          minWidth: 50,
          maxWidth: 50,
          isRowHeader: true,
-
-         //isResizable: true,
-         //isSorted: true,
-         //isSortedDescending: false,
-         //sortAscendingAriaLabel: 'Sorted A to Z',
-         //sortDescendingAriaLabel: 'Sorted Z to A',
-         //onColumnClick: this._onColumnClick,
+         className: "text-center",
+         headerClassName: "headerCenterClass",
          data: 'string',
-         //isPadded: true,
-       },
-       {
+      },
+      {
          key: uuidv4(),
          name: 'Wins',
          fieldName: 'wins',
          minWidth: 50,
          maxWidth: 50,
          isRowHeader: true,
-
+         className: "text-center",
+         headerClassName: "headerCenterClass",
          data: 'number',
-
-       },
-       {
+      },
+      {
          key: uuidv4(),
          name: 'Draws',
          fieldName: 'draws',
          minWidth: 50,
          maxWidth: 50,
          isRowHeader: true,
+         className: "text-center",
+         headerClassName: "headerCenterClass",
          data: 'number',
 
-       },
-       {
+      },
+      {
          key: uuidv4(),
          name: 'Looses',
          fieldName: 'looses',
          minWidth: 50,
          maxWidth: 50,
          isRowHeader: true,
-
+         className: "text-center",
+         headerClassName: "headerCenterClass",
          data: 'number',
 
-       },
-       {
+      },
+      {
          key: uuidv4(),
          name: 'Ergebnis',
-         //fieldName: 'pointsSelf',
          minWidth: 80,
-         //maxWidth: 80,
          isRowHeader: true,
-
-         
+         className: "text-center",
+         headerClassName: "headerCenterClass",
          onRender: (item: ITeamCompared) => {
-            //return <div className="badge badge-primary font-weight-light p-2" style={{fontSize: "1.0rem"}}>{item.team1Name}</div>
             return (
-               <div>{item.pointsSelf}:{item.pointsEnemy}</div>
+               <span>
+                  {item.pointsSelf}:{item.pointsEnemy}
+               </span>
             )
-            },
-//         data: 'number',
-
-       },
-       {
+         }
+      },
+      {
          key: uuidv4(),
          name: 'Maps',
          // fieldName: 'map2',
@@ -314,9 +292,9 @@ function Teams() {
                </div>
             )
          },
-       }
+      }
 
-    ];
+   ];
 
    return (
       <div className="container mt-4">

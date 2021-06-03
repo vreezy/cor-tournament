@@ -62,7 +62,7 @@ const darkTheme = {
       neutralPrimary: '#ffffff',
       neutralDark: '#f4f4f4',
       black: '#f8f8f8',
-      white: '#1d1d1b',
+      white: '#282828',
 
       // themePrimary: '#52c3ee',
       // themeLighterAlt: '#f8fcfe',

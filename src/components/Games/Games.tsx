@@ -16,11 +16,14 @@ import { IGame } from '../../interfaces/IGame';
 import { ITeam } from '../../interfaces/ITeam';
 import { IMap } from '../../interfaces/IMap';
 
+import './Games.scss';
+
 import { 
    DetailsList,
    DetailsListLayoutMode,
    SelectionMode,
-   IColumn
+   IColumn,
+   IGroup   
 } from '@fluentui/react/lib/DetailsList';
 
 interface IGameCompared extends IGame {
@@ -43,17 +46,39 @@ class FakeTeam {
       this.map1 = "Fehler";
       this.map2 = "fehler";
    }
-
 }
+
+
+// const groups: any[] = [
+//    {
+//       key: uuidv4(),
+//       name: 'KW: "22"',
+//       startIndex: 0,
+//       count: 4,
+//       level: 0
+//    },
+//    {
+//       key: uuidv4(),
+//       name: 'KW: "23"',
+//       startIndex: 4,
+//       count: 4,
+//       level: 0
+//    },
+//    {
+//       key: uuidv4(),
+//       name: 'KW: "24"',
+//       startIndex: 8,
+//       count: 4,
+//       level: 0
+//    }
+// ]
+
+
 
 function Games() {
    const [loading, setLoading] = React.useState(false);
-
-
-   // const [participants, setParticipants] = React.useState<IParticipant[]>([]);
-   // const [teams, setTeams] = React.useState<ITeam[]>([]);
-
    const [gamesCompared, setGamesCompared] = React.useState<IGameCompared[]>([]);
+   const [groups, setGroups] = React.useState<IGroup[]>([]);
 
    React.useEffect(() => {
       const fetchParticipants = async () => {
@@ -85,9 +110,6 @@ function Games() {
             const mapRowKeysFiltered = mapRowKeys.filter((m: string) => {
                return !allTeamMaps.includes(m);
             });
-
-
-
 
             const map1 = maps.find((m: IMap) => {return m.rowKey === team1.map1})?.name || "Fehler"
             const map2 = maps.find((m: IMap) => {return m.rowKey === team1.map2})?.name || "Fehler"
@@ -138,9 +160,43 @@ function Games() {
 
          });
 
+      
+         const gameDateTimes: string[] = gamesCompared.map((g: IGameCompared) => { return g.gameDateTime.value});
+         const gameDateTimesUnique: string[]  = uniq(gameDateTimes);
+
+         const groups: IGroup[] = gameDateTimesUnique.map((gdt: string) => {
+            const today = moment();
+            const date = moment(new Date(gdt));
+            const matchKW = date.isoWeek();
+            const from_date = date.startOf('isoWeek').format("DD.MM.YYYY");
+            const to_date = date.endOf('isoWeek').format("DD.MM.YYYY");
+
+            const startIndex: number = gamesCompared.findIndex((g:IGameCompared) => {return g.gameDateTime.value === gdt});
+            const gamesComparedThisGDT = gamesCompared.filter((g:IGameCompared) => {return g.gameDateTime.value === gdt});
+ 
+            return ({
+               key: uuidv4(),
+               name: `KW: ${matchKW} | ${from_date} - ${to_date}`,
+               startIndex,
+               count: gamesComparedThisGDT.length,
+               level: 0,
+               isCollapsed: today.isoWeek() !== date.isoWeek(),
+
+
+            });
+
+         });
+
+         console.log(groups)
+         // key: uuidv4(),
+         // name: 'KW: "24"',
+         // startIndex: 8,
+         // count: 4,
+         // level: 0
+
+
+         setGroups(groups)
          setGamesCompared(gamesCompared);
-
-
          setLoading(false);
       }
       fetchParticipants();
@@ -154,18 +210,11 @@ function Games() {
       {
          key: uuidv4(),
          name: 'KW',
-         // fieldName: 'gameDateTime.value',
          minWidth: 30,
          maxWidth: 50,
          isRowHeader: true,
          isResizable: true,
-         // isSorted: true,
-         // isSortedDescending: false,
-         // sortAscendingAriaLabel: 'Sorted A to Z',
-         // sortDescendingAriaLabel: 'Sorted Z to A',
-         //onColumnClick: this._onColumnClick,
          onRender: (item: IGameCompared) => {
-            // return <span>{new Date(item.gameDateTime.value).toLocaleDateString()}</span>
             const matchKW = moment(new Date(item.gameDateTime.value)).isoWeek();
             var color = "white";
             if(matchKW === moment().isoWeek()){
@@ -179,97 +228,49 @@ function Games() {
             
          },
          data: 'string',
-         //isPadded: true,
-       },
-      //  {
-      //    key: uuidv4(),
-      //    name: 'Uhrzeit',
-      //    // fieldName: 'gameDateTime.value',
-      //    minWidth: 50,
-      //    maxWidth: 60,
-      //    isRowHeader: true,
-      //    isResizable: true,
-      //    //isSorted: true,
-      //    //isSortedDescending: false,
-      //    //sortAscendingAriaLabel: 'Sorted A to Z',
-      //    //sortDescendingAriaLabel: 'Sorted Z to A',
-      //    //onColumnClick: this._onColumnClick,
-      //    onRender: (item: IGameCompared) => {
-      //       return <span>{new Date(item.gameDateTime.value).toLocaleTimeString()}</span>
-            
-      //    },
-      //    // data: 'string',
-      //    //isPadded: true,
-      //  },
-       {
-        key: uuidv4(),
-        name: 'Team1',
-        fieldName: 'team1Name',
-        minWidth: 150,
-        maxWidth: 350,
-        isRowHeader: true,
-        isResizable: true,
-      //   isSorted: true,
-      //   isSortedDescending: false,
-      //   sortAscendingAriaLabel: 'Sorted A to Z',
-      //   sortDescendingAriaLabel: 'Sorted Z to A',
-        //onColumnClick: this._onColumnClick,
-      //   onRender: (item: IGameCompared) => {
-      //    return <div className="badge badge-primary font-weight-light p-2" style={{fontSize: "1.0rem"}}>{item.team1Name}</div>
-         
-      // },
-        data: 'string',
-        //isPadded: true,
       },
       {
          key: uuidv4(),
-         name: '',
-         fieldName: 'punktet1',
-         minWidth: 30,
-         maxWidth: 80,
+         name: 'Team1',
+         fieldName: 'team1Name',
+         minWidth: 140,
+         maxWidth: 180,
          isRowHeader: true,
-         //isResizable: true,
-         //isSorted: true,
-         //isSortedDescending: false,
-         //sortAscendingAriaLabel: 'Sorted A to Z',
-         //sortDescendingAriaLabel: 'Sorted Z to A',
-         //onColumnClick: this._onColumnClick,
-         data: 'string',
-         //isPadded: true,
-       },
-       {
+         isResizable: true,
+         isMultiline: true,
+         className: "text-right",
+         headerClassName: "headerRightClass",
+         
+         data: 'string'
+      },
+      {
          key: uuidv4(),
-         name: '',
-         fieldName: 'punktet2',
-         minWidth: 30,
-         maxWidth: 80,
+         name: 'Ergebnis',
+         minWidth: 70,
+         maxWidth: 70,
          isRowHeader: true,
-         //isResizable: true,
-         //isSorted: true,
-         //isSortedDescending: false,
-         //sortAscendingAriaLabel: 'Sorted A to Z',
-         //sortDescendingAriaLabel: 'Sorted Z to A',
-         //onColumnClick: this._onColumnClick,
-         data: 'string',
-         //isPadded: true,
-       },
+         className: "text-center",
+         headerClassName: "headerCenterClass",
+         onRender: (item: IGameCompared) => {
+            return (
+               <span>
+                  {item.punktet1}:{item.punktet2}
+               </span>
+            )
+         }
+      },
       {
          key: uuidv4(),
          name: 'Team2',
          fieldName: 'team2Name',
-         minWidth: 150,
-         maxWidth: 350,
+         minWidth: 140,
+         maxWidth: 180,
          isRowHeader: true,
          isResizable: true,
-         // isSorted: true,
-         // isSortedDescending: false,
-         // sortAscendingAriaLabel: 'Sorted A to Z',
-         // sortDescendingAriaLabel: 'Sorted Z to A',
-         //onColumnClick: this._onColumnClick,
-         data: 'string',
-         //isPadded: true,
-       },
-       {
+         isMultiline: true,
+         data: 'string'
+      },
+      {
          key: uuidv4(),
          name: 'Map1',
          fieldName: 'map1',
@@ -278,8 +279,8 @@ function Games() {
          isRowHeader: true,
          isResizable: true,
          data: 'string',
-       },
-       {
+      },
+      {
          key: uuidv4(),
          name: 'Map2',
          fieldName: 'map2',
@@ -288,8 +289,8 @@ function Games() {
          isRowHeader: true,
          isResizable: true,
          data: 'string',
-       },
-       {
+      },
+      {
          key: uuidv4(),
          name: 'Map3',
          fieldName: 'map3',
@@ -298,8 +299,8 @@ function Games() {
          isRowHeader: true,
          isResizable: true,
          data: 'string',
-       },
-       {
+      },
+      {
          key: uuidv4(),
          name: 'Map4',
          fieldName: 'map4',
@@ -308,14 +309,18 @@ function Games() {
          isRowHeader: true,
          isResizable: true,
          data: 'string',
-       },
-    ];
+      },
+   ];
+
+
 
    return (
-      <div className="container mt-4">
+      <div className="container mt-4" >
          <div className="row">
-            <div className="col">
-               <h2>Spielplan ({gamesCompared.length})</h2>
+            <div className="col" >
+               <h2>Spielplan</h2> 
+               
+               {/* ({gamesCompared.length}) */}
             </div>
          </div>
          
@@ -330,23 +335,18 @@ function Games() {
             Diese Spielzeit muss nicht bie der Turnierleitung bestätigt werden.
             Wenn Ihr gespielt habt, meldet das Ergebnis bei einem Turnierleiter. Dieser trägt das Ergebnis bald möglich ein.
          </p>
+         
+         <div style={{backgroundColor: "#282828"}}>
          <DetailsList
             items={gamesCompared}
-            compact={false}
+            groups={groups}
             columns={columns}
+            compact={false}
             selectionMode={SelectionMode.none}
-            // getKey={this._getKey}
-            // setKey="multiple"
             layoutMode={DetailsListLayoutMode.justified}
             isHeaderVisible={true}
-            //selection={this._selection}
-            //selectionPreservedOnEmptyClick={true}
-            //onItemInvoked={this._onItemInvoked}
-            //enterModalSelectionOnTouch={true}
-            //ariaLabelForSelectionColumn="Toggle selection"
-            //ariaLabelForSelectAllCheckbox="Toggle selection for all items"
-            //checkButtonAriaLabel="select row"
          />
+         </div>
          {/* 
             {gamesCompared.map((game: IGameCompared) => {
                return (
@@ -375,11 +375,8 @@ function Games() {
    );
 }
 
-// function Team() {
-//    return (
-
-//    )
-
-// }
+function uniq(a: string[]) {
+   return Array.from(new Set(a));
+}
 
 export default Games;

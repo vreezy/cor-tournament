@@ -11,3 +11,30 @@
    row-gap: 14px;
 }
 
+
+/* CSS for Detaillist Fluent UI*/
+// .headerClass > span {
+//     /* right aligned header should have padding */
+//     // padding-right: 15px;
+// }
+
+.headerCenterClass span {
+   /* bolder font */
+//    'font-weight: 900;
+
+   /* Right Align the column header */
+   justify-content: center;
+   text-align: center;
+
+//    /* green color */
+//    color: green;
+
+//    /* background color */
+//    background: pink;
+}
+
+.headerRightClass span {
+   justify-content: flex-end;
+   text-align: right;
+
+}
