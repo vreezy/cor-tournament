@@ -199,19 +199,19 @@ function Games() {
    }, [setGamesCompared]);
 
    const columns: IColumn[] = [
-      {
-         key: uuidv4(),
-         name: 'KW',
-         minWidth: 30,
-         maxWidth: 50,
-         isRowHeader: true,
-         isResizable: true,
-         onRender: (item: IGameCompared) => {
-            const matchKW = moment(new Date(item.gameDateTime.value)).isoWeek();
-            return <span>{matchKW}</span>
-         },
-         data: 'string',
-      },
+      // {
+      //    key: uuidv4(),
+      //    name: 'KW',
+      //    minWidth: 30,
+      //    maxWidth: 50,
+      //    isRowHeader: true,
+      //    isResizable: true,
+      //    onRender: (item: IGameCompared) => {
+      //       const matchKW = moment(new Date(item.gameDateTime.value)).isoWeek();
+      //       return <span>{matchKW}</span>
+      //    },
+      //    data: 'string',
+      // },
       {
          key: uuidv4(),
          name: 'Team1',
