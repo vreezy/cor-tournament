@@ -187,14 +187,6 @@ function Games() {
 
          });
 
-         console.log(groups)
-         // key: uuidv4(),
-         // name: 'KW: "24"',
-         // startIndex: 8,
-         // count: 4,
-         // level: 0
-
-
          setGroups(groups)
          setGamesCompared(gamesCompared);
          setLoading(false);
@@ -216,16 +208,7 @@ function Games() {
          isResizable: true,
          onRender: (item: IGameCompared) => {
             const matchKW = moment(new Date(item.gameDateTime.value)).isoWeek();
-            var color = "white";
-            if(matchKW === moment().isoWeek()){
-               color = "green"
-            }
-            if(matchKW < moment().isoWeek()){
-               color = "red"
-            }
-            return <span style={{color}}>{matchKW}</span>
-
-            
+            return <span>{matchKW}</span>
          },
          data: 'string',
       },
@@ -319,7 +302,7 @@ function Games() {
          <div className="row">
             <div className="col" >
                <h2>Spielplan</h2> 
-               
+
                {/* ({gamesCompared.length}) */}
             </div>
          </div>
