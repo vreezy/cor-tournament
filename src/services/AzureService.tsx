@@ -10,7 +10,12 @@ import { ITwitchStatus } from '../interfaces/ITwitchStatus';
 // import { IParticipant } from '../interfaces/IParticipant';
 // import { ITwitchBroadcaster } from '../interfaces/ITwitchBroadcaster';
 
+import { 
+   ISetGame,
+   // ISetGameEntity
+} from '../interfaces/ISetGame'
 
+import { ISetGameResponse } from '../interfaces/ISetGameResponse';
 
 export const signUp = async (body: IRegisterUser): Promise<IBasicResult> => {
    try {
@@ -107,4 +112,41 @@ export const getTwitchItems = async (): Promise<ITwitchStatus> => {
    };
 };
 
+
+export const setGame = async (sg: ISetGame): Promise<ISetGameResponse> => {
+   try {
+      const url = `${constants.setGamesAPIURL}`;
+      const options: RequestInit = {
+         method: 'POST',
+         headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+         },
+         body: JSON.stringify(sg)
+      }
+
+      const response = await fetch(url, options);
+
+      if(response.status === 200) {
+         const json = await response.json();
+         // console.log(json)
+         return json;
+      }
+   }
+   catch(e) {
+      console.log(e)
+      return {
+         status: "exception",
+         rowKey: "0",
+         message: "look in the Console"
+      };
+   }
+
+   return {
+      status: "failed",
+      rowKey: "0",
+      message: "look in the Console"
+
+   };
+};
 

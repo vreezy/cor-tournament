@@ -1,10 +1,10 @@
 import React from 'react';
 import { reactPlugin } from '../../utils/AppInsights';
-import { 
-   useAppInsightsContext,
-   useTrackEvent,
-   withAITracking
-} from "@microsoft/applicationinsights-react-js";
+// import { 
+//    useAppInsightsContext,
+//    useTrackEvent,
+//    withAITracking
+// } from "@microsoft/applicationinsights-react-js";
 
 import { 
    TextField,
@@ -29,8 +29,8 @@ const columnProps: Partial<IStackProps> = {
 }
 
 function Register({addParticipant, participantsCount}: IRegisterProps) {
-   const appInsights = useAppInsightsContext();
-   const trackUser = useTrackEvent(appInsights, "Register - username", {user: ""}, false);
+   // const appInsights = useAppInsightsContext();
+   // const trackUser = useTrackEvent(appInsights, "Register - username", {user: ""}, false);
 
 
    const [loading, setLoading] = React.useState(false);
@@ -68,7 +68,7 @@ function Register({addParticipant, participantsCount}: IRegisterProps) {
          "password": password
       });
 
-      trackUser({user: username})
+      // trackUser({user: username})
       setStatus(result.status);
       setMessage(result.message);
       setLoading(false);
@@ -145,4 +145,4 @@ function Register({addParticipant, participantsCount}: IRegisterProps) {
 
 }
 
-export default withAITracking(reactPlugin, Register);
+export default Register;

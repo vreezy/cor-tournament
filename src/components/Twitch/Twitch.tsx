@@ -4,12 +4,12 @@ import { constants } from '../../constants';
 
 // logging
 import { reactPlugin } from '../../utils/AppInsights';
-import { 
-   useAppInsightsContext,
-   useTrackMetric,
-   useTrackEvent,
-   withAITracking
-} from "@microsoft/applicationinsights-react-js";
+// import { 
+//    useAppInsightsContext,
+//    useTrackMetric,
+//    useTrackEvent,
+//    withAITracking
+// } from "@microsoft/applicationinsights-react-js";
 
 // components
 import TwitchItem from './TwitchBroadcaster';
@@ -35,9 +35,9 @@ import './Twitch.scss'
 import { ITwitchBroadcaster } from '../../interfaces/ITwitchBroadcaster';
 
 function Twitch() {
-   const appInsights = useAppInsightsContext();
-   const trackOnMouseEnter = useTrackMetric(appInsights, "Twitch - onMouseEnter");
-   const trackFetchLoading = useTrackEvent(appInsights, "Twitch - fetch Loading time", {twitchLoadingtime: new Date().getTime()}, false);
+   // const appInsights = useAppInsightsContext();
+   // const trackOnMouseEnter = useTrackMetric(appInsights, "Twitch - onMouseEnter");
+   // const trackFetchLoading = useTrackEvent(appInsights, "Twitch - fetch Loading time", {twitchLoadingtime: new Date().getTime()}, false);
 
    const [loading, setLoading] = React.useState(false);
    const [data, setData] = React.useState<ITwitchBroadcaster[]>([]);
@@ -59,7 +59,7 @@ function Twitch() {
 
          setLoading(false);
 
-         trackFetchLoading({twitchLoadingtime: new Date().getTime()})
+         // trackFetchLoading({twitchLoadingtime: new Date().getTime()})
 
       }
       fetchTwitch();
@@ -67,7 +67,7 @@ function Twitch() {
       return () => {
       // returned function will be called on component unmount    
       }
-   }, [trackFetchLoading]);
+   }, []);
    
    const { width } = useWindowSize();
 
@@ -79,7 +79,7 @@ function Twitch() {
    }
 
    return (
-      <div className="d-flex flex-column mt-5" onMouseEnter={() => trackOnMouseEnter} >
+      <div className="d-flex flex-column mt-5" >
 
          <div className={"twitchDividerTop " + getTwitchDividerClass()}></div>
          <div className="twitchWrapper">
@@ -102,4 +102,4 @@ function Twitch() {
    )
 }
 
-export default withAITracking(reactPlugin, Twitch);
+export default Twitch;

@@ -30,9 +30,15 @@ import OverviewCard from './components/OverviewCard/OverviewCard';
 
 import { IParticipant } from './interfaces/IParticipant';
 
+// MSAL imports
+import { MsalProvider } from "@azure/msal-react";
+import { IPublicClientApplication } from "@azure/msal-browser";
+import Profile from './components/Profile/Profile';
+// import { CustomNavigationClient } from "./utils/NavigationClient";
+
 // AppInsights
-import { AppInsightsContext } from "@microsoft/applicationinsights-react-js";
-import { reactPlugin } from "./utils/AppInsights";
+// import { AppInsightsContext } from "@microsoft/applicationinsights-react-js";
+// import { reactPlugin } from "./utils/AppInsights";
 
 // styles 
 import { loadTheme } from '@fluentui/react';
@@ -89,17 +95,30 @@ const darkTheme = {
    }
 }; 
  
+type AppProps = {
+   pca: IPublicClientApplication
+};
+
+const globalState = {
+   isAdmin: false,
+   setAdmin: (bool: boolean) => {}
+};
+ 
+export const globalStateContext = React.createContext(globalState);
 
 
-function App() {
+function App({ pca }: AppProps) {
 
    loadTheme(darkTheme);
    initializeIcons();
 
    const [participants, setParticipants] = React.useState<IParticipant[]>([]);
-     
+   const [isAdmin, setAdmin] = React.useState(false); 
+
    return (
-      <AppInsightsContext.Provider value={reactPlugin}>
+      // <AppInsightsContext.Provider value={reactPlugin}>
+      <MsalProvider instance={pca}>
+         <globalStateContext.Provider value={{isAdmin, setAdmin}}>
          <div className="App h-100 bg-dark text-white">
             <HashRouter>
                <Navbar />
@@ -145,6 +164,9 @@ function App() {
                      <Route path="/schedule">
                         <Games />
                      </Route>
+                     <Route path="/profile">
+                        <Profile />
+                     </Route>
 
                      
 
@@ -152,7 +174,9 @@ function App() {
                <Footer />
             </HashRouter>
          </div>
-      </AppInsightsContext.Provider>
+         </globalStateContext.Provider>
+      </MsalProvider>
+      // </AppInsightsContext.Provider>
    );
 }
 
