@@ -551,7 +551,9 @@ function Games() {
                         selectedKey={item.map3RowKey}
                         onChange={(event: React.FormEvent<HTMLDivElement>, option?: IDropdownOption<any> | undefined, index?: number | undefined) => onChangeMapDD(item.rowKey, 3, option)}
                         placeholder="Bitte Karte wählen"
-                        options={mapsDDoptions.filter((m: IDropdownOption) => m.key !== item.map3Team2RowKey && m.key !== item.map4Team2RowKey)}
+                        options={mapsDDoptions.filter((m: IDropdownOption) => {
+                           return m.key !== item.map3Team2RowKey && m.key !== item.map4Team2RowKey && m.key !== item.map1RowKey && m.key !== item.map2RowKey && m.key !== item.map4RowKey
+                        })}
                      />
                      <span className="text-danger">
                         {maps.find((m: IMap) => {return m.rowKey === item.map3Team2RowKey})?.name || "Render Fehler"}
@@ -584,7 +586,9 @@ function Games() {
                         selectedKey={item.map4RowKey}
                         onChange={(event: React.FormEvent<HTMLDivElement>, option?: IDropdownOption<any> | undefined, index?: number | undefined) => onChangeMapDD(item.rowKey, 4, option)}
                         placeholder="Bitte Karte wählen"
-                        options={mapsDDoptions.filter((m: IDropdownOption) => m.key !== item.map3Team2RowKey && m.key !== item.map4Team2RowKey)}
+                        options={mapsDDoptions.filter((m: IDropdownOption) => {
+                           return m.key !== item.map3Team2RowKey && m.key !== item.map4Team2RowKey && m.key !== item.map1RowKey && m.key !== item.map2RowKey && m.key !== item.map3RowKey
+                        })}
                      />
                      <span className="text-danger">
                         {maps.find((m: IMap) => {return m.rowKey === item.map4Team2RowKey})?.name || "Render Fehler"}
