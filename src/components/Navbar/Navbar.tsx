@@ -32,7 +32,7 @@ import {
 function NavbarComp() {
    const [isOpen, setIsOpen] = useState(false);
 
-  //  const toggle = () => setIsOpen(!isOpen);
+   const toggle = () => setIsOpen(!isOpen);
 
    const checkClose = () => {
      if(isOpen) {
@@ -45,23 +45,23 @@ function NavbarComp() {
       <Navbar color="dark" dark fixed="top" expand="md">
         <div className="container">
         <NavbarBrand href="/">HardCoR-Season 1</NavbarBrand>
-        <NavbarToggler onClick={ checkClose} />
+        <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto bg-dark" navbar>
             <NavItem>
-              <NavLink href="/" onClick={ checkClose}>Home</NavLink>
+              <NavLink href="/" onClick={checkClose}>Home</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="/#/rules" onClick={ checkClose}>Regeln</NavLink>
+              <NavLink href="/#/rules" onClick={checkClose}>Regeln</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="/#/participants" onClick={ checkClose}>Teilnehmer</NavLink>
+              <NavLink href="/#/participants" onClick={checkClose}>Teilnehmer</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="/#/teams" onClick={ checkClose}>Teams</NavLink>
+              <NavLink href="/#/teams" onClick={checkClose}>Teams</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="/#/schedule" onClick={ checkClose}>Spielplan</NavLink>
+              <NavLink href="/#/schedule" onClick={checkClose}>Spielplan</NavLink>
             </NavItem>
             {/* <NavItem>
               <NavLink href="/#/profile" onClick={checkClose}>Profile</NavLink>
