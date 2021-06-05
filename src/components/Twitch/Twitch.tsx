@@ -3,7 +3,7 @@ import React from 'react';
 import { constants } from '../../constants';
 
 // logging
-import { reactPlugin } from '../../utils/AppInsights';
+// import { reactPlugin } from '../../utils/AppInsights';
 // import { 
 //    useAppInsightsContext,
 //    useTrackMetric,

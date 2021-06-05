@@ -9,7 +9,9 @@ export const games: IGame[] = [
       "punktet1": "28",
       "punktet2": "12",
       "team1RowKey": "ff888248-4d14-4fd7-af55-cbebdac1f682",
-      "team2RowKey": "c78a8bb9-c6fb-406d-bc2d-3bb93dca2564"
+      "team2RowKey": "c78a8bb9-c6fb-406d-bc2d-3bb93dca2564",
+      "map3RowKey": "68412c6a-2d77-418e-91fe-80ec000b3a5e",
+      "map4RowKey": "c2062cce-f7f5-4732-a2d0-a3855c148685"
     },
     {
       "odata.etag": "W/\"datetime'2021-05-30T18%3A12%3A26.0278351Z'\"",
@@ -21,7 +23,9 @@ export const games: IGame[] = [
       "punktet1": "15",
       "punktet2": "25",
       "team1RowKey": "67f1de19-3b31-49a2-940f-e413aa6aa59e",
-      "team2RowKey": "ad8ec06e-ecf7-402a-b453-f359a2172c43"
+      "team2RowKey": "ad8ec06e-ecf7-402a-b453-f359a2172c43",
+      "map3RowKey": "68412c6a-2d77-418e-91fe-80ec000b3a5e",
+      "map4RowKey": "c2062cce-f7f5-4732-a2d0-a3855c148685"
     },
     {
       "odata.etag": "W/\"datetime'2021-05-31T19%3A13%3A12.7856775Z'\"",
@@ -33,7 +37,9 @@ export const games: IGame[] = [
       "punktet1": "10",
       "punktet2": "30",
       "team1RowKey": "5f7759ec-5095-4ea6-a140-95ef08736599",
-      "team2RowKey": "ba1584b5-af12-4a53-b51a-868596bc6d2e"
+      "team2RowKey": "ba1584b5-af12-4a53-b51a-868596bc6d2e",
+      "map3RowKey": "68412c6a-2d77-418e-91fe-80ec000b3a5e",
+      "map4RowKey": "c2062cce-f7f5-4732-a2d0-a3855c148685"
     },
     {
       "odata.etag": "W/\"datetime'2021-05-30T18%3A12%3A35.5055785Z'\"",
@@ -45,7 +51,9 @@ export const games: IGame[] = [
       "punktet1": "13",
       "punktet2": "27",
       "team1RowKey": "5f7759ec-5095-4ea6-a140-95ef08736599",
-      "team2RowKey": "ff888248-4d14-4fd7-af55-cbebdac1f682"
+      "team2RowKey": "ff888248-4d14-4fd7-af55-cbebdac1f682",
+      "map3RowKey": "68412c6a-2d77-418e-91fe-80ec000b3a5e",
+      "map4RowKey": "c2062cce-f7f5-4732-a2d0-a3855c148685"
     },
     {
       "odata.etag": "W/\"datetime'2021-06-01T20%3A28%3A43.8626289Z'\"",
@@ -57,7 +65,9 @@ export const games: IGame[] = [
       "punktet1": "18",
       "punktet2": "22",
       "team1RowKey": "e6f44e26-9fa1-4caf-abbf-7aaaa1b3197f",
-      "team2RowKey": "788dfaab-e518-4d99-8e47-c1e61f163968"
+      "team2RowKey": "788dfaab-e518-4d99-8e47-c1e61f163968",
+      "map3RowKey": "68412c6a-2d77-418e-91fe-80ec000b3a5e",
+      "map4RowKey": "c2062cce-f7f5-4732-a2d0-a3855c148685"
     },
     {
       "odata.etag": "W/\"datetime'2021-05-30T18%3A52%3A15.6247608Z'\"",
@@ -69,7 +79,9 @@ export const games: IGame[] = [
       "punktet1": "1",
       "punktet2": "39",
       "team1RowKey": "e6f44e26-9fa1-4caf-abbf-7aaaa1b3197f",
-      "team2RowKey": "ad8ec06e-ecf7-402a-b453-f359a2172c43"
+      "team2RowKey": "ad8ec06e-ecf7-402a-b453-f359a2172c43",
+      "map3RowKey": "68412c6a-2d77-418e-91fe-80ec000b3a5e",
+      "map4RowKey": "c2062cce-f7f5-4732-a2d0-a3855c148685"
     },
     {
       "odata.etag": "W/\"datetime'2021-05-30T18%3A10%3A28.8343879Z'\"",
@@ -81,7 +93,9 @@ export const games: IGame[] = [
       "punktet1": "-",
       "punktet2": "-",
       "team1RowKey": "e6f44e26-9fa1-4caf-abbf-7aaaa1b3197f",
-      "team2RowKey": "5f7759ec-5095-4ea6-a140-95ef08736599"
+      "team2RowKey": "5f7759ec-5095-4ea6-a140-95ef08736599",
+      "map3RowKey": "68412c6a-2d77-418e-91fe-80ec000b3a5e",
+      "map4RowKey": "c2062cce-f7f5-4732-a2d0-a3855c148685"
     },
     {
       "odata.etag": "W/\"datetime'2021-05-30T18%3A03%3A08.8991429Z'\"",
@@ -93,7 +107,9 @@ export const games: IGame[] = [
       "punktet1": "-",
       "punktet2": "-",
       "team1RowKey": "ba1584b5-af12-4a53-b51a-868596bc6d2e",
-      "team2RowKey": "ff888248-4d14-4fd7-af55-cbebdac1f682"
+      "team2RowKey": "ff888248-4d14-4fd7-af55-cbebdac1f682",
+      "map3RowKey": "68412c6a-2d77-418e-91fe-80ec000b3a5e",
+      "map4RowKey": "c2062cce-f7f5-4732-a2d0-a3855c148685"
     },
     {
       "odata.etag": "W/\"datetime'2021-05-30T18%3A10%3A37.7397297Z'\"",
@@ -105,7 +121,9 @@ export const games: IGame[] = [
       "punktet1": "-",
       "punktet2": "-",
       "team1RowKey": "ff888248-4d14-4fd7-af55-cbebdac1f682",
-      "team2RowKey": "67f1de19-3b31-49a2-940f-e413aa6aa59e"
+      "team2RowKey": "67f1de19-3b31-49a2-940f-e413aa6aa59e",
+      "map3RowKey": "68412c6a-2d77-418e-91fe-80ec000b3a5e",
+      "map4RowKey": "c2062cce-f7f5-4732-a2d0-a3855c148685"
     },
     {
       "odata.etag": "W/\"datetime'2021-05-30T18%3A03%3A59.0498515Z'\"",
@@ -117,7 +135,9 @@ export const games: IGame[] = [
       "punktet1": "-",
       "punktet2": "-",
       "team1RowKey": "e6f44e26-9fa1-4caf-abbf-7aaaa1b3197f",
-      "team2RowKey": "ff888248-4d14-4fd7-af55-cbebdac1f682"
+      "team2RowKey": "ff888248-4d14-4fd7-af55-cbebdac1f682",
+      "map3RowKey": "68412c6a-2d77-418e-91fe-80ec000b3a5e",
+      "map4RowKey": "c2062cce-f7f5-4732-a2d0-a3855c148685"
     },
     {
       "odata.etag": "W/\"datetime'2021-05-30T18%3A03%3A50.8119831Z'\"",
@@ -129,7 +149,9 @@ export const games: IGame[] = [
       "punktet1": "-",
       "punktet2": "-",
       "team1RowKey": "ba1584b5-af12-4a53-b51a-868596bc6d2e",
-      "team2RowKey": "67f1de19-3b31-49a2-940f-e413aa6aa59e"
+      "team2RowKey": "67f1de19-3b31-49a2-940f-e413aa6aa59e",
+      "map3RowKey": "68412c6a-2d77-418e-91fe-80ec000b3a5e",
+      "map4RowKey": "c2062cce-f7f5-4732-a2d0-a3855c148685"
     },
     {
       "odata.etag": "W/\"datetime'2021-05-30T18%3A52%3A51.0770071Z'\"",
@@ -141,7 +163,9 @@ export const games: IGame[] = [
       "punktet1": "-",
       "punktet2": "-",
       "team1RowKey": "5f7759ec-5095-4ea6-a140-95ef08736599",
-      "team2RowKey": "788dfaab-e518-4d99-8e47-c1e61f163968"
+      "team2RowKey": "788dfaab-e518-4d99-8e47-c1e61f163968",
+      "map3RowKey": "68412c6a-2d77-418e-91fe-80ec000b3a5e",
+      "map4RowKey": "c2062cce-f7f5-4732-a2d0-a3855c148685"
     },
     {
       "odata.etag": "W/\"datetime'2021-05-30T18%3A12%3A18.7266335Z'\"",
@@ -153,7 +177,9 @@ export const games: IGame[] = [
       "punktet1": "-",
       "punktet2": "-",
       "team1RowKey": "ba1584b5-af12-4a53-b51a-868596bc6d2e",
-      "team2RowKey": "788dfaab-e518-4d99-8e47-c1e61f163968"
+      "team2RowKey": "788dfaab-e518-4d99-8e47-c1e61f163968",
+      "map3RowKey": "68412c6a-2d77-418e-91fe-80ec000b3a5e",
+      "map4RowKey": "c2062cce-f7f5-4732-a2d0-a3855c148685"
     },
     {
       "odata.etag": "W/\"datetime'2021-05-30T18%3A11%3A39.542734Z'\"",
@@ -165,7 +191,9 @@ export const games: IGame[] = [
       "punktet1": "-",
       "punktet2": "-",
       "team1RowKey": "e6f44e26-9fa1-4caf-abbf-7aaaa1b3197f",
-      "team2RowKey": "ba1584b5-af12-4a53-b51a-868596bc6d2e"
+      "team2RowKey": "ba1584b5-af12-4a53-b51a-868596bc6d2e",
+      "map3RowKey": "68412c6a-2d77-418e-91fe-80ec000b3a5e",
+      "map4RowKey": "c2062cce-f7f5-4732-a2d0-a3855c148685"
     },
     {
       "odata.etag": "W/\"datetime'2021-05-30T18%3A12%3A10.3046388Z'\"",
@@ -177,7 +205,9 @@ export const games: IGame[] = [
       "punktet1": "-",
       "punktet2": "-",
       "team1RowKey": "e6f44e26-9fa1-4caf-abbf-7aaaa1b3197f",
-      "team2RowKey": "c78a8bb9-c6fb-406d-bc2d-3bb93dca2564"
+      "team2RowKey": "c78a8bb9-c6fb-406d-bc2d-3bb93dca2564",
+      "map3RowKey": "68412c6a-2d77-418e-91fe-80ec000b3a5e",
+      "map4RowKey": "c2062cce-f7f5-4732-a2d0-a3855c148685"
     },
     {
       "odata.etag": "W/\"datetime'2021-05-31T19%3A12%3A45.3661143Z'\"",
@@ -189,7 +219,9 @@ export const games: IGame[] = [
       "punktet1": "-",
       "punktet2": "-",
       "team1RowKey": "67f1de19-3b31-49a2-940f-e413aa6aa59e",
-      "team2RowKey": "5f7759ec-5095-4ea6-a140-95ef08736599"
+      "team2RowKey": "5f7759ec-5095-4ea6-a140-95ef08736599",
+      "map3RowKey": "68412c6a-2d77-418e-91fe-80ec000b3a5e",
+      "map4RowKey": "c2062cce-f7f5-4732-a2d0-a3855c148685"
     },
     {
       "odata.etag": "W/\"datetime'2021-05-30T18%3A03%3A35.2959343Z'\"",
@@ -201,7 +233,9 @@ export const games: IGame[] = [
       "punktet1": "-",
       "punktet2": "-",
       "team1RowKey": "788dfaab-e518-4d99-8e47-c1e61f163968",
-      "team2RowKey": "ff888248-4d14-4fd7-af55-cbebdac1f682"
+      "team2RowKey": "ff888248-4d14-4fd7-af55-cbebdac1f682",
+      "map3RowKey": "68412c6a-2d77-418e-91fe-80ec000b3a5e",
+      "map4RowKey": "c2062cce-f7f5-4732-a2d0-a3855c148685"
     },
     {
       "odata.etag": "W/\"datetime'2021-05-30T18%3A03%3A43.2335894Z'\"",
@@ -213,7 +247,9 @@ export const games: IGame[] = [
       "punktet1": "-",
       "punktet2": "-",
       "team1RowKey": "c78a8bb9-c6fb-406d-bc2d-3bb93dca2564",
-      "team2RowKey": "5f7759ec-5095-4ea6-a140-95ef08736599"
+      "team2RowKey": "5f7759ec-5095-4ea6-a140-95ef08736599",
+      "map3RowKey": "68412c6a-2d77-418e-91fe-80ec000b3a5e",
+      "map4RowKey": "c2062cce-f7f5-4732-a2d0-a3855c148685"
     },
     {
       "odata.etag": "W/\"datetime'2021-05-30T18%3A04%3A15.9779053Z'\"",
@@ -225,7 +261,9 @@ export const games: IGame[] = [
       "punktet1": "-",
       "punktet2": "-",
       "team1RowKey": "788dfaab-e518-4d99-8e47-c1e61f163968",
-      "team2RowKey": "67f1de19-3b31-49a2-940f-e413aa6aa59e"
+      "team2RowKey": "67f1de19-3b31-49a2-940f-e413aa6aa59e",
+      "map3RowKey": "68412c6a-2d77-418e-91fe-80ec000b3a5e",
+      "map4RowKey": "c2062cce-f7f5-4732-a2d0-a3855c148685"
     },
     {
       "odata.etag": "W/\"datetime'2021-05-30T18%3A11%3A46.9189889Z'\"",
@@ -237,7 +275,9 @@ export const games: IGame[] = [
       "punktet1": "-",
       "punktet2": "-",
       "team1RowKey": "67f1de19-3b31-49a2-940f-e413aa6aa59e",
-      "team2RowKey": "c78a8bb9-c6fb-406d-bc2d-3bb93dca2564"
+      "team2RowKey": "c78a8bb9-c6fb-406d-bc2d-3bb93dca2564",
+      "map3RowKey": "68412c6a-2d77-418e-91fe-80ec000b3a5e",
+      "map4RowKey": "c2062cce-f7f5-4732-a2d0-a3855c148685"
     },
     {
       "odata.etag": "W/\"datetime'2021-05-30T18%3A12%3A01.9516873Z'\"",
@@ -249,7 +289,9 @@ export const games: IGame[] = [
       "punktet1": "-",
       "punktet2": "-",
       "team1RowKey": "ff888248-4d14-4fd7-af55-cbebdac1f682",
-      "team2RowKey": "ad8ec06e-ecf7-402a-b453-f359a2172c43"
+      "team2RowKey": "ad8ec06e-ecf7-402a-b453-f359a2172c43",
+      "map3RowKey": "68412c6a-2d77-418e-91fe-80ec000b3a5e",
+      "map4RowKey": "c2062cce-f7f5-4732-a2d0-a3855c148685"
     },
     {
       "odata.etag": "W/\"datetime'2021-05-31T19%3A12%3A59.6162834Z'\"",
@@ -261,7 +303,9 @@ export const games: IGame[] = [
       "punktet1": "-",
       "punktet2": "-",
       "team1RowKey": "c78a8bb9-c6fb-406d-bc2d-3bb93dca2564",
-      "team2RowKey": "ba1584b5-af12-4a53-b51a-868596bc6d2e"
+      "team2RowKey": "ba1584b5-af12-4a53-b51a-868596bc6d2e",
+      "map3RowKey": "68412c6a-2d77-418e-91fe-80ec000b3a5e",
+      "map4RowKey": "c2062cce-f7f5-4732-a2d0-a3855c148685"
     },
     {
       "odata.etag": "W/\"datetime'2021-05-30T18%3A04%3A06.2819993Z'\"",
@@ -273,7 +317,9 @@ export const games: IGame[] = [
       "punktet1": "-",
       "punktet2": "-",
       "team1RowKey": "ad8ec06e-ecf7-402a-b453-f359a2172c43",
-      "team2RowKey": "5f7759ec-5095-4ea6-a140-95ef08736599"
+      "team2RowKey": "5f7759ec-5095-4ea6-a140-95ef08736599",
+      "map3RowKey": "68412c6a-2d77-418e-91fe-80ec000b3a5e",
+      "map4RowKey": "c2062cce-f7f5-4732-a2d0-a3855c148685"
     },
     {
       "odata.etag": "W/\"datetime'2021-05-31T19%3A12%3A52.6032798Z'\"",
@@ -285,7 +331,9 @@ export const games: IGame[] = [
       "punktet1": "-",
       "punktet2": "-",
       "team1RowKey": "c78a8bb9-c6fb-406d-bc2d-3bb93dca2564",
-      "team2RowKey": "ad8ec06e-ecf7-402a-b453-f359a2172c43"
+      "team2RowKey": "ad8ec06e-ecf7-402a-b453-f359a2172c43",
+      "map3RowKey": "68412c6a-2d77-418e-91fe-80ec000b3a5e",
+      "map4RowKey": "c2062cce-f7f5-4732-a2d0-a3855c148685"
     },
     {
       "odata.etag": "W/\"datetime'2021-05-30T18%3A11%3A07.0656073Z'\"",
@@ -297,7 +345,9 @@ export const games: IGame[] = [
       "punktet1": "-",
       "punktet2": "-",
       "team1RowKey": "e6f44e26-9fa1-4caf-abbf-7aaaa1b3197f",
-      "team2RowKey": "67f1de19-3b31-49a2-940f-e413aa6aa59e"
+      "team2RowKey": "67f1de19-3b31-49a2-940f-e413aa6aa59e",
+      "map3RowKey": "68412c6a-2d77-418e-91fe-80ec000b3a5e",
+      "map4RowKey": "c2062cce-f7f5-4732-a2d0-a3855c148685"
     },
     {
       "odata.etag": "W/\"datetime'2021-05-30T18%3A10%3A57.6168843Z'\"",
@@ -309,7 +359,9 @@ export const games: IGame[] = [
       "punktet1": "-",
       "punktet2": "-",
       "team1RowKey": "788dfaab-e518-4d99-8e47-c1e61f163968",
-      "team2RowKey": "c78a8bb9-c6fb-406d-bc2d-3bb93dca2564"
+      "team2RowKey": "c78a8bb9-c6fb-406d-bc2d-3bb93dca2564",
+      "map3RowKey": "68412c6a-2d77-418e-91fe-80ec000b3a5e",
+      "map4RowKey": "c2062cce-f7f5-4732-a2d0-a3855c148685"
     },
     {
       "odata.etag": "W/\"datetime'2021-05-30T18%3A10%3A48.2952443Z'\"",
@@ -321,7 +373,9 @@ export const games: IGame[] = [
       "punktet1": "-",
       "punktet2": "-",
       "team1RowKey": "ad8ec06e-ecf7-402a-b453-f359a2172c43",
-      "team2RowKey": "ba1584b5-af12-4a53-b51a-868596bc6d2e"
+      "team2RowKey": "ba1584b5-af12-4a53-b51a-868596bc6d2e",
+      "map3RowKey": "68412c6a-2d77-418e-91fe-80ec000b3a5e",
+      "map4RowKey": "c2062cce-f7f5-4732-a2d0-a3855c148685"
     },
     {
       "odata.etag": "W/\"datetime'2021-05-30T18%3A11%3A32.1024371Z'\"",
@@ -333,6 +387,9 @@ export const games: IGame[] = [
       "punktet1": "-",
       "punktet2": "-",
       "team1RowKey": "ad8ec06e-ecf7-402a-b453-f359a2172c43",
-      "team2RowKey": "788dfaab-e518-4d99-8e47-c1e61f163968"
+      "team2RowKey": "788dfaab-e518-4d99-8e47-c1e61f163968",
+      "map3RowKey": "68412c6a-2d77-418e-91fe-80ec000b3a5e",
+      "map4RowKey": "c2062cce-f7f5-4732-a2d0-a3855c148685"
     }
+    
   ]

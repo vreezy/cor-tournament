@@ -34,7 +34,8 @@ function Footer() {
                <div className="flex-fill"><Link to="/impressum">Impressum</Link></div>
                <div className="flex-fill"><Link to="/dataprotection">Datenschutz</Link></div>
                <div className="flex-fill"><Link to="/contact">Kontakt</Link></div>
-               <div className="flex-fill"><a href="javascript:;" role="button" onClick={() => toggleAdmin()}>{isAdmin ? "Normal" : "Admin"} </a></div>
+               <div className="flex-fill"><button  type="button" className="link-button" onClick={() => toggleAdmin()}>{isAdmin ? "Normal" : "Admin"} </button></div>
+
                <div className="flex-fill"><a href="https://www.cryofredemption.de/" target="_blank" rel="noreferrer">Cry of Redemption</a></div>
             </div>
          </div>

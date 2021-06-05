@@ -10,4 +10,6 @@ export interface IGame {
     gameDateTime: IAzureDateTime;
     punktet1: string;
     punktet2: string;
+    map3RowKey: string | null;
+    map4RowKey: string | null;
  }

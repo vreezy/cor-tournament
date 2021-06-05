@@ -7,6 +7,8 @@ export interface ISetGameEntity {
     "gameDateTime@odata.type": "Edm.DateTime";
     team1RowKey: string;
     team2RowKey: string;
+    map3RowKey: string;
+    map4RowKey: string;
 }
 
 export interface ISetGame {

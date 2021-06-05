@@ -40,20 +40,25 @@ import {
    MessageBar,
    MessageBarType,
    Stack,
-   IStackTokens
+   IStackTokens,
+   Dropdown,
+   IDropdownOption
 } from '@fluentui/react';
 
-import {columns as columnsNormal} from './columnsNormal';
 
 import { globalStateContext } from '../../App';
 
 export interface IGameCompared extends IGame {
    team1Name: string;
    team2Name: string;
-   map1: string;
-   map2: string;
-   map3: string;
-   map4: string;
+   map1RowKey: string;
+   map2RowKey: string;
+   map3RowKey: string;
+   map4RowKey: string;
+   isMap3Random: boolean;
+   isMap4Random: boolean;
+   map3Team2RowKey: string;
+   map4Team2RowKey: string;
 }
 
 class FakeTeam {
@@ -69,11 +74,6 @@ class FakeTeam {
    }
 }
 
-enum Mode {
-   Normal,
-   Edit
-}
-
 enum Punkte {
    t1,
    t2
@@ -87,6 +87,9 @@ const itemAlignmentsStackTokens: IStackTokens = {
 function Games() {
    const [loading, setLoading] = React.useState(false);
    const [games, setGames] = React.useState<IGame[]>([]);
+   const [maps, setMaps] = React.useState<IMap[]>([]);
+   const [mapsDDoptions, setMapsDDoptions] = React.useState<IDropdownOption[]>([]);
+   
    const [gamesCompared, setGamesCompared] = React.useState<IGameCompared[]>([]);
    const [groups, setGroups] = React.useState<IGroup[]>([]);
    // const [mode, setMode] = React.useState<Mode>(Mode.Normal)
@@ -110,53 +113,40 @@ function Games() {
          const teams: ITeam[] = results[1];
          const maps: IMap[] = results[2];
 
-         console.log(games)
-
-
          const gamesFiltered = games.sort((a: IGame, b: IGame) => {
             return new Date(a.gameDateTime.value).getTime() - new Date(b.gameDateTime.value).getTime();
          });
 
-         const mapRowKeys: string[] = maps.map(m => m.rowKey);
-
-         var mapCount: number = 0;
          const gamesCompared: IGameCompared[] = gamesFiltered.map((game: IGame) => {
             const team1: ITeam | FakeTeam = teams.find(t => t.rowKey === game.team1RowKey) || new FakeTeam();
             const team2: ITeam | FakeTeam = teams.find(t => t.rowKey === game.team2RowKey) || new FakeTeam();
 
             const team1Maps = [team1.map1, team1.map2];
-            const allTeamMaps = [...team1Maps, team2.map1, team2.map2];
 
-            const mapRowKeysFiltered = mapRowKeys.filter((m: string) => {
-               return !allTeamMaps.includes(m);
-            });
+            var map3RowKey = "";
+            var map4RowKey = "";
+            var isMap3Random = false;
+            var isMap4Random = false;
 
-            const map1 = maps.find((m: IMap) => {return m.rowKey === team1.map1})?.name || "Fehler"
-            const map2 = maps.find((m: IMap) => {return m.rowKey === team1.map2})?.name || "Fehler"
-
-            var map3 = "toDo";
-            var map4 = "toDo";
+            var map3Team2RowKey = "";
+            var map4Team2RowKey = "";
             
             if(team1Maps.includes(team2.map1)){
-               if(mapCount >= mapRowKeysFiltered.length){
-                  mapCount = 0;
-               }
-               map3 = maps.find((m: IMap) => {return m.rowKey === mapRowKeysFiltered[mapCount]})?.name || "Fehler"
-               mapCount += 2;
+               map3RowKey = game.map3RowKey ? game.map3RowKey : "Fehler";
+               isMap3Random = true;
+               map3Team2RowKey = team2.map1;
             }
             else {
-               map3 = maps.find((m: IMap) => {return m.rowKey === team2.map1})?.name || "Fehler"
+               map3RowKey = team2.map1;
             }
 
             if(team1Maps.includes(team2.map2)){
-               if(mapCount >= mapRowKeysFiltered.length){
-                  mapCount = 1;
-               }
-               map4 = maps.find((m: IMap) => {return m.rowKey === mapRowKeysFiltered[mapCount]})?.name || "Fehler"
-               mapCount += 2;
+               map4RowKey = game.map4RowKey ? game.map4RowKey : "Fehler";
+               isMap4Random = true;
+               map4Team2RowKey = team2.map2;
             }
             else {
-               map4 = maps.find((m: IMap) => {return m.rowKey === team2.map2})?.name || "Fehler"
+               map4RowKey = team2.map2;
             }
 
             return {
@@ -171,10 +161,14 @@ function Games() {
                team1RowKey: game.team1RowKey,
                team2Name: team2.name,
                team2RowKey: game.team2RowKey,
-               map1,
-               map2,
-               map3,
-               map4
+               map1RowKey: team1.map1,
+               map2RowKey: team1.map2,
+               map3RowKey,
+               map3Team2RowKey,
+               isMap3Random,
+               map4RowKey,
+               map4Team2RowKey,
+               isMap4Random
             }
          });
       
@@ -198,15 +192,21 @@ function Games() {
                count: gamesComparedThisGDT.length,
                level: 0,
                isCollapsed: today.isoWeek() !== date.isoWeek(),
-
-
             });
-
          });
+
+         const mapsDDoptions: IDropdownOption[] = maps.map((m: IMap) => {
+            return ({
+               key: m.rowKey,
+               text: m.name
+            })
+         })
 
          setGroups(groups)
          setGamesCompared(gamesCompared);
          setGames(games);
+         setMaps(maps);
+         setMapsDDoptions(mapsDDoptions)
          setLoading(false);
       }
       initFetch();
@@ -217,17 +217,23 @@ function Games() {
    }, [setGamesCompared, setGroups, setLoading]);
 
    const saveChanges = async () => {
-
+      setMessages([]);
       const gamesToChange = gamesCompared.filter((gc: IGameCompared, ) => {
          const gameIndex = games.findIndex((g: IGame) => g.rowKey === gc.rowKey);
 
          if(games[gameIndex]?.punktet1 !== gc.punktet1) {
-            console.log(games[gameIndex]?.rowKey + " , " +  gc.rowKey + " , " + games[gameIndex]?.punktet1 + " , " + gc.punktet1)
             return true;
          }
 
          if(games[gameIndex]?.punktet2 !== gc.punktet2) {
-            console.log(games[gameIndex]?.rowKey + " , " +  gc.rowKey + " , " + games[gameIndex]?.punktet2 + " , " + gc.punktet2)
+            return true;
+         }
+
+         if(games[gameIndex]?.map3RowKey !== gc.map3RowKey && gc.isMap3Random) {
+            return true;
+         }
+
+         if(games[gameIndex]?.map4RowKey !== gc.map4RowKey && gc.isMap4Random) {
             return true;
          }
 
@@ -243,6 +249,8 @@ function Games() {
             punktet2: gtc.punktet2,
             team1RowKey: gtc.team1RowKey,
             team2RowKey: gtc.team2RowKey,
+            map3RowKey: gtc.map3RowKey,
+            map4RowKey: gtc.map4RowKey
          }
 
          const sg: ISetGame = {
@@ -256,18 +264,17 @@ function Games() {
       }
 
       const results = await Promise.all(promises);
-      console.log(results)
+      // console.log(results)
 
       // update games
       const newGames: IGame[] = await getAzureTableEntities(constants.azureAccount, "games");
       setGames(newGames);      
-
       setMessages(results);
    }
       
-   const onChangePunkte = (event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, rowKey: any, pEnum: Punkte, newValue?: string | undefined ) => {
+   const onChangePunkte = (event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, rowKey: string, pEnum: Punkte, newValue?: string | undefined ) => {
       // console.log(event)
-      //event.preventDefault();
+      // event.preventDefault();
 
       if(newValue !== undefined) {
          const gcClone: IGameCompared[] = JSON.parse(JSON.stringify(gamesCompared))
@@ -285,6 +292,135 @@ function Games() {
       }
    }
 
+   
+   const onChangeMapDD = (rowKey: string, mapKey: 3|4, option?: IDropdownOption<any> | undefined) => {
+      // console.log(option)
+
+      if(option) {
+         const gcClone: IGameCompared[] = JSON.parse(JSON.stringify(gamesCompared))
+         const index = gcClone.findIndex((gc: IGameCompared) => gc.rowKey === rowKey)
+
+         if(mapKey === 3) {
+            gcClone[index].map3RowKey = option.key.toString()
+         }
+
+         if(mapKey === 4) {
+            gcClone[index].map4RowKey = option.key.toString()
+         }
+
+         setGamesCompared(gcClone);
+      }
+   }
+
+
+   const columnsNormal: IColumn[] = [
+      {
+         key: uuidv4(),
+         name: 'Team1',
+         fieldName: 'team1Name',
+         minWidth: 140,
+         maxWidth: 180,
+         isRowHeader: true,
+         isResizable: true,
+         isMultiline: true,
+         className: "text-right",
+         headerClassName: "headerRightClass",
+         
+         data: 'string'
+      },
+      {
+         key: uuidv4(),
+         name: 'Ergebnis',
+         minWidth: 70,
+         maxWidth: 70,
+         isRowHeader: true,
+         className: "text-center",
+         headerClassName: "headerCenterClass",
+         onRender: (item: IGameCompared) => {
+            return (
+               <span>
+                  {item.punktet1}&nbsp;:&nbsp;{item.punktet2}
+               </span>
+            )
+         }
+      },
+      {
+         key: uuidv4(),
+         name: 'Team2',
+         fieldName: 'team2Name',
+         minWidth: 140,
+         maxWidth: 180,
+         isRowHeader: true,
+         isResizable: true,
+         isMultiline: true,
+         data: 'string'
+      },
+      {
+         key: uuidv4(),
+         name: 'Map1',
+         fieldName: 'map1',
+         minWidth: 100,
+         maxWidth: 150,
+         isRowHeader: true,
+         isResizable: true,
+         onRender: (item: IGameCompared) => {
+            return (
+               <span>
+                  {maps.find((m: IMap) => {return m.rowKey === item.map1RowKey})?.name || "Render Fehler"}
+               </span>
+            );
+         } 
+      },
+      {
+         key: uuidv4(),
+         name: 'Map2',
+         fieldName: 'map2',
+         minWidth: 100,
+         maxWidth: 150,
+         isRowHeader: true,
+         isResizable: true,
+         onRender: (item: IGameCompared) => {
+            return (
+               <span>
+                  {maps.find((m: IMap) => {return m.rowKey === item.map2RowKey})?.name || "Render Fehler"}
+               </span>
+            );
+         } 
+      },
+      {
+         key: uuidv4(),
+         name: 'Map3',
+         fieldName: 'map3',
+         minWidth: 100,
+         maxWidth: 150,
+         isRowHeader: true,
+         isResizable: true,
+         onRender: (item: IGameCompared) => {
+            return (
+               <span className={item.isMap3Random ? "text-primary" : ""}>
+                  {maps.find((m: IMap) => {return m.rowKey === item.map3RowKey})?.name || "Render Fehler"}
+               </span>
+            );
+         } 
+         // data: 'string',
+      },
+      {
+         key: uuidv4(),
+         name: 'Map4',
+         // fieldName: 'map4',
+         minWidth: 100,
+         maxWidth: 150,
+         isRowHeader: true,
+         isResizable: true,
+         onRender: (item: IGameCompared) => {
+            return (
+               <span className={item.isMap4Random ? "text-primary" : ""}>
+                  {maps.find((m: IMap) => {return m.rowKey === item.map4RowKey})?.name || "Render Fehler"}
+               </span>
+            );
+         }         
+      },
+   ];
 
 
    const columnsEdit: IColumn[] = [
@@ -319,7 +455,7 @@ function Games() {
       {
          key: uuidv4(),
          name: 'Ergebnis',
-         minWidth: 200,
+         minWidth: 240,
          maxWidth: 240,
          isRowHeader: true,
          className: "text-center",
@@ -370,47 +506,106 @@ function Games() {
          key: uuidv4(),
          name: 'Map1',
          fieldName: 'map1',
-         minWidth: 40,
-         maxWidth: 150,
+         minWidth: 180,
+         maxWidth: 180,
          isRowHeader: true,
          isResizable: true,
-         data: 'string',
+         onRender: (item: IGameCompared) => {
+            return (
+               <span>
+                  {maps.find((m: IMap) => {return m.rowKey === item.map1RowKey})?.name || "Render Fehler"}
+               </span>
+            );
+         } 
       },
       {
          key: uuidv4(),
          name: 'Map2',
          fieldName: 'map2',
-         minWidth: 40,
-         maxWidth: 150,
+         minWidth: 180,
+         maxWidth: 180,
          isRowHeader: true,
          isResizable: true,
-         data: 'string',
+         onRender: (item: IGameCompared) => {
+            return (
+               <span>
+                  {maps.find((m: IMap) => {return m.rowKey === item.map2RowKey})?.name || "Render Fehler"}
+               </span>
+            );
+         }  
       },
       {
          key: uuidv4(),
          name: 'Map3',
          fieldName: 'map3',
-         minWidth: 40,
-         maxWidth: 150,
+         minWidth: 180,
+         maxWidth: 180,
          isRowHeader: true,
          isResizable: true,
-         data: 'string',
+         onRender: (item: IGameCompared) => {
+            if(item.isMap3Random) {
+               return (
+                  <div>
+                     <Dropdown
+                        // label="Controlled example"
+                        selectedKey={item.map3RowKey}
+                        onChange={(event: React.FormEvent<HTMLDivElement>, option?: IDropdownOption<any> | undefined, index?: number | undefined) => onChangeMapDD(item.rowKey, 3, option)}
+                        placeholder="Bitte Karte wählen"
+                        options={mapsDDoptions.filter((m: IDropdownOption) => m.key !== item.map3Team2RowKey && m.key !== item.map4Team2RowKey)}
+                     />
+                     <span className="text-danger">
+                        {maps.find((m: IMap) => {return m.rowKey === item.map3Team2RowKey})?.name || "Render Fehler"}
+                     </span>                  
+                  </div>
+               );
+            }
+
+            return (
+               <span>
+                  {maps.find((m: IMap) => {return m.rowKey === item.map3RowKey})?.name || "Render Fehler"}
+               </span>
+            );
+         } 
       },
       {
          key: uuidv4(),
          name: 'Map4',
          fieldName: 'map4',
-         minWidth: 40,
-         maxWidth: 150,
+         minWidth: 180,
+         maxWidth: 180,
          isRowHeader: true,
          isResizable: true,
-         data: 'string',
+         onRender: (item: IGameCompared) => {
+            if(item.isMap4Random) {
+               return (
+                  <div>
+                     <Dropdown
+                        // label="Controlled example"
+                        selectedKey={item.map4RowKey}
+                        onChange={(event: React.FormEvent<HTMLDivElement>, option?: IDropdownOption<any> | undefined, index?: number | undefined) => onChangeMapDD(item.rowKey, 4, option)}
+                        placeholder="Bitte Karte wählen"
+                        options={mapsDDoptions.filter((m: IDropdownOption) => m.key !== item.map3Team2RowKey && m.key !== item.map4Team2RowKey)}
+                     />
+                     <span className="text-danger">
+                        {maps.find((m: IMap) => {return m.rowKey === item.map4Team2RowKey})?.name || "Render Fehler"}
+                     </span>
+                  </div>
+               );
+            }
+
+            return (
+               <span>
+                  {maps.find((m: IMap) => {return m.rowKey === item.map4RowKey})?.name || "Render Fehler"}
+               </span>
+            );
+         },
+         isPadded: true
       },
    ];
 
 
    return (
-      <div className="container mt-4" >
+      <div className={isAdmin ? "m-5" : "container mt-4"}>
          <div className="row">
             <div className="col" >
                <h2>Spielplan</h2> 
@@ -474,30 +669,6 @@ function Games() {
             isHeaderVisible={true}
          />
          </div>
-         {/* 
-            {gamesCompared.map((game: IGameCompared) => {
-               return (
-                  <div key={uuidv4()} className="row m-1 p-4 align-items-center border border-fix border-secondary rounded ">
-                     <div className="col col-auto p-2">
-                        
-                        {/* <div><pre>{JSON.stringify(game.gameDateTime, null, 2) }</pre></div> 
-                        {new Date(game.gameDateTime.value).toLocaleDateString()} {new Date(game.gameDateTime.value).toLocaleTimeString()}
-
-                        <div className="badge badge-primary font-weight-light p-2" style={{fontSize: "1.2rem"}}>{game.team1Name}</div>
-                        {game.punktet1}
-                        {game.punktet2}
-                        <div className="badge badge-primary font-weight-light p-2" style={{fontSize: "1.2rem"}}>{game.team2Name}</div>
-                        </div> 
-
-
-
-                  </div> 
-               )
-            
-            })}
-            
-
-         */}
       </div>         
    );
 }
