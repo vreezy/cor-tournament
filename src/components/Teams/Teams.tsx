@@ -5,8 +5,6 @@ import {
    //Selection,
    SelectionMode,
    IColumn,
-   TeachingBubble,
-   PrimaryButton
 } from '@fluentui/react/';
 
 // helper
@@ -246,7 +244,8 @@ function Teams() {
       <div className="container mt-4">
          <div className="row">
             <div className="col">
-               <h2>Teams ({teamsCompared.length})</h2>
+               <h2>Tabelle</h2>
+               {/* <h2>Teams ({teamsCompared.length})</h2> */}
             </div>
          </div>
          
