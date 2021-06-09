@@ -40,7 +40,6 @@ function NavbarComp() {
      }
    }
 
-
    return (
       <Navbar color="dark" dark fixed="top" expand="md">
         <div className="container">
@@ -58,7 +57,7 @@ function NavbarComp() {
               <NavLink href="/#/participants" onClick={checkClose}>Teilnehmer</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="/#/teams" onClick={checkClose}>Teams</NavLink>
+              <NavLink href="/#/teams" onClick={checkClose}>Tabelle</NavLink>
             </NavItem>
             <NavItem>
               <NavLink href="/#/schedule" onClick={checkClose}>Spielplan</NavLink>

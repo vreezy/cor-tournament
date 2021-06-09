@@ -4,8 +4,10 @@ import {
    DetailsListLayoutMode,
    //Selection,
    SelectionMode,
-   IColumn
-} from '@fluentui/react/lib/DetailsList';
+   IColumn,
+   TeachingBubble,
+   PrimaryButton
+} from '@fluentui/react/';
 
 // helper
 import { v4 as uuidv4 } from 'uuid';
@@ -13,6 +15,7 @@ import { Spinner, SpinnerSize  } from '@fluentui/react';
 
 // services
 import { getAzureTableEntities } from '../../services/AzureService';
+import { compareTeams } from '../../services/CompareService';
 
 // constantes
 import { constants } from '../../constants';
@@ -23,27 +26,14 @@ import { ITeam } from '../../interfaces/ITeam';
 import { IGame } from '../../interfaces/IGame';
 import { IMap } from '../../interfaces/IMap';
 
+import { ITeamCompared } from '../../interfaces/ITeamCompared';
 // mock
 // import { games as mockGames } from '../../mock/games';
 
-interface ITeamCompared extends ITeam {
-   users: IParticipant[];
-   scores: number;
-   rank: number;
-   wins: number;
-   draws: number;
-   looses: number;
-   pointsSelf: number;
-   pointsEnemy: number;
-}
+
 
 function Teams() {
    const [loading, setLoading] = React.useState(false);
-
-
-   // const [participants, setParticipants] = React.useState<IParticipant[]>([]);
-   // const [teams, setTeams] = React.useState<ITeam[]>([]);
-
    const [teamsCompared, setTeamsCompared] = React.useState<ITeamCompared[]>([]);
 
    React.useEffect(() => {
@@ -60,77 +50,7 @@ function Teams() {
          const games: IGame[] = results[2]; // mockGames; // 
          const maps: IMap[] = results[3];
 
-         const teamsCompared: ITeamCompared[] = teams.map((team: ITeam) => {
-            const users = participants.filter(p => p.teamRowKey === team.rowKey);
-            var scores: number = 0;
-            var pointsSelf: number = 0;
-            var pointsEnemy: number = 0;
-            var wins: number = 0;
-            var looses: number = 0;
-            var draws: number = 0;
-            games.forEach((game: IGame) => {
-               if(game.team1RowKey === team.rowKey) {
-                  if(!isNaN(parseInt(game.punktet1)) && !isNaN(parseInt(game.punktet2))) {
-                     pointsSelf += parseInt(game.punktet1);
-                     pointsEnemy += parseInt(game.punktet2) ;
-                  }
-
-                  if(parseInt(game.punktet1) > parseInt(game.punktet2)) {
-                     wins++;
-                     scores += 3;
-                  }
-
-                  if(parseInt(game.punktet2) > parseInt(game.punktet1)) {
-                     looses++;
-                  }
-
-                  if(parseInt(game.punktet1) === parseInt(game.punktet2)) {
-                     draws++;
-                     scores += 1;
-                  }
-               }
-
-               if(game.team2RowKey === team.rowKey) {
-                  if(!isNaN(parseInt(game.punktet2)) && !isNaN(parseInt(game.punktet1))) {
-                     pointsSelf += parseInt(game.punktet2);
-                     pointsEnemy += parseInt(game.punktet1);
-                     if(parseInt(game.punktet2) > parseInt(game.punktet1)) {
-                        wins++;
-                        scores += 3;
-                     }
-
-                     if(parseInt(game.punktet1) > parseInt(game.punktet2)) {
-                        looses++;
-                     }
-
-                     if(parseInt(game.punktet1) === parseInt(game.punktet2)) {
-                        draws++;
-                        scores += 1;
-                     }
-                  }
-               }
-            });
-
-            
-            return {
-               etag: team.etag,
-               map1: maps.find((m: IMap) => {return m.rowKey === team.map1})?.name || "Fehler",
-               map2: maps.find((m: IMap) => {return m.rowKey === team.map2})?.name || "Fehler",
-               name: team.name,
-               partitionKey: team.partitionKey,
-               rowKey: team.rowKey,
-               timestamp: team.timestamp,
-               users,
-               scores,
-               rank: 0,
-               wins,
-               draws,
-               looses,
-               pointsSelf,
-               pointsEnemy
-            }
-
-         });
+         const teamsCompared: ITeamCompared[] = compareTeams(teams, participants, games, maps);
 
          const teamsComparedSorted: ITeamCompared[] = teamsCompared.sort((a: ITeamCompared, b: ITeamCompared) => {
             if(b.scores === a.scores) {
@@ -146,8 +66,16 @@ function Teams() {
             // return a.scores > b.scores ? 1 : -1;
          });
 
+
+         var rank = 0
          const teamsComparedRanked: ITeamCompared[] = teamsComparedSorted.map((team: ITeamCompared, index: number) => {
-            team.rank = index + 1;
+            if(index > 0 && teamsComparedSorted[index -1].scores === team.scores && teamsComparedSorted[index -1].pointsSelf === team.pointsSelf) {
+               team.rank = teamsComparedSorted[index -1].rank;
+            }
+            else {
+               team.rank = ++rank;
+            }
+            
             return team;
          });
 
@@ -166,7 +94,7 @@ function Teams() {
    const columns: IColumn[] = [
       {
          key: uuidv4(),
-         name: '#',
+         name: 'Platz',
          fieldName: 'rank',
          minWidth: 30,
          maxWidth: 40,
@@ -177,11 +105,9 @@ function Teams() {
          // sortAscendingAriaLabel: 'Sorted A to Z',
          // sortDescendingAriaLabel: 'Sorted Z to A',
          //onColumnClick: this._onColumnClick,
-         // onRender: (item: IGameCompared) => {
-         //    return <span>{new Date(item.gameDateTime.value).toLocaleDateString()}</span>
-
-            
-         // },
+         onRender: (item: ITeamCompared) => {
+            return <span>{item.rank.toString()}.</span>            
+         },
          data: 'number',
          //isPadded: true,
       },
@@ -194,6 +120,26 @@ function Teams() {
          isRowHeader: true,
          isResizable: true,
          isMultiline: true,
+         // onRender: (item: ITeamCompared) => {
+         //    const id: string = "t" + uuidv4().replaceAll('-', '');
+         //    return (
+         //       <div>
+         //       <PrimaryButton id={id} >{item.name}</PrimaryButton>
+
+         //       <TeachingBubble
+         //          target={"#" + id}
+         //          // primaryButtonProps={examplePrimaryButtonProps}
+         //          // secondaryButtonProps={exampleSecondaryButtonProps}
+         //          // onDismiss={toggleTeachingBubbleVisible}
+         //          headline="Discover what’s trending around you"
+         //       >
+         //          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facere, nulla, ipsum? Molestiae quis aliquam magni
+         //          harum non?
+         //       </TeachingBubble>
+         //     </div>
+         //    )
+         // },
+
          data: 'string'
       },
       {
@@ -271,7 +217,7 @@ function Teams() {
          onRender: (item: ITeamCompared) => {
             return (
                <span>
-                  {item.pointsSelf}:{item.pointsEnemy}
+                  {item.pointsSelf} : {item.pointsEnemy}
                </span>
             )
          }
