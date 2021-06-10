@@ -29,6 +29,9 @@ import Rules from './components/Rules/Rules';
 import OverviewCard from './components/OverviewCard/OverviewCard';
 
 import { IParticipant } from './interfaces/IParticipant';
+import { ITeam } from './interfaces/ITeam';
+import { IGame } from './interfaces/IGame';
+import { IMap } from './interfaces/IMap';
 
 // MSAL imports
 import { MsalProvider } from "@azure/msal-react";
@@ -39,6 +42,13 @@ import Profile from './components/Profile/Profile';
 // AppInsights
 // import { AppInsightsContext } from "@microsoft/applicationinsights-react-js";
 // import { reactPlugin } from "./utils/AppInsights";
+
+// services
+import { getAzureTableEntities } from './services/AzureService';
+
+
+// constantes
+import { constants } from './constants';
 
 // styles 
 import { loadTheme } from '@fluentui/react';
@@ -99,9 +109,35 @@ type AppProps = {
    pca: IPublicClientApplication
 };
 
-const globalState = {
+interface IGlobalState {
+   loading: boolean;
+   setLoading(bool: boolean): void;
+   isAdmin: boolean;
+   setAdmin(bool: boolean): void;
+   participants: IParticipant[];
+   setParticipants(arr: IParticipant[]): void;
+   teams: ITeam[];
+   setTeams(arr: ITeam[]): void;
+   games: IGame[];
+   setGames(arr: IGame[]): void;
+   maps: IMap[];
+   setMaps(arr: IMap[]): void;
+}
+
+
+const globalState: IGlobalState = {
+   loading: false,
+   setLoading: (bool: boolean) => {},
    isAdmin: false,
-   setAdmin: (bool: boolean) => {}
+   setAdmin: (bool: boolean) => {},
+   participants: [],
+   setParticipants: (arr: IParticipant[]) => {},
+   teams: [],
+   setTeams: (arr: ITeam[]) => {},
+   games: [],
+   setGames: (arr: IGame[]) => {},
+   maps: [],
+   setMaps: (arr: IMap[]) => {}
 };
  
 export const globalStateContext = React.createContext(globalState);
@@ -112,13 +148,46 @@ function App({ pca }: AppProps) {
    loadTheme(darkTheme);
    initializeIcons();
 
-   const [participants, setParticipants] = React.useState<IParticipant[]>([]);
+   const [loading, setLoading] = React.useState(false);
    const [isAdmin, setAdmin] = React.useState(false); 
+   const [participants, setParticipants] = React.useState<IParticipant[]>([]);
+   const [teams, setTeams] = React.useState<ITeam[]>([]);
+   const [games, setGames] = React.useState<IGame[]>([]);
+   const [maps, setMaps] = React.useState<IMap[]>([]);
+
+
+   React.useEffect(() => {
+      const fetchParticipants = async () => {
+         setLoading(true);
+         const promises: Promise<any>[] = [];
+         // const participants: IParticipant[] = await getAzureTableEntities(constants.azureAccount, "user");
+         promises.push(getAzureTableEntities(constants.azureAccount, "user"));
+         promises.push(getAzureTableEntities(constants.azureAccount, "teams"));
+         promises.push(getAzureTableEntities(constants.azureAccount, "games"));
+         promises.push(getAzureTableEntities(constants.azureAccount, "maps"));
+         const results = await Promise.all(promises);
+         const participants: IParticipant[] = results[0];
+         const teams: ITeam[] = results[1];
+         const games: IGame[] = results[2]; // mockGames; // 
+         const maps: IMap[] = results[3];
+
+         setParticipants(participants);
+         setTeams(teams);
+         setGames(games);
+         setMaps(maps);
+         setLoading(false);
+      }
+      fetchParticipants();
+   
+      return () => {
+      // returned function will be called on component unmount    
+      }
+   }, [setLoading, setParticipants, setTeams, setGames, setMaps]);
 
    return (
       // <AppInsightsContext.Provider value={reactPlugin}>
       <MsalProvider instance={pca}>
-         <globalStateContext.Provider value={{isAdmin, setAdmin}}>
+         <globalStateContext.Provider value={{isAdmin, setAdmin, loading, setLoading, participants, setParticipants, teams, setTeams, games, setGames, maps, setMaps}}>
          <div className="App h-100 bg-dark text-white">
             <HashRouter>
                <Navbar />
@@ -149,10 +218,7 @@ function App({ pca }: AppProps) {
                      </Route>
 
                      <Route path="/participants">
-
-                        <Participants participants={participants} setParticipants={setParticipants} />
-
-   
+                        <Participants />
                      </Route>
 
                      <Route path="/teams">

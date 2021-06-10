@@ -12,82 +12,63 @@ import { v4 as uuidv4 } from 'uuid';
 import { Spinner, SpinnerSize  } from '@fluentui/react';
 
 // services
-import { getAzureTableEntities } from '../../services/AzureService';
 import { compareTeams } from '../../services/CompareService';
 
 // constantes
-import { constants } from '../../constants';
+// import { constants } from '../../constants';
 
 // interfaces
-import { IParticipant } from '../../interfaces/IParticipant';
-import { ITeam } from '../../interfaces/ITeam';
-import { IGame } from '../../interfaces/IGame';
-import { IMap } from '../../interfaces/IMap';
+// import { IParticipant } from '../../interfaces/IParticipant';
+// import { ITeam } from '../../interfaces/ITeam';
+// import { IGame } from '../../interfaces/IGame';
+// import { IMap } from '../../interfaces/IMap';
 
 import { ITeamCompared } from '../../interfaces/ITeamCompared';
 // mock
 // import { games as mockGames } from '../../mock/games';
 
+import { globalStateContext } from '../../App';
 
 
 function Teams() {
-   const [loading, setLoading] = React.useState(false);
+   const {loading, participants, teams, games, maps} = React.useContext(globalStateContext);
    const [teamsCompared, setTeamsCompared] = React.useState<ITeamCompared[]>([]);
 
    React.useEffect(() => {
-      const fetchParticipants = async () => {
-         setLoading(true);
-         const promises: Promise<any>[] = [];
-         promises.push(getAzureTableEntities(constants.azureAccount, "user"));
-         promises.push(getAzureTableEntities(constants.azureAccount, "teams"));
-         promises.push(getAzureTableEntities(constants.azureAccount, "games"));
-         promises.push(getAzureTableEntities(constants.azureAccount, "maps"));
-         const results = await Promise.all(promises);
-         const participants: IParticipant[] = results[0];
-         const teams: ITeam[] = results[1];
-         const games: IGame[] = results[2]; // mockGames; // 
-         const maps: IMap[] = results[3];
+      const teamsCompared: ITeamCompared[] = compareTeams(teams, participants, games, maps);
 
-         const teamsCompared: ITeamCompared[] = compareTeams(teams, participants, games, maps);
-
-         const teamsComparedSorted: ITeamCompared[] = teamsCompared.sort((a: ITeamCompared, b: ITeamCompared) => {
-            if(b.scores === a.scores) {
-               return b.pointsSelf - a.pointsSelf;
-            } 
-            if(b.scores > a.scores) {
-               return 1
-            }
-            if(b.scores < a.scores) {
-               return -1
-            }
+      const teamsComparedSorted: ITeamCompared[] = teamsCompared.sort((a: ITeamCompared, b: ITeamCompared) => {
+         if(b.scores === a.scores) {
+            return b.pointsSelf - a.pointsSelf;
+         } 
+         if(b.scores > a.scores) {
+            return 1
+         }
+         if(b.scores < a.scores) {
             return -1
-            // return a.scores > b.scores ? 1 : -1;
-         });
+         }
+         return -1
+         // return a.scores > b.scores ? 1 : -1;
+      });
 
+      var rank = 0
+      const teamsComparedRanked: ITeamCompared[] = teamsComparedSorted.map((team: ITeamCompared, index: number) => {
+         if(index > 0 && teamsComparedSorted[index -1].scores === team.scores && teamsComparedSorted[index -1].pointsSelf === team.pointsSelf) {
+            team.rank = teamsComparedSorted[index -1].rank;
+         }
+         else {
+            team.rank = ++rank;
+         }
+         
+         return team;
+      });
 
-         var rank = 0
-         const teamsComparedRanked: ITeamCompared[] = teamsComparedSorted.map((team: ITeamCompared, index: number) => {
-            if(index > 0 && teamsComparedSorted[index -1].scores === team.scores && teamsComparedSorted[index -1].pointsSelf === team.pointsSelf) {
-               team.rank = teamsComparedSorted[index -1].rank;
-            }
-            else {
-               team.rank = ++rank;
-            }
-            
-            return team;
-         });
-
-         setTeamsCompared(teamsComparedRanked);
-
-
-         setLoading(false);
-      }
-      fetchParticipants();
+      setTeamsCompared(teamsComparedRanked);
    
       return () => {
       // returned function will be called on component unmount    
       }
-   }, [setTeamsCompared]);
+   }, [teams, participants, games, maps]);
 
    const columns: IColumn[] = [
       {
@@ -237,7 +218,6 @@ function Teams() {
             )
          },
       }
-
    ];
 
    return (

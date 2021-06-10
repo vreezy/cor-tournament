@@ -45,7 +45,6 @@ import {
    IDropdownOption
 } from '@fluentui/react';
 
-
 import { globalStateContext } from '../../App';
 
 export interface IGameCompared extends IGame {
@@ -62,16 +61,9 @@ export interface IGameCompared extends IGame {
 }
 
 class FakeTeam {
-   name: string;
-   map1: string;
-   map2: string;
-
-
-   constructor() {
-      this.name = "Fehler";
-      this.map1 = "Fehler";
-      this.map2 = "fehler";
-   }
+   name: string = "Fehler";
+   map1: string = "Fehler";
+   map2: string = "Fehler";
 }
 
 enum Punkte {
@@ -85,136 +77,113 @@ const itemAlignmentsStackTokens: IStackTokens = {
 };
 
 function Games() {
-   const [loading, setLoading] = React.useState(false);
-   const [games, setGames] = React.useState<IGame[]>([]);
-   const [maps, setMaps] = React.useState<IMap[]>([]);
-   const [mapsDDoptions, setMapsDDoptions] = React.useState<IDropdownOption[]>([]);
+
+   const { isAdmin, loading, games, teams, maps, setGames } = React.useContext(globalStateContext);
    
+   const [mapsDDoptions, setMapsDDoptions] = React.useState<IDropdownOption[]>([]);
    const [gamesCompared, setGamesCompared] = React.useState<IGameCompared[]>([]);
    const [groups, setGroups] = React.useState<IGroup[]>([]);
-   // const [mode, setMode] = React.useState<Mode>(Mode.Normal)
    const [token, setToken] = React.useState<string>("")
-
    const [messages, setMessages] = React.useState<ISetGameResponse[]>([])
 
-   const { isAdmin } = React.useContext(globalStateContext);
-
-
-
    React.useEffect(() => {
-      const initFetch = async () => {
-         setLoading(true);
-         const promises: Promise<any>[] = [];
-         promises.push(getAzureTableEntities(constants.azureAccount, "games"));
-         promises.push(getAzureTableEntities(constants.azureAccount, "teams"));
-         promises.push(getAzureTableEntities(constants.azureAccount, "maps"));
-         const results = await Promise.all(promises);
-         const games: IGame[] = results[0];
-         const teams: ITeam[] = results[1];
-         const maps: IMap[] = results[2];
+      const gamesSorted = games.sort((a: IGame, b: IGame) => {
+         return new Date(a.gameDateTime.value).getTime() - new Date(b.gameDateTime.value).getTime();
+      });
 
-         const gamesFiltered = games.sort((a: IGame, b: IGame) => {
-            return new Date(a.gameDateTime.value).getTime() - new Date(b.gameDateTime.value).getTime();
+      const gamesCompared: IGameCompared[] = gamesSorted.map((game: IGame) => {
+         const team1: ITeam | FakeTeam = teams.find(t => t.rowKey === game.team1RowKey) || new FakeTeam();
+         const team2: ITeam | FakeTeam = teams.find(t => t.rowKey === game.team2RowKey) || new FakeTeam();
+
+         const team1Maps = [team1.map1, team1.map2];
+
+         var map3RowKey = "";
+         var map4RowKey = "";
+         var isMap3Random = false;
+         var isMap4Random = false;
+
+         var map3Team2RowKey = "";
+         var map4Team2RowKey = "";
+         
+         if(team1Maps.includes(team2.map1)){
+            map3RowKey = game.map3RowKey ? game.map3RowKey : "Fehler";
+            isMap3Random = true;
+            map3Team2RowKey = team2.map1;
+         }
+         else {
+            map3RowKey = team2.map1;
+         }
+
+         if(team1Maps.includes(team2.map2)){
+            map4RowKey = game.map4RowKey ? game.map4RowKey : "Fehler";
+            isMap4Random = true;
+            map4Team2RowKey = team2.map2;
+         }
+         else {
+            map4RowKey = team2.map2;
+         }
+
+         return {
+            'odata.etag': game['odata.etag'],
+            partitionKey: game.partitionKey,
+            rowKey: game.rowKey,
+            timestamp: game.timestamp,
+            gameDateTime: game.gameDateTime,
+            punktet1: game.punktet1,
+            punktet2: game.punktet2,
+            team1Name: team1.name,
+            team1RowKey: game.team1RowKey,
+            team2Name: team2.name,
+            team2RowKey: game.team2RowKey,
+            map1RowKey: team1.map1,
+            map2RowKey: team1.map2,
+            map3RowKey,
+            map3Team2RowKey,
+            isMap3Random,
+            map4RowKey,
+            map4Team2RowKey,
+            isMap4Random
+         }
+      });
+   
+      const gameDateTimes: string[] = gamesCompared.map((g: IGameCompared) => { return g.gameDateTime.value});
+      const gameDateTimesUnique: string[]  = uniq(gameDateTimes);
+
+      const groups: IGroup[] = gameDateTimesUnique.map((gdt: string) => {
+         const today = moment();
+         const date = moment(new Date(gdt));
+         const matchKW = date.isoWeek();
+         const from_date = date.startOf('isoWeek').format("DD.MM.YYYY");
+         const to_date = date.endOf('isoWeek').format("DD.MM.YYYY");
+
+         const startIndex: number = gamesCompared.findIndex((g:IGameCompared) => {return g.gameDateTime.value === gdt});
+         const gamesComparedThisGDT = gamesCompared.filter((g:IGameCompared) => {return g.gameDateTime.value === gdt});
+
+         return ({
+            key: uuidv4(),
+            name: `KW: ${matchKW} | ${from_date} - ${to_date}`,
+            startIndex,
+            count: gamesComparedThisGDT.length,
+            level: 0,
+            isCollapsed: today.isoWeek() !== date.isoWeek(),
          });
+      });
 
-         const gamesCompared: IGameCompared[] = gamesFiltered.map((game: IGame) => {
-            const team1: ITeam | FakeTeam = teams.find(t => t.rowKey === game.team1RowKey) || new FakeTeam();
-            const team2: ITeam | FakeTeam = teams.find(t => t.rowKey === game.team2RowKey) || new FakeTeam();
-
-            const team1Maps = [team1.map1, team1.map2];
-
-            var map3RowKey = "";
-            var map4RowKey = "";
-            var isMap3Random = false;
-            var isMap4Random = false;
-
-            var map3Team2RowKey = "";
-            var map4Team2RowKey = "";
-            
-            if(team1Maps.includes(team2.map1)){
-               map3RowKey = game.map3RowKey ? game.map3RowKey : "Fehler";
-               isMap3Random = true;
-               map3Team2RowKey = team2.map1;
-            }
-            else {
-               map3RowKey = team2.map1;
-            }
-
-            if(team1Maps.includes(team2.map2)){
-               map4RowKey = game.map4RowKey ? game.map4RowKey : "Fehler";
-               isMap4Random = true;
-               map4Team2RowKey = team2.map2;
-            }
-            else {
-               map4RowKey = team2.map2;
-            }
-
-            return {
-               'odata.etag': game['odata.etag'],
-               partitionKey: game.partitionKey,
-               rowKey: game.rowKey,
-               timestamp: game.timestamp,
-               gameDateTime: game.gameDateTime,
-               punktet1: game.punktet1,
-               punktet2: game.punktet2,
-               team1Name: team1.name,
-               team1RowKey: game.team1RowKey,
-               team2Name: team2.name,
-               team2RowKey: game.team2RowKey,
-               map1RowKey: team1.map1,
-               map2RowKey: team1.map2,
-               map3RowKey,
-               map3Team2RowKey,
-               isMap3Random,
-               map4RowKey,
-               map4Team2RowKey,
-               isMap4Random
-            }
-         });
-      
-         const gameDateTimes: string[] = gamesCompared.map((g: IGameCompared) => { return g.gameDateTime.value});
-         const gameDateTimesUnique: string[]  = uniq(gameDateTimes);
-
-         const groups: IGroup[] = gameDateTimesUnique.map((gdt: string) => {
-            const today = moment();
-            const date = moment(new Date(gdt));
-            const matchKW = date.isoWeek();
-            const from_date = date.startOf('isoWeek').format("DD.MM.YYYY");
-            const to_date = date.endOf('isoWeek').format("DD.MM.YYYY");
-
-            const startIndex: number = gamesCompared.findIndex((g:IGameCompared) => {return g.gameDateTime.value === gdt});
-            const gamesComparedThisGDT = gamesCompared.filter((g:IGameCompared) => {return g.gameDateTime.value === gdt});
- 
-            return ({
-               key: uuidv4(),
-               name: `KW: ${matchKW} | ${from_date} - ${to_date}`,
-               startIndex,
-               count: gamesComparedThisGDT.length,
-               level: 0,
-               isCollapsed: today.isoWeek() !== date.isoWeek(),
-            });
-         });
-
-         const mapsDDoptions: IDropdownOption[] = maps.map((m: IMap) => {
-            return ({
-               key: m.rowKey,
-               text: m.name
-            })
+      const mapsDDoptions: IDropdownOption[] = maps.map((m: IMap) => {
+         return ({
+            key: m.rowKey,
+            text: m.name
          })
+      })
 
-         setGroups(groups)
-         setGamesCompared(gamesCompared);
-         setGames(games);
-         setMaps(maps);
-         setMapsDDoptions(mapsDDoptions)
-         setLoading(false);
-      }
-      initFetch();
+      setGroups(groups)
+      setGamesCompared(gamesCompared);
+      setMapsDDoptions(mapsDDoptions)
    
       return () => {
       // returned function will be called on component unmount    
       }
-   }, [setGamesCompared, setGroups, setLoading]);
+   }, [games, maps, teams, setGroups, setGamesCompared, setMapsDDoptions]);
 
    const saveChanges = async () => {
       setMessages([]);
@@ -238,7 +207,7 @@ function Games() {
          }
 
          return false;
-      })
+      });
 
       const promises: Promise<any>[] = []
       for (const gtc of gamesToChange) {
@@ -662,17 +631,22 @@ function Games() {
             </div>
          }
    
-         <div style={{backgroundColor: "#282828"}}>
-         <DetailsList
-            items={gamesCompared}
-            groups={groups}
-            columns={isAdmin ? columnsEdit : columnsNormal }
-            compact={false}
-            selectionMode={SelectionMode.none}
-            layoutMode={DetailsListLayoutMode.justified}
-            isHeaderVisible={true}
-         />
-         </div>
+         {!loading &&
+            <div style={{backgroundColor: "#282828"}}>
+               <DetailsList
+                  items={gamesCompared}
+                  groups={groups}
+                  columns={isAdmin ? columnsEdit : columnsNormal }
+                  compact={false}
+                  selectionMode={SelectionMode.none}
+                  layoutMode={DetailsListLayoutMode.justified}
+                  isHeaderVisible={true}
+               />
+            </div>
+         }
+
+         {/* <div><pre>{JSON.stringify(games, null, 2) }</pre></div> */}
+         {/* <div><pre>{JSON.stringify(gamesCompared, null, 2) }</pre></div> */}
       </div>         
    );
 }
