@@ -203,7 +203,7 @@ function Games() {
       return () => {
       // returned function will be called on component unmount    
       }
-   }, [games, maps, teams, setGroups, setGamesCompared, setMapsDDoptions]);
+   }, [participants, games, maps, teams, setGroups, setGamesCompared, setMapsDDoptions]);
 
    const theme = getTheme();
    const contentStyles = mergeStyleSets({
