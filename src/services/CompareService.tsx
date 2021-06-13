@@ -6,7 +6,7 @@ import { IMap } from '../interfaces/IMap';
 import { ITeamCompared } from '../interfaces/ITeamCompared';
 
 export const compareTeams = (teams: ITeam[], participants:IParticipant[], games: IGame[], maps: IMap[] ): ITeamCompared[] => {
-    return teams.map((team: ITeam) => {
+    const teamsCompared:ITeamCompared[] =  teams.map((team: ITeam) => {
         const users = participants.filter(p => p.teamRowKey === team.rowKey);
         var scores: number = 0;
         var pointsSelf: number = 0;
@@ -76,4 +76,33 @@ export const compareTeams = (teams: ITeam[], participants:IParticipant[], games:
             pointsEnemy
         }
     });
+
+    const teamsComparedSorted: ITeamCompared[] = teamsCompared.sort((a: ITeamCompared, b: ITeamCompared) => {
+        if(b.scores === a.scores) {
+            return b.pointsSelf - a.pointsSelf;
+        } 
+        if(b.scores > a.scores) {
+            return 1
+        }
+        if(b.scores < a.scores) {
+            return -1
+        }
+        return -1
+        // return a.scores > b.scores ? 1 : -1;
+    });
+
+    var rank = 0
+    const teamsComparedRanked: ITeamCompared[] = teamsComparedSorted.map((team: ITeamCompared, index: number) => {
+    if(index > 0 && teamsComparedSorted[index -1].scores === team.scores && teamsComparedSorted[index -1].pointsSelf === team.pointsSelf) {
+        team.rank = teamsComparedSorted[index -1].rank;
+        rank++;
+    }
+    else {
+        team.rank = ++rank;
+    }
+    
+    return team;
+    });
+
+    return teamsComparedRanked;
 }

@@ -2,10 +2,19 @@ import React from 'react';
 import { 
    DetailsList,
    DetailsListLayoutMode,
-   //Selection,
    SelectionMode,
    IColumn,
+   PrimaryButton,
+   IconButton,
+   Modal,
+   IIconProps,
+   mergeStyleSets,
+   FontWeights,
+   getTheme,
 } from '@fluentui/react/';
+
+// Components
+import TeamCard from '../TeamCard/TeamCard';
 
 // helper
 import { v4 as uuidv4 } from 'uuid';
@@ -33,42 +42,54 @@ import { globalStateContext } from '../../App';
 function Teams() {
    const {loading, participants, teams, games, maps} = React.useContext(globalStateContext);
    const [teamsCompared, setTeamsCompared] = React.useState<ITeamCompared[]>([]);
+   const [isOpen, setIsOpen] = React.useState<boolean>(false);
+   const [modalTC, setModalTC] = React.useState<ITeamCompared>();
+
+   const cancelIcon: IIconProps = { iconName: 'Cancel' };
 
    React.useEffect(() => {
       const teamsCompared: ITeamCompared[] = compareTeams(teams, participants, games, maps);
-
-      const teamsComparedSorted: ITeamCompared[] = teamsCompared.sort((a: ITeamCompared, b: ITeamCompared) => {
-         if(b.scores === a.scores) {
-            return b.pointsSelf - a.pointsSelf;
-         } 
-         if(b.scores > a.scores) {
-            return 1
-         }
-         if(b.scores < a.scores) {
-            return -1
-         }
-         return -1
-         // return a.scores > b.scores ? 1 : -1;
-      });
-
-      var rank = 0
-      const teamsComparedRanked: ITeamCompared[] = teamsComparedSorted.map((team: ITeamCompared, index: number) => {
-         if(index > 0 && teamsComparedSorted[index -1].scores === team.scores && teamsComparedSorted[index -1].pointsSelf === team.pointsSelf) {
-            team.rank = teamsComparedSorted[index -1].rank;
-         }
-         else {
-            team.rank = ++rank;
-         }
-         
-         return team;
-      });
-
-      setTeamsCompared(teamsComparedRanked);
+      setTeamsCompared(teamsCompared);
    
       return () => {
       // returned function will be called on component unmount    
       }
    }, [teams, participants, games, maps]);
+
+
+   const theme = getTheme();
+   const contentStyles = mergeStyleSets({
+      container: {
+      display: 'flex',
+      flexFlow: 'column nowrap',
+      alignItems: 'stretch',
+      },
+      header: [
+         {
+            flex: '1 1 auto',
+            borderTop: `4px solid ${theme.palette.themePrimary}`,
+            color: theme.palette.neutralPrimary,
+            fontWeight: FontWeights.semibold,
+            padding: '12px 12px 14px 24px',
+         },
+      ],
+      body: {
+         flex: '4 4 auto',
+         padding: '0 24px 24px 24px',
+         overflowY: 'hidden',
+         selectors: {
+            p: { margin: '14px 0' },
+            'p:first-child': { marginTop: 0 },
+            'p:last-child': { marginBottom: 0 },
+         },
+      },
+   });
+
+   
+   const showTeam = (tc: ITeamCompared) => {
+      setModalTC(tc);
+      setIsOpen(true);
+   }
 
    const columns: IColumn[] = [
       {
@@ -79,66 +100,44 @@ function Teams() {
          maxWidth: 40,
          isRowHeader: true,
          isResizable: false,
-         // isSorted: true,
-         // isSortedDescending: false,
-         // sortAscendingAriaLabel: 'Sorted A to Z',
-         // sortDescendingAriaLabel: 'Sorted Z to A',
-         //onColumnClick: this._onColumnClick,
          onRender: (item: ITeamCompared) => {
             return <span>{item.rank.toString()}.</span>            
          },
          data: 'number',
-         //isPadded: true,
       },
       {
          key: uuidv4(),
          name: 'Name',
          fieldName: 'name',
-         minWidth: 140,
-         maxWidth: 180,
+         minWidth: 200,
+         // maxWidth: 10,
          isRowHeader: true,
          isResizable: true,
          isMultiline: true,
-         // onRender: (item: ITeamCompared) => {
-         //    const id: string = "t" + uuidv4().replaceAll('-', '');
-         //    return (
-         //       <div>
-         //       <PrimaryButton id={id} >{item.name}</PrimaryButton>
-
-         //       <TeachingBubble
-         //          target={"#" + id}
-         //          // primaryButtonProps={examplePrimaryButtonProps}
-         //          // secondaryButtonProps={exampleSecondaryButtonProps}
-         //          // onDismiss={toggleTeachingBubbleVisible}
-         //          headline="Discover what’s trending around you"
-         //       >
-         //          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facere, nulla, ipsum? Molestiae quis aliquam magni
-         //          harum non?
-         //       </TeachingBubble>
-         //     </div>
-         //    )
-         // },
+         onRender: (item: ITeamCompared) => {
+            return (
+               <PrimaryButton className="m-1" onClick={() => showTeam(item)}>{item.name}</PrimaryButton>
+            )
+         },
 
          data: 'string'
       },
       {
-      key: uuidv4(),
-      name: 'Spieler',
-      //fieldName: 'team1Name',
-      minWidth: 180,
-      // maxWidth: 120,
-      isRowHeader: true,
-      isResizable: true,
-      isMultiline: true,
-      onRender: (item: ITeamCompared) => {
-         return (
-            <div className="d-flex flex-wrap">
-               {item.users.map((participant: any) => <div key={uuidv4()} className="badge badge-secondary block-badge font-weight-light p-2 m-1" style={{fontSize: "0.8rem"}}>{participant.user}</div> )}
-            </div>
-         )
-      },
-      data: 'string',
-      // isPadded: true,
+         key: uuidv4(),
+         name: 'Spiele',
+         //fieldName: 'rank',
+         minWidth: 60,
+         maxWidth: 60,
+         isRowHeader: true,
+         isResizable: false,
+         headerClassName: "headerCenterClass",
+         onRender: (item: ITeamCompared) => {
+             return (
+                 <div className="h-100 d-flex align-items-center justify-content-center">
+                     {(item.wins + item.draws + item.looses)}
+                 </div>
+             );
+         },
       },
       {
          key: uuidv4(),
@@ -147,7 +146,7 @@ function Teams() {
          minWidth: 50,
          maxWidth: 50,
          isRowHeader: true,
-         className: "text-center",
+         className: "h-100 d-flex align-items-center justify-content-center",
          headerClassName: "headerCenterClass",
          data: 'string',
       },
@@ -158,7 +157,7 @@ function Teams() {
          minWidth: 50,
          maxWidth: 50,
          isRowHeader: true,
-         className: "text-center",
+         className: "h-100 d-flex align-items-center justify-content-center",
          headerClassName: "headerCenterClass",
          data: 'number',
       },
@@ -169,7 +168,7 @@ function Teams() {
          minWidth: 50,
          maxWidth: 50,
          isRowHeader: true,
-         className: "text-center",
+         className: "h-100 d-flex align-items-center justify-content-center",
          headerClassName: "headerCenterClass",
          data: 'number',
 
@@ -181,7 +180,7 @@ function Teams() {
          minWidth: 50,
          maxWidth: 50,
          isRowHeader: true,
-         className: "text-center",
+         className: "h-100 d-flex align-items-center justify-content-center",
          headerClassName: "headerCenterClass",
          data: 'number',
 
@@ -191,7 +190,7 @@ function Teams() {
          name: 'Ergebnis',
          minWidth: 80,
          isRowHeader: true,
-         className: "text-center",
+         className: "h-100 d-flex align-items-center justify-content-center",
          headerClassName: "headerCenterClass",
          onRender: (item: ITeamCompared) => {
             return (
@@ -201,23 +200,6 @@ function Teams() {
             )
          }
       },
-      {
-         key: uuidv4(),
-         name: 'Maps',
-         // fieldName: 'map2',
-         minWidth: 140,
-         maxWidth: 120,
-         isRowHeader: true,
-         onRender: (item: ITeamCompared) => {
-            //return <div className="badge badge-primary font-weight-light p-2" style={{fontSize: "1.0rem"}}>{item.team1Name}</div>
-            return (
-               <div className="d-flex align-items-start flex-column">
-                  <span>{item.map1}</span>
-                  <span>{item.map2}</span>
-               </div>
-            )
-         },
-      }
    ];
 
    return (
@@ -240,49 +222,38 @@ function Teams() {
             compact={false}
             columns={columns}
             selectionMode={SelectionMode.none}
-            // getKey={this._getKey}
-            // setKey="multiple"
             layoutMode={DetailsListLayoutMode.justified}
             isHeaderVisible={true}
-            //selection={this._selection}
-            //selectionPreservedOnEmptyClick={true}
-            //onItemInvoked={this._onItemInvoked}
-            //enterModalSelectionOnTouch={true}
-            //ariaLabelForSelectionColumn="Toggle selection"
-            //ariaLabelForSelectAllCheckbox="Toggle selection for all items"
-            //checkButtonAriaLabel="select row"
          />
 
-         {/* {teamsCompared.map((team: ITeamCompared) => {
-               return (
-                  <div key={uuidv4()} className="row m-1 p-4 align-items-center border border-fix border-secondary rounded ">
-                     <div className="col col-auto p-2">
-                        <div className="badge badge-primary block-badge font-weight-light p-2" style={{fontSize: "1.8rem"}}>{team.name}</div>
-                        <br />
-                     
-
-                     <div className="mt-2">
-                        {team.users.map((participant: any) => <div key={uuidv4()} className="badge badge-secondary block-badge font-weight-light p-2 mr-2" style={{fontSize: "1.2rem"}}>{participant.user}</div> )}
-                     </div>
-
-                     <div className="mt-2">
-                        <div key={uuidv4()} className="badge badge-secondary font-weight-light p-2 mr-2" style={{fontSize: "1.0rem"}}>{team.map1}</div>
-                        <div key={uuidv4()} className="badge badge-secondary font-weight-light p-2 mr-2" style={{fontSize: "1.0rem"}}>{team.map2}</div>
-                     </div>
+         <Modal
+            titleAriaId="Team"
+            isOpen={isOpen}
+            onDismiss={() => setIsOpen(false)}
+            isBlocking={false}
+            //isModeless={true}
+            containerClassName={contentStyles.container}
+         >
                
-                     </div> 
-                  </div> 
-               )
-            })} */}
+            <div className={contentStyles.header + " d-flex justify-content-between align-items-center" }>
+                TEAM
+                <IconButton
+                    //styles={iconButtonStyles}
+                    iconProps={cancelIcon}
+                    ariaLabel="Close popup modal"
+                    onClick={() => setIsOpen(false)}
+                />
+            </div>
+            
+            <div className={contentStyles.body + " text-white"}>
+               {modalTC &&
+                  <TeamCard tc={modalTC} />
+               }
+            </div>
+
+         </Modal>
       </div>         
    );
 }
-
-// function Team() {
-//    return (
-
-//    )
-
-// }
 
 export default Teams;

@@ -1,5 +1,8 @@
 import React from 'react';
 
+// Components
+import TeamCard from '../TeamCard/TeamCard';
+
 // helper
 import { v4 as uuidv4 } from 'uuid';
 import { Spinner, SpinnerSize  } from '@fluentui/react';
@@ -10,6 +13,7 @@ import {
    getAzureTableEntities,
    setGame
  } from '../../services/AzureService';
+import { compareTeams } from '../../services/CompareService';
 
 // constantes
 import { constants } from '../../constants';
@@ -19,6 +23,7 @@ import { IGame } from '../../interfaces/IGame';
 import { ITeam } from '../../interfaces/ITeam';
 import { IMap } from '../../interfaces/IMap';
 
+import { ITeamCompared } from '../../interfaces/ITeamCompared';
 import { ISetGameResponse } from '../../interfaces/ISetGameResponse';
 
 
@@ -42,7 +47,13 @@ import {
    Stack,
    IStackTokens,
    Dropdown,
-   IDropdownOption
+   IDropdownOption,
+   IIconProps,
+   getTheme,
+   mergeStyleSets,
+   FontWeights,
+   Modal,
+   IconButton
 } from '@fluentui/react';
 
 import { globalStateContext } from '../../App';
@@ -78,13 +89,19 @@ const itemAlignmentsStackTokens: IStackTokens = {
 
 function Games() {
 
-   const { isAdmin, loading, games, teams, maps, setGames } = React.useContext(globalStateContext);
+   const { isAdmin, loading, participants, games, teams, maps, setGames } = React.useContext(globalStateContext);
    
    const [mapsDDoptions, setMapsDDoptions] = React.useState<IDropdownOption[]>([]);
    const [gamesCompared, setGamesCompared] = React.useState<IGameCompared[]>([]);
    const [groups, setGroups] = React.useState<IGroup[]>([]);
    const [token, setToken] = React.useState<string>("")
    const [messages, setMessages] = React.useState<ISetGameResponse[]>([])
+
+   const [teamsCompared, setTeamsCompared] = React.useState<ITeamCompared[]>([]);
+   const [isOpen, setIsOpen] = React.useState<boolean>(false);
+   const [modalTC, setModalTC] = React.useState<ITeamCompared>();
+
+   const cancelIcon: IIconProps = { iconName: 'Cancel' };
 
    React.useEffect(() => {
       const gamesSorted = games.sort((a: IGame, b: IGame) => {
@@ -176,6 +193,9 @@ function Games() {
          })
       })
 
+      const teamsCompared: ITeamCompared[] = compareTeams(teams, participants, games, maps);
+
+      setTeamsCompared(teamsCompared);
       setGroups(groups)
       setGamesCompared(gamesCompared);
       setMapsDDoptions(mapsDDoptions)
@@ -184,6 +204,41 @@ function Games() {
       // returned function will be called on component unmount    
       }
    }, [games, maps, teams, setGroups, setGamesCompared, setMapsDDoptions]);
+
+   const theme = getTheme();
+   const contentStyles = mergeStyleSets({
+      container: {
+      display: 'flex',
+      flexFlow: 'column nowrap',
+      alignItems: 'stretch',
+      },
+      header: [
+         {
+            flex: '1 1 auto',
+            borderTop: `4px solid ${theme.palette.themePrimary}`,
+            color: theme.palette.neutralPrimary,
+            fontWeight: FontWeights.semibold,
+            padding: '12px 12px 14px 24px',
+         },
+      ],
+      body: {
+         flex: '4 4 auto',
+         padding: '0 24px 24px 24px',
+         overflowY: 'hidden',
+         selectors: {
+            p: { margin: '14px 0' },
+            'p:first-child': { marginTop: 0 },
+            'p:last-child': { marginBottom: 0 },
+         },
+      },
+   });
+
+   const showTeam = (tc: ITeamCompared | undefined) => {
+      if(tc) {
+         setModalTC(tc);
+         setIsOpen(true);
+      }
+   }
 
    const saveChanges = async () => {
       setMessages([]);
@@ -287,15 +342,19 @@ function Games() {
          key: uuidv4(),
          name: 'Team1',
          fieldName: 'team1Name',
-         minWidth: 140,
-         maxWidth: 180,
+         minWidth: 220,
+         maxWidth: 220,
          isRowHeader: true,
          isResizable: true,
          isMultiline: true,
          className: "text-right",
          headerClassName: "headerRightClass",
-         
-         data: 'string'
+         onRender: (item: IGameCompared) => {
+            const tc: ITeamCompared | undefined = teamsCompared.find((tc: ITeamCompared) => tc.rowKey === item.team1RowKey)
+            return (
+               <PrimaryButton className="m-1" onClick={() => showTeam(tc)}>{item.team1Name}</PrimaryButton>
+            )
+         },
       },
       {
          key: uuidv4(),
@@ -303,7 +362,7 @@ function Games() {
          minWidth: 70,
          maxWidth: 70,
          isRowHeader: true,
-         className: "text-center",
+         className: "h-100 d-flex align-items-center justify-content-center",
          headerClassName: "headerCenterClass",
          onRender: (item: IGameCompared) => {
             return (
@@ -317,12 +376,17 @@ function Games() {
          key: uuidv4(),
          name: 'Team2',
          fieldName: 'team2Name',
-         minWidth: 140,
-         maxWidth: 180,
+         minWidth: 220,
+         maxWidth: 220,
          isRowHeader: true,
          isResizable: true,
          isMultiline: true,
-         data: 'string'
+         onRender: (item: IGameCompared) => {
+            const tc: ITeamCompared | undefined = teamsCompared.find((tc: ITeamCompared) => tc.rowKey === item.team2RowKey)
+            return (
+               <PrimaryButton className="m-1" onClick={() => showTeam(tc)}>{item.team2Name}</PrimaryButton>
+            )
+         },
       },
       {
          key: uuidv4(),
@@ -332,6 +396,7 @@ function Games() {
          maxWidth: 150,
          isRowHeader: true,
          isResizable: true,
+         className: "h-100 d-flex align-items-center justify-content-left",
          onRender: (item: IGameCompared) => {
             return (
                <span>
@@ -348,6 +413,7 @@ function Games() {
          maxWidth: 150,
          isRowHeader: true,
          isResizable: true,
+         className: "h-100 d-flex align-items-center justify-content-left",
          onRender: (item: IGameCompared) => {
             return (
                <span>
@@ -364,6 +430,7 @@ function Games() {
          maxWidth: 150,
          isRowHeader: true,
          isResizable: true,
+         className: "h-100 d-flex align-items-center justify-content-left",
          onRender: (item: IGameCompared) => {
             return (
                <span className={item.isMap3Random ? "text-primary" : ""}>
@@ -381,6 +448,7 @@ function Games() {
          maxWidth: 150,
          isRowHeader: true,
          isResizable: true,
+         className: "h-100 d-flex align-items-center justify-content-left",
          onRender: (item: IGameCompared) => {
             return (
                <span className={item.isMap4Random ? "text-primary" : ""}>
@@ -402,8 +470,8 @@ function Games() {
          isRowHeader: true,
          isResizable: true,
          // isMultiline: true,
-         className: "text-right",
-         headerClassName: "headerRightClass",
+         className: "h-100 d-flex align-items-center justify-content-left",
+         // headerClassName: "headerRightClass",
          
          data: 'string'
       },
@@ -411,23 +479,27 @@ function Games() {
          key: uuidv4(),
          name: 'Team1',
          fieldName: 'team1Name',
-         minWidth: 140,
-         maxWidth: 180,
+         minWidth: 240,
+          maxWidth: 240,
          isRowHeader: true,
          isResizable: true,
          isMultiline: true,
-         className: "text-right",
+         className: "h-100 d-flex align-items-center justify-content-end",
          headerClassName: "headerRightClass",
-         
-         data: 'string'
+         onRender: (item: IGameCompared) => {
+            const tc: ITeamCompared | undefined = teamsCompared.find((tc: ITeamCompared) => tc.rowKey === item.team1RowKey)
+            return (
+               <PrimaryButton className="m-1" onClick={() => showTeam(tc)}>{item.team1Name}</PrimaryButton>
+            )
+         },
       },
       {
          key: uuidv4(),
          name: 'Ergebnis',
-         minWidth: 240,
-         maxWidth: 240,
+         minWidth: 180,
+         maxWidth: 180,
          isRowHeader: true,
-         className: "text-center",
+         className: "h-100 d-flex align-items-center justify-content-center",
          headerClassName: "headerCenterClass",
          onRender: (item: IGameCompared) => {
             var errorMessage = "";
@@ -464,12 +536,18 @@ function Games() {
          key: uuidv4(),
          name: 'Team2',
          fieldName: 'team2Name',
-         minWidth: 140,
-         maxWidth: 180,
+         minWidth: 240,
+         maxWidth: 240,
          isRowHeader: true,
          isResizable: true,
          isMultiline: true,
-         data: 'string'
+         className: "h-100 d-flex align-items-center justify-content-left",
+         onRender: (item: IGameCompared) => {
+            const tc: ITeamCompared | undefined = teamsCompared.find((tc: ITeamCompared) => tc.rowKey === item.team2RowKey)
+            return (
+               <PrimaryButton className="m-1" onClick={() => showTeam(tc)}>{item.team2Name}</PrimaryButton>
+            )
+         }
       },
       {
          key: uuidv4(),
@@ -479,6 +557,7 @@ function Games() {
          maxWidth: 180,
          isRowHeader: true,
          isResizable: true,
+         className: "h-100 d-flex align-items-center justify-content-left",
          onRender: (item: IGameCompared) => {
             return (
                <span>
@@ -492,9 +571,10 @@ function Games() {
          name: 'Map2',
          fieldName: 'map2',
          minWidth: 180,
-         maxWidth: 180,
+         maxWidth: 240,
          isRowHeader: true,
          isResizable: true,
+         className: "h-100 d-flex align-items-center justify-content-left",
          onRender: (item: IGameCompared) => {
             return (
                <span>
@@ -508,9 +588,10 @@ function Games() {
          name: 'Map3',
          fieldName: 'map3',
          minWidth: 180,
-         maxWidth: 180,
+         maxWidth: 240,
          isRowHeader: true,
          isResizable: true,
+         // className: "h-100 d-flex align-items-center justify-content-left",
          onRender: (item: IGameCompared) => {
             if(item.isMap3Random) {
                return (
@@ -532,7 +613,7 @@ function Games() {
             }
 
             return (
-               <span>
+               <span className="h-100 d-flex align-items-center justify-content-left">
                   {maps.find((m: IMap) => {return m.rowKey === item.map3RowKey})?.name || "Render Fehler"}
                </span>
             );
@@ -546,6 +627,7 @@ function Games() {
          maxWidth: 180,
          isRowHeader: true,
          isResizable: true,
+         // className: "h-100 d-flex align-items-center justify-content-left",
          onRender: (item: IGameCompared) => {
             if(item.isMap4Random) {
                return (
@@ -567,7 +649,7 @@ function Games() {
             }
 
             return (
-               <span>
+               <span className="h-100 d-flex align-items-center justify-content-left">
                   {maps.find((m: IMap) => {return m.rowKey === item.map4RowKey})?.name || "Render Fehler"}
                </span>
             );
@@ -644,6 +726,33 @@ function Games() {
                />
             </div>
          }
+
+         <Modal
+            titleAriaId="Team"
+            isOpen={isOpen}
+            onDismiss={() => setIsOpen(false)}
+            isBlocking={false}
+            //isModeless={true}
+            containerClassName={contentStyles.container}
+         >
+               
+            <div className={contentStyles.header + " d-flex justify-content-between align-items-center" }>
+                TEAM
+                <IconButton
+                    //styles={iconButtonStyles}
+                    iconProps={cancelIcon}
+                    ariaLabel="Close popup modal"
+                    onClick={() => setIsOpen(false)}
+                />
+            </div>
+            
+            <div className={contentStyles.body + " text-white"}>
+               {modalTC &&
+                  <TeamCard tc={modalTC} />
+               }
+            </div>
+
+         </Modal>
 
          {/* <div><pre>{JSON.stringify(games, null, 2) }</pre></div> */}
          {/* <div><pre>{JSON.stringify(gamesCompared, null, 2) }</pre></div> */}
