@@ -5,6 +5,6 @@ export const constants: IConstants = {
    twitchStatusAPIURL: "https://prod-33.westeurope.logic.azure.com:443/workflows/701d154a1f7840338aa65d9c7d4fbb48/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=geF4pAVYpjoezAJfldjJS4urCXPXPppZhXhaoOdeDqU",
    setGamesAPIURL: "https://prod-124.westeurope.logic.azure.com:443/workflows/b40fbb6e4f134649932abecfad7f5be3/triggers/request/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Frequest%2Frun&sv=1.0&sig=-Bzg_3wBynRe0Zgvonuh1GEw4z9m4ahFJgLPOHifmsA",
    azureAccount: "cordatabase",
-   sasToken: "?sv=2020-02-10&ss=t&srt=sco&sp=rl&se=2021-10-09T20:18:24Z&st=2021-03-21T13:18:24Z&spr=https,http&sig=zBGf8TfipcVZVlhAdQjBO7p6YjFHyjGwvGGSLjC2Fzo%3D",
+   sasToken: "?sv=2020-08-04&ss=bfqt&srt=sco&sp=r&se=2022-10-14T01:38:49Z&st=2021-10-13T17:38:49Z&sip=0.0.0.0-254.254.254.254&spr=https&sig=C84EFWfF%2B49gdjdbfpwfk5KZxTjpGseKoBDoeb537oo%3D",
 }
 
